@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Meta Tags -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Descrição da página para SEO">
+  <meta name="keywords" content="palavras-chave">
+  <meta name="author" content="Visual Design Squad">
+  <meta name="theme-color" content="#2563EB">
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://example.com/page">
+  <meta property="og:title" content="Título da Página">
+  <meta property="og:description" content="Descrição para compartilhamento">
+  <meta property="og:image" content="https://example.com/og-image.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/page-name.css">
+
+  <!-- Fonts (with preload for performance) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <title>Título da Página | Brand Name</title>
+</head>
+
+<body>
+  <!-- Skip Navigation Link (Accessibility) -->
+  <a href="#main-content" class="skip-link">Pular para conteúdo principal</a>
+
+  <!-- Header / Navigation -->
+  <header role="banner">
+    <nav role="navigation" aria-label="Navegação principal">
+      <a href="/" class="logo">Logo</a>
+      <ul class="nav-menu">
+        <li><a href="/about">Sobre</a></li>
+        <li><a href="/services">Serviços</a></li>
+        <li><a href="/contact">Contato</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content" role="main">
+    <!-- Hero Section -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container">
+        <h1 id="hero-title" class="hero__title">
+          Bem-vindo à nossa página
+        </h1>
+        <p class="hero__subtitle">
+          A melhor solução para suas necessidades
+        </p>
+        <button class="btn btn--primary btn--large">
+          Começar Agora
+        </button>
+      </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="content-section" aria-labelledby="section-title">
+      <div class="container">
+        <h2 id="section-title" class="section__title">
+          Recursos Principais
+        </h2>
+
+        <div class="features-grid">
+          <!-- Feature Card 1 -->
+          <article class="card">
+            <img
+              src="/images/feature-1.webp"
+              alt="Descrição do recurso 1"
+              width="400"
+              height="300"
+              loading="lazy"
+            >
+            <h3 class="card__title">Recurso 1</h3>
+            <p class="card__description">
+              Descrição breve do recurso e seus benefícios.
+            </p>
+            <a href="#" class="btn btn--secondary">
+              Saiba Mais
+            </a>
+          </article>
+
+          <!-- Feature Card 2 -->
+          <article class="card">
+            <img
+              src="/images/feature-2.webp"
+              alt="Descrição do recurso 2"
+              width="400"
+              height="300"
+              loading="lazy"
+            >
+            <h3 class="card__title">Recurso 2</h3>
+            <p class="card__description">
+              Descrição breve do recurso e seus benefícios.
+            </p>
+            <a href="#" class="btn btn--secondary">
+              Saiba Mais
+            </a>
+          </article>
+
+          <!-- Feature Card 3 -->
+          <article class="card">
+            <img
+              src="/images/feature-3.webp"
+              alt="Descrição do recurso 3"
+              width="400"
+              height="300"
+              loading="lazy"
+            >
+            <h3 class="card__title">Recurso 3</h3>
+            <p class="card__description">
+              Descrição breve do recurso e seus benefícios.
+            </p>
+            <a href="#" class="btn btn--secondary">
+              Saiba Mais
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" aria-labelledby="cta-title">
+      <div class="container">
+        <h2 id="cta-title" class="cta__title">
+          Pronto para começar?
+        </h2>
+        <p class="cta__subtitle">
+          Jogue-se em nossa plataforma hoje
+        </p>
+        <button class="btn btn--primary btn--large">
+          Experimente Agora Gratuitamente
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <nav aria-label="Links de rodapé">
+        <ul class="footer-menu">
+          <li><a href="/privacy">Privacidade</a></li>
+          <li><a href="/terms">Termos</a></li>
+          <li><a href="/sitemap">Mapa do Site</a></li>
+        </ul>
+      </nav>
+
+      <p class="footer__copyright">
+        &copy; 2026 Brand Name. Todos os direitos reservados.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/scripts/main.js" defer></script>
+
+  <!-- Analytics (add your tracking code) -->
+  <!-- Google Analytics, Segment, Mixpanel, etc. -->
+</body>
+
+</html>

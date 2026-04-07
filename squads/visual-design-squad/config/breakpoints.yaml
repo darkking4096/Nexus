@@ -1,0 +1,186 @@
+---
+# Breakpoints Configuration
+# Mobile-first approach: define breakpoints from smallest to largest
+
+breakpoints:
+  xs:
+    name: Extra Small (Mobile)
+    min-width: 320px
+    description: iPhone SE, small phones
+    viewport-width: 320px
+    test-device: iPhone SE
+
+  sm:
+    name: Small (Mobile Landscape)
+    min-width: 640px
+    description: Mobile phones in landscape
+    viewport-width: 640px
+    test-device: iPhone 14 landscape
+
+  md:
+    name: Medium (Tablet)
+    min-width: 768px
+    description: iPad and tablet devices
+    viewport-width: 768px
+    test-device: iPad Portrait
+
+  lg:
+    name: Large (Tablet Landscape)
+    min-width: 1024px
+    description: Tablet landscape, small laptops
+    viewport-width: 1024px
+    test-device: iPad Landscape
+
+  xl:
+    name: Extra Large (Desktop)
+    min-width: 1280px
+    description: Desktop and laptops
+    viewport-width: 1280px
+    test-device: MacBook 13"
+
+  2xl:
+    name: 2X Large (Wide)
+    min-width: 1536px
+    description: Large monitors and displays
+    viewport-width: 1536px
+    test-device: 27" Monitor
+
+# Mobile-first Design Strategy
+mobile_first_approach: true
+
+# Typography Scaling
+typography_scaling:
+  xs:
+    heading-1: 2.5rem      # Down from 3.5rem
+    heading-2: 1.75rem     # Down from 2rem
+    heading-3: 1.25rem     # Down from 1.5rem
+    body: 1rem
+    small: 0.875rem
+
+  sm:
+    heading-1: 2.75rem
+    heading-2: 1.875rem
+    heading-3: 1.375rem
+    body: 1rem
+    small: 0.875rem
+
+  md:
+    heading-1: 3rem
+    heading-2: 1.95rem
+    heading-3: 1.5rem
+    body: 1rem
+    small: 0.875rem
+
+  lg:
+    heading-1: 3.25rem
+    heading-2: 2rem
+    heading-3: 1.5rem
+    body: 1rem
+    small: 0.875rem
+
+  xl:
+    heading-1: 3.5rem
+    heading-2: 2rem
+    heading-3: 1.5rem
+    body: 1rem
+    small: 0.875rem
+
+  2xl:
+    heading-1: 3.5rem
+    heading-2: 2rem
+    heading-3: 1.5rem
+    body: 1rem
+    small: 0.875rem
+
+# Spacing Scaling
+spacing_scaling:
+  xs:
+    grid-gap: 16px
+    padding-section: 16px
+    padding-container: 16px
+
+  sm:
+    grid-gap: 20px
+    padding-section: 24px
+    padding-container: 20px
+
+  md:
+    grid-gap: 24px
+    padding-section: 32px
+    padding-container: 24px
+
+  lg:
+    grid-gap: 32px
+    padding-section: 48px
+    padding-container: 32px
+
+  xl:
+    grid-gap: 32px
+    padding-section: 64px
+    padding-container: 40px
+
+  2xl:
+    grid-gap: 32px
+    padding-section: 96px
+    padding-container: 48px
+
+# Container Widths
+container_widths:
+  xs: "100% - 32px"  # Full width with padding
+  sm: "100% - 40px"
+  md: "100% - 48px"
+  lg: "960px"
+  xl: "1200px"
+  2xl: "1280px"
+
+# Touch Target Sizing
+touch_targets:
+  minimum: 44px     # Minimum size for interactive elements
+  recommended: 48px  # Recommended size for better UX
+
+# Grid System
+grid_system:
+  columns:
+    xs: 1
+    sm: 2
+    md: 3
+    lg: 4
+    xl: 4
+    2xl: 6
+  gutter: 16px
+
+# Images & Responsive Breakpoints
+image_sizes:
+  xs: "100vw"
+  sm: "100vw"
+  md: "100vw"
+  lg: "50vw"
+  xl: "33.33vw"
+  2xl: "25vw"
+
+# Visibility
+visibility:
+  xs: show all
+  sm: show mobile-optimized
+  md: show tablet-optimized
+  lg: show desktop
+  xl: show desktop
+  2xl: show desktop
+
+# Testing Strategy
+testing:
+  priority_breakpoints:
+    - xs   # Most important (mobile first)
+    - md   # Tablet transition
+    - lg   # Desktop
+
+  actual_devices:
+    - iPhone SE (320px)
+    - iPhone 14 (390px)
+    - iPad (768px)
+    - MacBook 13" (1280px)
+
+  emulation_tools:
+    - Chrome DevTools
+    - Firefox Responsive Design Mode
+    - BrowserStack (for real devices)

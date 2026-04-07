@@ -1,0 +1,90 @@
+# Squad Context — Profile Configuration
+# Preencha este arquivo para cada novo perfil gerenciado pelo squad
+# Todos os agentes usam este arquivo como contexto base antes de executar tasks
+
+profile:
+  # Identificação
+  handle: "@seu_handle_aqui"
+  name: "Nome do Perfil"
+  niche: "Descrição do nicho (ex: copywriting, fitness, saas-marketing)"
+
+  # Público e Objetivo
+  audience: |
+    Descrição da persona-alvo:
+    - Idade/faixa etária
+    - Problema que enfrenta
+    - Resultado que busca
+    - Onde se informa
+
+  objective: "Descrição clara do objetivo (ex: 10k seguidores, 100 leads, 5k em vendas)"
+
+  # Voz e Tom
+  tone: "tom_do_perfil (ex: educativo, inspirador, direto, divertido)"
+  tone_description: "Descreva o tom em detalhes para manter consistência"
+
+  # Operacional
+  posting_frequency: "posts_por_semana (ex: 3, 4, 5)"
+  posting_times:
+    - "HH:MM (ex: 09:00, 18:30)"
+
+  content_pillars:
+    - name: "Pilar 1"
+      percentage: "XX%"
+      description: "O que este pilar entrega ao público"
+    - name: "Pilar 2"
+      percentage: "XX%"
+      description: "O que este pilar entrega ao público"
+    - name: "Pilar 3"
+      percentage: "XX%"
+      description: "O que este pilar entrega ao público"
+
+  # Posicionamento Competitivo
+  competitors:
+    - handle: "@competitor_1"
+      why: "Por que analisamos este perfil"
+    - handle: "@competitor_2"
+      why: "Por que analisamos este perfil"
+
+  unique_angle: "O que este perfil faz diferente dos competidores"
+
+  # Métricas Atuais
+  current_metrics:
+    followers: 0
+    avg_engagement_rate: "0%"
+    avg_reach: 0
+    avg_saves: 0
+    most_viral_format: "reel | carousel | post"
+
+  # Ofertas/CTAs
+  primary_offer: "Descrição da oferta principal (ex: course $97, newsletter, lead magnet)"
+  cta_primary: "Texto da CTA principal"
+
+  secondary_offers:
+    - name: "Oferta 2"
+      description: ""
+      cta: ""
+
+  # Histórico de Aprendizados
+  what_works:
+    - "Hook tipo X funciona bem com nosso público"
+    - "Formato reel > carousel (80% vs 20%)"
+
+  what_doesnt_work:
+    - "Hashtags genéricas = engagement baixo"
+
+  # Referências e Inspirações
+  inspiration_accounts:
+    - "@account_1 — por quê"
+    - "@account_2 — por quê"
+
+  # Datas Importantes
+  created_at: "YYYY-MM-DD"
+  last_strategy_review: "YYYY-MM-DD"
+  next_optimization_cycle: "YYYY-MM-DD"
+
+# Versioning
+metadata:
+  version: "1.0.0"
+  updated_by: "Seu Nome"
+  updated_at: "YYYY-MM-DD"
+  status: "draft | active | paused"

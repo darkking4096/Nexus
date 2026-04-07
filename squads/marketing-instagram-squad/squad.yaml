@@ -1,0 +1,105 @@
+---
+squad:
+  id: marketing-instagram-squad
+  name: Marketing Instagram Squad
+  version: 1.0.0
+  description: |
+    Squad de marketing para gerenciar perfis de Instagram de forma orgânica.
+    Adapta estratégia, conteúdo e análise ao objetivo específico de cada perfil.
+    5 agentes especializados.
+
+  domain: social-media-marketing
+  channel: instagram
+  operation-mode: solo
+  status: active
+
+metadata:
+  created_at: 2026-04-07
+  author: Marketing Team
+  version-history:
+    - version: 1.0.0
+      date: 2026-04-07
+      description: Initial squad creation with 5 agents
+
+agents:
+  - id: profile-strategist
+    name: Profile Strategist
+    file: agents/profile-strategist.md
+    role: Define estratégia mestra adaptada ao objetivo do perfil
+    commands:
+      - onboard-profile
+      - define-strategy
+      - update-strategy
+
+  - id: copywriter
+    name: Copywriter
+    file: agents/copywriter.md
+    role: Escreve captions, hooks, CTAs com psicologia de persuasão
+    commands:
+      - write-caption
+      - write-hook
+      - write-cta
+
+  - id: content-planner
+    name: Content Planner
+    file: agents/content-planner.md
+    role: Cria calendário editorial e briefs de conteúdo
+    commands:
+      - create-calendar
+      - generate-brief
+
+  - id: trend-researcher
+    name: Trend Researcher
+    file: agents/trend-researcher.md
+    role: Monitora tendências e busca referências virais
+    commands:
+      - find-trends
+      - suggest-format
+
+  - id: analytics-agent
+    name: Analytics Agent
+    file: agents/analytics-agent.md
+    role: Analisa métricas e sugere ajustes na estratégia
+    commands:
+      - analyze-performance
+      - suggest-adjustments
+
+tasks:
+  - id: onboard-profile
+    agent: profile-strategist
+    file: tasks/onboard-profile.md
+  - id: define-strategy
+    agent: profile-strategist
+    file: tasks/define-strategy.md
+  - id: update-strategy
+    agent: profile-strategist
+    file: tasks/update-strategy.md
+  - id: create-calendar
+    agent: content-planner
+    file: tasks/create-calendar.md
+  - id: generate-brief
+    agent: content-planner
+    file: tasks/generate-brief.md
+  - id: write-caption
+    agent: copywriter
+    file: tasks/write-caption.md
+  - id: write-hook
+    agent: copywriter
+    file: tasks/write-hook.md
+  - id: write-cta
+    agent: copywriter
+    file: tasks/write-cta.md
+  - id: find-trends
+    agent: trend-researcher
+    file: tasks/find-trends.md
+  - id: suggest-format
+    agent: trend-researcher
+    file: tasks/suggest-format.md
+  - id: analyze-performance
+    agent: analytics-agent
+    file: tasks/analyze-performance.md
+  - id: suggest-adjustments
+    agent: analytics-agent
+    file: tasks/suggest-adjustments.md
+
+# Frameworks integrados nos agentes, não precisa referencias externas

@@ -1,0 +1,282 @@
+---
+# Accessibility Standards (WCAG 2.1 Level AA)
+# Reference: https://www.w3.org/WAI/WCAG21/quickref/
+
+compliance-level: AA
+reference-version: "WCAG 2.1"
+
+# Perceivable Principles
+perceivable:
+  # 1.1 Text Alternatives
+  non-text-content:
+    requirement: "All images must have alt text (descriptive for informative, empty for decorative)"
+    compliance-level: A
+    examples:
+      - "✓ <img alt='Product photo'> for informative images"
+      - "✓ <img alt=''> for decorative images"
+      - "✗ Missing alt text"
+
+  # 1.4 Distinguishable (Color Contrast)
+  color-contrast:
+    requirement: "Minimum contrast ratio 4.5:1 for text, 3:1 for large text"
+    compliance-level: AA
+    testing:
+      - "Use: Contrast Checker tool"
+      - "Check: All text colors"
+      - "Check: Button text"
+      - "Check: Links"
+    exceptions:
+      - "Large text (18pt+): 3:1 ratio acceptable"
+      - "Decorative text: no requirement"
+      - "Logos: exempt"
+
+  text-spacing:
+    requirement: "Text must be readable without loss of content or functionality"
+    compliance-level: AA
+    implementation:
+      - "Line spacing: >= 1.5x"
+      - "Paragraph spacing: >= 2x"
+      - "Letter spacing: >= 0.12x font size"
+      - "Word spacing: >= 0.16x font size"
+
+  text-resizing:
+    requirement: "Text must be resizable up to 200%"
+    compliance-level: AA
+    avoid:
+      - "Fixed height containers (use min-height)"
+      - "Overflow: hidden on text"
+      - "Font sizes only in pixels (use rem/em)"
+
+# Operable Principles
+operable:
+  # 2.1 Keyboard Accessible
+  keyboard-navigation:
+    requirement: "All functionality must be keyboard accessible"
+    compliance-level: A
+    implementation:
+      - "Tab navigation through all interactive elements"
+      - "Logical tab order (top-to-bottom, left-to-right)"
+      - "Skip navigation links for main content"
+      - "Keyboard shortcuts documented"
+    testing:
+      - "Tab through entire page"
+      - "Verify tab order is logical"
+      - "Test with screen readers"
+
+  focus-visible:
+    requirement: "Keyboard focus indicator must be visible"
+    compliance-level: A
+    specification:
+      - "Outline width: >= 2px"
+      - "Outline offset: 2px"
+      - "Color contrast: >= 3:1"
+      - "Never use outline: none without replacement"
+    example: |
+      :focus {
+        outline: 2px solid #2563EB;
+        outline-offset: 2px;
+      }
+
+  no-keyboard-trap:
+    requirement: "Keyboard users must be able to move away from any component"
+    compliance-level: A
+    avoidance:
+      - "Modals without escape key"
+      - "Dropdowns that trap focus"
+      - "Form inputs without exit path"
+
+  # 2.4 Navigation & Orientation
+  meaningful-sequence:
+    requirement: "DOM order must be logical for screen readers"
+    compliance-level: A
+    implementation:
+      - "HTML structure reflects visual hierarchy"
+      - "Avoid CSS for reordering (flex-direction, grid-row)"
+      - "Heading hierarchy: h1 → h2 → h3 (no skipping)"
+
+  link-purpose:
+    requirement: "Link purpose must be clear from link text alone"
+    compliance-level: A
+    good-examples:
+      - "✓ <a href='/about'>About Us</a>"
+      - "✓ <a href='/docs'>Read documentation</a>"
+    bad-examples:
+      - "✗ <a href='/'>Click here</a>"
+      - "✗ <a href='/'>Link</a>"
+
+  # 2.5 Input Modalities
+  touch-target-size:
+    requirement: "Interactive elements must be >= 44x44px (CSS pixels)"
+    compliance-level: AA
+    implementation:
+      - "Buttons: min-height 44px, min-width 44px"
+      - "Links: min-height 44px, padding as needed"
+      - "Form inputs: min-height 40px"
+      - "Spacing between targets: >= 8px"
+
+# Understandable Principles
+understandable:
+  # 3.1 Readable & Understandable
+  language:
+    requirement: "Page language must be identified"
+    compliance-level: A
+    implementation:
+      - "Set lang attribute on <html>"
+      - "Example: <html lang='en'> or <html lang='pt-BR'>"
+
+  unusual-words:
+    requirement: "Unusual words/abbreviations must be defined"
+    compliance-level: AAA
+    implementation:
+      - "Use <abbr title='Full form'>ABBR</abbr>"
+      - "Use <dfn>definition</dfn> for terminology"
+      - "Provide glossary for technical terms"
+
+  # 3.2 Predictable Behavior
+  on-focus:
+    requirement: "No unexpected context changes on focus"
+    compliance-level: A
+    avoid:
+      - "Auto-submitting forms on focus"
+      - "Auto-opening menus on focus"
+      - "Page jumps on focus"
+
+  on-change:
+    requirement: "No unexpected context changes on input"
+    compliance-level: A
+    avoid:
+      - "Auto-submitting on radio/checkbox change"
+      - "Auto-navigating on select change"
+    allowed:
+      - "Real-time validation feedback"
+      - "Auto-complete suggestions"
+
+  # 3.3 Input Assistance
+  error-identification:
+    requirement: "Form errors must be identified and described clearly"
+    compliance-level: A
+    implementation:
+      - "Error message identifies the field"
+      - "Error message describes the problem"
+      - "Error message suggests correction"
+    example: |
+      ✓ "Email address is invalid. Use format: name@domain.com"
+      ✗ "Invalid input"
+
+  error-prevention:
+    requirement: "Confirmation for important actions"
+    compliance-level: AA
+    implement-for:
+      - "Deleting data"
+      - "Financial transactions"
+      - "Legal commitments"
+    avoidance:
+      - "Tests and exams (review allowed)"
+      - "Recoverable actions"
+
+# Robust Principles
+robust:
+  # 4.1 Compatible
+  valid-html:
+    requirement: "Valid HTML markup"
+    compliance-level: A
+    validation:
+      - "Use: W3C Markup Validator"
+      - "Test: Every page"
+      - "Zero parsing errors"
+
+  aria-usage:
+    requirement: "ARIA attributes used correctly"
+    compliance-level: A
+    rules:
+      - "No ARIA on semantic elements (button, link, etc.)"
+      - "aria-label for icon-only buttons"
+      - "aria-describedby for form error messages"
+      - "aria-expanded for collapsible sections"
+      - "aria-live for dynamic content updates"
+    avoidance:
+      - "Mismatched role/state combinations"
+      - "ARIA that conflicts with HTML semantics"
+
+  semantic-html:
+    requirement: "Use semantic elements over generic divs"
+    compliance-level: AA
+    implementation:
+      - "Use <button> for buttons (not <div>)"
+      - "Use <nav> for navigation"
+      - "Use <main> for main content"
+      - "Use <article> for articles"
+      - "Use <section> for sections"
+      - "Use <header> and <footer>"
+      - "Use <h1>-<h6> for headings"
+      - "Use <ul>, <ol>, <li> for lists"
+      - "Use <label> for form labels"
+
+# Testing & Validation
+testing:
+  automated-tools:
+    - "axe DevTools"
+    - "WAVE"
+    - "Lighthouse (a11y)"
+    - "aXe Accessibility Checker"
+    - "WebAIM Color Contrast Checker"
+
+  manual-testing:
+    - "Keyboard navigation (Tab, Enter, Escape)"
+    - "Screen reader testing (NVDA, JAWS, VoiceOver)"
+    - "Color contrast verification"
+    - "Focus indicator visibility"
+    - "Form input association"
+
+  screen-readers:
+    - "NVDA (Windows, free)"
+    - "JAWS (Windows, paid)"
+    - "VoiceOver (macOS, iOS, built-in)"
+    - "TalkBack (Android, built-in)"
+
+  devices:
+    - "Real devices with screen readers"
+    - "Slow network conditions"
+    - "Mobile touch interaction"
+
+# Common Violations to Avoid
+violations-to-avoid:
+  critical:
+    - "Missing alt text on images"
+    - "No focus indicators"
+    - "Color used as only indicator"
+    - "Keyboard traps"
+    - "Missing form labels"
+    - "Invalid HTML"
+    - "ARIA misuse"
+
+  high:
+    - "Low color contrast"
+    - "Small touch targets (< 44px)"
+    - "Illogical heading hierarchy"
+    - "Missing skip navigation"
+    - "Ambiguous link text"
+
+  medium:
+    - "Small text that can't be resized"
+    - "Auto-playing audio/video"
+    - "Flashing content (> 3/second)"
+    - "Blocks for language/region"
+
+# Documentation
+documentation:
+  required-for-each-page:
+    - "Alt text descriptions"
+    - "Form field labels"
+    - "Error message specifications"
+    - "Keyboard navigation plan"
+    - "ARIA usage documentation"
+
+  testing-report:
+    template: "accessibility-audit.md"
+    includes:
+      - "Automated scan results"
+      - "Manual testing results"
+      - "Issues found with severity"
+      - "Remediation steps"
+      - "Sign-off by accessibility reviewer"

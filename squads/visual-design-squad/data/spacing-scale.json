@@ -1,0 +1,265 @@
+{
+  "metadata": {
+    "name": "Spacing Scale",
+    "version": "1.0.0",
+    "lastUpdated": "2026-04-07",
+    "description": "8px-based spacing system for visual design squad",
+    "baseUnit": "8px",
+    "principle": "All spacing uses multiples of 8px base unit"
+  },
+  "baseUnit": {
+    "value": "8px",
+    "cssVariable": "--spacing-unit",
+    "principle": "All spacing derives from 8px base"
+  },
+  "scale": {
+    "0": {
+      "value": "0",
+      "pixels": "0px",
+      "rems": "0rem",
+      "cssVariable": "--spacing-0",
+      "usage": "No spacing (remove margins/padding)"
+    },
+    "1": {
+      "value": "0.5rem",
+      "pixels": "8px",
+      "multiples": "1x base unit",
+      "cssVariable": "--spacing-1",
+      "usage": "Minimal spacing (padding in small buttons, icon spacing)"
+    },
+    "2": {
+      "value": "1rem",
+      "pixels": "16px",
+      "multiples": "2x base unit",
+      "cssVariable": "--spacing-2",
+      "usage": "Small spacing (component padding, list gaps)"
+    },
+    "3": {
+      "value": "1.5rem",
+      "pixels": "24px",
+      "multiples": "3x base unit",
+      "cssVariable": "--spacing-3",
+      "usage": "Medium spacing (section margins, container padding)"
+    },
+    "4": {
+      "value": "2rem",
+      "pixels": "32px",
+      "multiples": "4x base unit",
+      "cssVariable": "--spacing-4",
+      "usage": "Large spacing (major section gaps)"
+    },
+    "5": {
+      "value": "2.5rem",
+      "pixels": "40px",
+      "multiples": "5x base unit",
+      "cssVariable": "--spacing-5",
+      "usage": "Extra large spacing"
+    },
+    "6": {
+      "value": "3rem",
+      "pixels": "48px",
+      "multiples": "6x base unit",
+      "cssVariable": "--spacing-6",
+      "usage": "Very large spacing (page sections)"
+    },
+    "8": {
+      "value": "4rem",
+      "pixels": "64px",
+      "multiples": "8x base unit",
+      "cssVariable": "--spacing-8",
+      "usage": "Huge spacing (hero sections)"
+    },
+    "12": {
+      "value": "6rem",
+      "pixels": "96px",
+      "multiples": "12x base unit",
+      "cssVariable": "--spacing-12",
+      "usage": "Massive spacing (page top/bottom)"
+    },
+    "16": {
+      "value": "8rem",
+      "pixels": "128px",
+      "multiples": "16x base unit",
+      "cssVariable": "--spacing-16",
+      "usage": "Extreme spacing (full viewport sections)"
+    }
+  },
+  "commonPatterns": {
+    "button": {
+      "padding": "8px 16px",
+      "spacing": "--spacing-1 --spacing-2",
+      "minHeight": "44px",
+      "example": "padding: var(--spacing-1) var(--spacing-2);"
+    },
+    "inputField": {
+      "padding": "8px 12px",
+      "spacing": "--spacing-1",
+      "minHeight": "40px",
+      "example": "padding: var(--spacing-1) var(--spacing-2);"
+    },
+    "cardPadding": {
+      "padding": "24px",
+      "spacing": "--spacing-3",
+      "example": "padding: var(--spacing-3);"
+    },
+    "sectionMargin": {
+      "margin": "48px 0",
+      "spacing": "--spacing-6",
+      "example": "margin: var(--spacing-6) 0;"
+    },
+    "gap": {
+      "gapSmall": "16px",
+      "gapMedium": "24px",
+      "gapLarge": "32px",
+      "example": "gap: var(--spacing-2);"
+    },
+    "touchTarget": {
+      "minimum": "44px",
+      "spacing": "8px between targets",
+      "rule": "WCAG 2.5.5 - Target Size"
+    }
+  },
+  "padding": {
+    "xs": {
+      "value": "8px",
+      "usage": "Minimal padding (small components)"
+    },
+    "sm": {
+      "value": "12px",
+      "usage": "Small padding (buttons, inputs)"
+    },
+    "md": {
+      "value": "16px",
+      "usage": "Medium padding (cards, sections)"
+    },
+    "lg": {
+      "value": "24px",
+      "usage": "Large padding (containers)"
+    },
+    "xl": {
+      "value": "32px",
+      "usage": "Extra large padding (page padding)"
+    }
+  },
+  "margin": {
+    "auto": {
+      "value": "auto",
+      "usage": "Center elements (margin: auto)"
+    },
+    "xs": {
+      "value": "8px",
+      "usage": "Minimal margin"
+    },
+    "sm": {
+      "value": "16px",
+      "usage": "Small margin (between elements)"
+    },
+    "md": {
+      "value": "24px",
+      "usage": "Medium margin (section spacing)"
+    },
+    "lg": {
+      "value": "32px",
+      "usage": "Large margin (major sections)"
+    },
+    "xl": {
+      "value": "48px",
+      "usage": "Extra large margin"
+    }
+  },
+  "gap": {
+    "xs": {
+      "value": "8px",
+      "usage": "Tight item spacing (grid, flexbox)"
+    },
+    "sm": {
+      "value": "12px",
+      "usage": "Small gap"
+    },
+    "md": {
+      "value": "16px",
+      "usage": "Medium gap (common for grids)"
+    },
+    "lg": {
+      "value": "24px",
+      "usage": "Large gap (spacious layouts)"
+    },
+    "xl": {
+      "value": "32px",
+      "usage": "Extra large gap (very spacious)"
+    }
+  },
+  "responsiveSpacing": {
+    "mobile": {
+      "padding": "16px",
+      "margin": "16px",
+      "gap": "12px",
+      "sectionGap": "24px"
+    },
+    "tablet": {
+      "padding": "24px",
+      "margin": "24px",
+      "gap": "16px",
+      "sectionGap": "32px"
+    },
+    "desktop": {
+      "padding": "32px",
+      "margin": "32px",
+      "gap": "16px",
+      "sectionGap": "48px"
+    }
+  },
+  "fluidSpacing": {
+    "enabled": true,
+    "method": "clamp()",
+    "examples": {
+      "sectionPadding": "clamp(1rem, 5vw, 3rem)",
+      "containerGap": "clamp(1rem, 2vw, 2rem)"
+    }
+  },
+  "accessibility": {
+    "minimumTouchTarget": {
+      "size": "44x44px",
+      "padding": "≥ var(--spacing-1) around each target",
+      "rule": "WCAG 2.5.5 - Touch Target Size"
+    },
+    "minimumSpacing": {
+      "height": "44px",
+      "width": "44px",
+      "betweenTargets": "≥ 8px",
+      "principle": "Prevent accidental activation"
+    }
+  },
+  "cssVariables": {
+    "enabled": true,
+    "pattern": "--spacing-{scale}",
+    "declaration": ":root { --spacing-unit: 8px; --spacing-1: 8px; --spacing-2: 16px; ... }",
+    "usage": "padding: var(--spacing-2); margin: var(--spacing-3);"
+  },
+  "commonMistakes": {
+    "inconsistentSpacing": {
+      "issue": "Using arbitrary spacing (15px, 23px, etc.)",
+      "solution": "Stick to scale (8, 16, 24, 32, etc.)"
+    },
+    "tooMuchSpacing": {
+      "issue": "Over-spacing creates disconnected layouts",
+      "solution": "Use minimal spacing for related items, larger spacing for sections"
+    },
+    "tooLittleSpacing": {
+      "issue": "Cramped layout, difficult to read",
+      "solution": "Mobile: 16px padding, Desktop: 32px padding"
+    },
+    "inconsistentGridGaps": {
+      "issue": "Item gaps vary across page",
+      "solution": "Use consistent gap values (16px, 24px)"
+    }
+  },
+  "guidelines": {
+    "principle1": "Always use multiples of 8px (8, 16, 24, 32, 40, 48, 56, 64, etc.)",
+    "principle2": "Consistency creates visual harmony and predictability",
+    "principle3": "Mobile: Use smaller spacing (16-24px). Desktop: Can be larger (24-32px)",
+    "principle4": "Related items: Small gap. Unrelated items: Large gap",
+    "principle5": "Touch targets: Minimum 44x44px with 8px spacing between"
+  },
+  "notes": "This 8px spacing system creates visual harmony across the design. All spacing must be multiples of 8 for consistency, predictability, and professional appearance."
+}

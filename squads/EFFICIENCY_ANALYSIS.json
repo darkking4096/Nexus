@@ -1,0 +1,262 @@
+{
+  "analysis_date": "2026-04-07",
+  "analysis_scope": ["marketing-instagram-squad", "visual-design-squad"],
+  "total_squads_analyzed": 2,
+  "total_agents": 10,
+  "total_tasks": 25,
+  "total_workflows": 5,
+  "efficiency_issues": [
+    {
+      "id": "REDUNDANT-001",
+      "type": "Redundant Framework Application",
+      "severity": "HIGH",
+      "location": "marketing-instagram-squad: All agents load 9 marketing frameworks",
+      "description": "Each of 5 agents in marketing-instagram-squad duplicates framework references in squad.yaml (StoryBrand, Value Equation, Hook-Story-Offer, AIDA, STEPPS, AARRR, etc.). These frameworks appear across agent definitions but are never referenced in actual task implementations.",
+      "impact": "Context bloat: ~5K tokens per squad load for frameworks never used. Knowledge duplication makes framework updates require changes in 5 places instead of 1.",
+      "example": "squad.yaml lines 29-50 list frameworks in agent definitions, but agents/profile-strategist.md never references them by name",
+      "fix": "Create single frameworks-registry.md in squad root. Reference by ID in agents. Load framework details on-demand, not at squad initialization."
+    },
+    {
+      "id": "CONTEXT-LOST-001",
+      "type": "Context Lost Between Tasks",
+      "severity": "HIGH",
+      "location": "marketing-instagram-squad: Optimize-existing-profile workflow",
+      "description": "Strategy document is created in launch-new-profile (Day 1) and updated in optimize-existing-profile (Week 2). However, neither workflow validates whether the update is actually backwards-compatible or tracks what changed. New tests in suggest-adjustments depend on strategy changes, but there's no explicit handoff documenting what changed.",
+      "impact": "Tests may be misaligned with updated strategy. Requires re-reading entire strategy doc to understand deltas. If strategy-document gets large (10KB+), context window gets expensive.",
+      "example": "optimize-existing-profile.md Week 2 says 'Validar: core messages ainda ressoam?' but doesn't create a changelog. suggest-adjustments.md (Week 1 output) must re-read entire strategy to find changes.",
+      "fix": "Add optional output in update-strategy task: strategy-changelog.md showing [REMOVED], [UPDATED], [ADDED] for core-messages, pillars, hooks. Reference changelog in suggest-adjustments inputs."
+    },
+    {
+      "id": "INEFFICIENT-SEQUENTIAL-001",
+      "type": "Unnecessarily Sequential Execution",
+      "severity": "MEDIUM",
+      "location": "marketing-instagram-squad: Launch-new-profile workflow Days 2-4",
+      "description": "Days 2, 3, 4 are strictly sequential (copywriter → planner → researcher), but many tasks have no true dependency. Copywriter writes 5 captions in Day 2 (3 hrs). Content planner creates calendar in Day 3 (2 hrs morning). But planner could start calendar in parallel with copywriter Day 2 afternoon, since both need strategy doc (available since Day 1).",
+      "impact": "5-day workflow could compress to 4 days. ~20% longer than necessary. If scaling to 10 profiles, cumulative overhead is 2+ days.",
+      "example": "Day 2: @copywriter write-caption (3hrs) vs Day 3: @content-planner create-calendar (2hrs). Planner's input is strategy-doc (from Day 1) + pilar %. Planner doesn't need 5 captions to exist before starting skeleton calendar.",
+      "fix": "Refactor as: Day 2: copywriter (3hrs) + planner start calendar structure (1hr parallel). Day 3: planner finish calendar (1hr). Overlaps 1hr, saves 1 full day."
+    },
+    {
+      "id": "REDUNDANT-AUDIT-001",
+      "type": "Duplicated Quality Assurance Steps",
+      "severity": "MEDIUM",
+      "location": "visual-design-squad: component-creation.md vs page-to-production.md",
+      "description": "Both workflows have Rio (responsive specialist) audit at the end, and both have Nova run a11y + performance audits independently. However, responsive-audit (Rio) and a11y-audit (Nova) both check focus rings, color contrast, and mobile layouts. 20-30% of checks overlap.",
+      "impact": "Redundant testing. If a focus ring issue is found by Rio, Nova will find it again. Time waste: ~2-3 hours per component.",
+      "example": "component-creation.md Day 3: Rio tests 'All interactive elements accessible' + Nova tests 'Screen reader + keyboard nav'. Both test keyboard navigation independently.",
+      "fix": "Create unified responsive-a11y-audit.md combining both into single pass. Rio owns responsive at all breakpoints, Nova owns a11y compliance. Single document, coordinated checklist."
+    },
+    {
+      "id": "CONFIG-UNUSED-001",
+      "type": "Loaded Configuration Never Used",
+      "severity": "MEDIUM",
+      "location": "marketing-instagram-squad: squad.yaml references profile-context.yaml",
+      "description": "squad.yaml (line 136) lists dependencies.frameworks-extraction and dependencies.persona-instructions, but tasks never reference these files. profile-context.yaml exists but is mentioned only in define-strategy.md inputs as 'partially predefilled' with no guidance on what fields.",
+      "impact": "Configuration files loaded at initialization but never accessed. Wasted I/O and memory. Maintenance risk: if framework paths change, squad still tries to load old paths.",
+      "example": "squad.yaml line 136 'frameworks-extraction: ../.aiox/frameworks-extraction.md' but no agent task actually imports or reads this file.",
+      "fix": "Remove unused dependencies from squad.yaml. If framework extraction is needed, add explicit task input. Clean up profile-context.yaml or document required fields with schema."
+    },
+    {
+      "id": "INEFFICIENT-HANDOFF-001",
+      "type": "Verbose Handoff Protocol",
+      "severity": "LOW",
+      "location": "marketing-instagram-squad: All workflows have handoff sections",
+      "description": "Each workflow handoff block (launch-new-profile Days 1-5, optimize-existing-profile Weeks 1-4) includes 'Pass to:' sections with full context repeated. Example: Day 1 handoff lists all 5 core messages, all 10 hooks, etc. Day 2 could infer these from strategy-doc link.",
+      "impact": "Handoff sections add 500+ words per workflow. Not critical, but reduces scannability. Reduces clarity (readers must match handoff to actual document).",
+      "example": "launch-new-profile.md line 29-37: handoff repeats '5 core messages: [lista]' when reader can just look at {handle}-strategy-document.md.",
+      "fix": "Simplify handoff format to: 'Pass to: @copywriter. Previous output: {handle}-strategy-document.md. Next task: write-caption.' Remove context summaries; link to source of truth."
+    },
+    {
+      "id": "MISSING-DEPS-001",
+      "type": "Undeclared Task Dependencies",
+      "severity": "MEDIUM",
+      "location": "visual-design-squad: responsive-audit.md and a11y-audit.md missing explicit blockers",
+      "description": "responsive-audit.md and a11y-audit.md both list 'requires: frontend-implement-page' in dependencies, but the task YAML doesn't declare 'blocks' relationships. This means if frontend-implement-page has a bug, Rio and Nova start auditing incomplete code, waste hours, then must re-audit.",
+      "impact": "No task orchestration. Agents don't know which task waits for them. Manual coordination required.",
+      "example": "responsive-audit.md (lines 42-44) says 'requires: frontend-implement-page' but doesn't declare 'blocks: [performance-audit, quality-gate-visual]'. This inverse relationship must be inferred.",
+      "fix": "Add 'blocks' field in responsive-audit and a11y-audit task YAML. Declare: 'responsive-audit blocks: quality-gate-visual' so runner knows order."
+    },
+    {
+      "id": "FRAMEWORK-DUPLICATION-001",
+      "type": "Framework Duplication Across Squads",
+      "severity": "MEDIUM",
+      "location": "marketing-instagram-squad and visual-design-squad both define personas using external frameworks",
+      "description": "marketing-instagram-squad agents reference frameworks like 'StoryBrand 7-Point (Donald Miller)'. visual-design-squad agents reference 'Atomic Design (Brad Frost)', 'Design of Everyday Things (Norman)'. Both load from same persona integration points ('../.aiox/personas/') but define frameworks separately in squad.yaml.",
+      "impact": "If framework list changes, both squads must be updated. No single source of truth. If adding a new framework, unclear which squad 'owns' it.",
+      "example": "marketing-instagram-squad/squad.yaml defines frameworks in agent blocks. visual-design-squad/squad.yaml does the same. No deduplicated registry.",
+      "fix": "Create central .aiox/frameworks-registry.yaml (or extend existing one) with all frameworks. Both squads reference by ID: 'frameworks: [storybrand-7pt, value-equation-hormozi]' instead of full definitions."
+    },
+    {
+      "id": "UNCLEAR-TEMPLATES-001",
+      "type": "Template Output Formats Not Linked to Tasks",
+      "severity": "LOW",
+      "location": "marketing-instagram-squad: templates/ folder has markdown templates, but tasks don't explicitly reference them",
+      "description": "marketing-instagram-squad/templates/ has caption-output.md, content-calendar.md, strategy-document.md, etc. But tasks (write-caption.md, create-calendar.md) embed their own format examples instead of linking to template files. This creates two sources of truth.",
+      "impact": "If template format changes, task example must be manually updated. Risk of divergence.",
+      "example": "write-caption.md (lines 48-96) embeds full caption-*.md structure. But templates/caption-output.md likely has the same format. Two places to maintain.",
+      "fix": "Tasks should say 'Output: Use template {squad}/templates/caption-output.md and substitute [variables]'. Maintain one source (template file), tasks reference it."
+    },
+    {
+      "id": "BOTTLENECK-001",
+      "type": "Single-Agent Bottleneck: @analytics-agent",
+      "severity": "MEDIUM",
+      "location": "marketing-instagram-squad: optimize-existing-profile workflow",
+      "description": "@analytics-agent is the only agent who can run analyze-performance and suggest-adjustments. In optimize-existing-profile, Week 1 (5 hours) + Week 4 (2 hours). If two profiles need optimization in same month, @analytics-agent is blocked for 7+ hours before @profile-strategist can even start Week 2.",
+      "impact": "Cannot scale to >2-3 simultaneous profiles without bottleneck. Week 2+ agents (strategist, copywriter, planner) idle waiting for analytics.",
+      "example": "optimize-existing-profile.md Week 1: 'Monday-Friday (5 horas)' — @analytics-agent alone. Weeks 2-4 agents idle until done.",
+      "fix": "Consider task splitting: analyze-performance (data collection) vs suggest-adjustments (strategy). Allow parallel work on data analysis and strategy review. Or document acceptable load: max 2 concurrent profiles per month."
+    },
+    {
+      "id": "CONTEXT-EXPLOSION-002",
+      "type": "Large Output Documents Passed Between Tasks",
+      "severity": "MEDIUM",
+      "location": "marketing-instagram-squad: strategy-document → all downstream tasks",
+      "description": "strategy-document.md includes StoryBrand 7-point (full section), Value Equation (full section), 10 Hook Frameworks (detailed examples), Content Pillars (descriptions), 5 Core Messages, and Operational Recommendations. Estimated 2-3KB per profile. Every downstream task (write-caption, create-calendar, suggest-adjustments) loads this entire document, even if using only 1 section (e.g., copywriter only needs hook frameworks + core messages).",
+      "impact": "Context window inflation. If strategy grows to 5KB, and 8 tasks reference it, cumulative load is 40KB. For 10 profiles, 400KB+ of redundant context.",
+      "example": "write-caption.md inputs say 'Precisa de: 1. {handle}-strategy-document.md' — full doc. But task only uses core messages + hooks (maybe 200 lines of 800).",
+      "fix": "Create modular strategy artifacts: core-messages.md (50 lines), hooks-framework.md (300 lines), content-pillars.md (100 lines). Tasks load only needed modules."
+    }
+  ],
+  "unused_components": [
+    {
+      "path": "squads/marketing-instagram-squad/config/profile-context.yaml",
+      "description": "Referenced in squad.yaml but never imported or documented. No task reads it. Unclear purpose.",
+      "recommendation": "Document schema with required fields, or remove if unused."
+    },
+    {
+      "path": ".aiox/frameworks-extraction.md (referenced but not present)",
+      "description": "Both squads reference frameworks-extraction.md in dependencies, but file doesn't exist in repo (presumed missing or in parent .aiox dir). Creates broken reference.",
+      "recommendation": "Either create frameworks-extraction.md or remove from dependencies."
+    },
+    {
+      "path": "squads/marketing-instagram-squad/templates/ folder",
+      "description": "Templates exist but tasks embed duplicate examples instead of linking to templates. Templates become stale.",
+      "recommendation": "Update tasks to reference templates by name. Remove embedded examples from task descriptions."
+    },
+    {
+      "path": "squads/visual-design-squad/agents/ux-interaction-designer.md (Iris agent)",
+      "description": "In component-creation.md workflow, Iris is listed as participant but has no component-specific tasks. Iris only appears in page-to-production.md (Day 3: Interaction Phase). In component-creation, interactions are left to Nova's quality gate.",
+      "recommendation": "Either remove Iris from component-creation or add interaction-design task for components (currently skipped)."
+    }
+  ],
+  "optimization_opportunities": [
+    {
+      "id": "OPT-001",
+      "title": "Parallelize Marketing Days 2-4",
+      "area": "marketing-instagram-squad: launch-new-profile",
+      "current_timeline": "5 days (Day 1 → Day 2 → Day 3 → Day 4 → Day 5)",
+      "proposed_timeline": "4 days (Day 1 → Days 2-3 parallel → Day 4 → Day 5)",
+      "description": "Copywriter (Day 2) and Content Planner (Day 3) have no hard dependency on each other. Both need strategy-doc (ready Day 1). Planner can start calendar skeleton while copywriter finishes captions.",
+      "effort_savings": "1 day (20% reduction)",
+      "implementation": "Refactor launch-new-profile.md: Add 'Day 2.5' section showing copywriter finishing captions + planner starting calendar in parallel. Adjust handoff timing."
+    },
+    {
+      "id": "OPT-002",
+      "title": "Consolidate Responsive + A11y Audits",
+      "area": "visual-design-squad: component-creation + page-to-production",
+      "current_timeline": "Rio audits, then Nova audits (sequential or partial overlap)",
+      "proposed_timeline": "Single unified audit, Rio + Nova coordinate once",
+      "description": "Rio (responsive) and Nova (a11y/performance) both test keyboard nav, color contrast, touch targets. Combine into single pass with coordinated checklist.",
+      "effort_savings": "2-3 hours per component/page",
+      "implementation": "Create unified responsive-a11y-audit.md task that both agents run together. Divide responsibilities: Rio owns layout/images, Nova owns focus/contrast/keyboard. Both sign off on single report."
+    },
+    {
+      "id": "OPT-003",
+      "title": "Modularize Strategy Document",
+      "area": "marketing-instagram-squad: All tasks depend on strategy-document",
+      "current_timeline": "Tasks load full 2-3KB strategy-doc each",
+      "proposed_timeline": "Tasks load 200-300 byte module specific to their needs",
+      "description": "Split strategy-document.md into: core-messages.md, hooks-framework.md, content-pillars.md, operational-rec.md. Tasks reference only needed modules.",
+      "effort_savings": "Context reduction ~70%, faster task initialization",
+      "implementation": "Refactor define-strategy output to create 4 modular files instead of 1 big doc. Update all task inputs to reference specific modules."
+    },
+    {
+      "id": "OPT-004",
+      "title": "Create Framework Registry",
+      "area": "marketing-instagram-squad + visual-design-squad: Framework definitions",
+      "current_timeline": "Frameworks embedded in agent definitions (duplicated)",
+      "proposed_timeline": "Single .aiox/frameworks-registry.yaml with all frameworks",
+      "description": "Instead of listing frameworks in squad.yaml agent blocks, create central registry. Squads reference by ID. Single source of truth.",
+      "effort_savings": "Maintenance time: 50% reduction per framework update",
+      "implementation": "Create .aiox/frameworks-registry.yaml with entries like 'storybrand-7pt: {source, description, application}'. Agents reference by ID only."
+    },
+    {
+      "id": "OPT-005",
+      "title": "Simplify Workflow Handoff Sections",
+      "area": "marketing-instagram-squad: All workflows",
+      "current_timeline": "Handoff blocks include context summary (5-10 lines each)",
+      "proposed_timeline": "Handoff blocks reference previous outputs (1-2 lines each)",
+      "description": "Instead of repeating '5 core messages: [list]' in handoff, say 'Previous output: {handle}-strategy-document.md (see core messages section)'. Readers know where truth is.",
+      "effort_savings": "Reduce workflow doc size 15%, improve scannability",
+      "implementation": "Update all 'Handoff to' sections: replace context summaries with 'Previous output: [filename]' links."
+    },
+    {
+      "id": "OPT-006",
+      "title": "Add Task Blockers in YAML",
+      "area": "visual-design-squad: Task YAML definitions",
+      "current_timeline": "Tasks declare 'requires' but no 'blocks' field",
+      "proposed_timeline": "Tasks declare both 'requires' and 'blocks'",
+      "description": "Add inverse dependency: responsive-audit.md should declare 'blocks: [quality-gate-visual]'. Allows task orchestration engine to know order.",
+      "effort_savings": "Enable parallel execution planning, reduce manual coordination",
+      "implementation": "Add 'blocks: [task-ids]' field to responsive-audit.md, a11y-audit.md, performance-audit.md YAML headers."
+    },
+    {
+      "id": "OPT-007",
+      "title": "Document Load Profile by Squad Size",
+      "area": "marketing-instagram-squad: Scaling guidance",
+      "current_timeline": "No documented scaling limits or bottlenecks",
+      "proposed_timeline": "Document max concurrent profiles based on agent availability",
+      "description": "Add section to optimize-existing-profile.md: 'Scaling: @analytics-agent is bottleneck. Recommend max 2 concurrent profiles per month. For 3+, hire second analyst.'",
+      "effort_savings": "Prevents runtime surprises when scaling",
+      "implementation": "Add 'Scaling & Capacity' section to both workflow docs listing agent bottlenecks and max concurrent workload."
+    },
+    {
+      "id": "OPT-008",
+      "title": "Create Delta Tracking for Strategy Updates",
+      "area": "marketing-instagram-squad: optimize-existing-profile Week 2",
+      "current_timeline": "Update-strategy task doesn't output what changed",
+      "proposed_timeline": "Update-strategy outputs original + updated + changelog.md",
+      "description": "When @profile-strategist updates strategy (Week 2), output a changelog: [REMOVED] core messages, [UPDATED] pillars, [ADDED] hooks. Downstream tasks (suggest-adjustments) reference changelog instead of re-reading entire doc.",
+      "effort_savings": "Reduce context load for downstream tasks, faster decision-making",
+      "implementation": "Add optional output to update-strategy task: 'strategy-delta-{mes-ano}.md' with [REMOVED], [UPDATED], [ADDED] sections."
+    },
+    {
+      "id": "OPT-009",
+      "title": "Link Templates to Tasks Explicitly",
+      "area": "marketing-instagram-squad: Templates not referenced",
+      "current_timeline": "Tasks embed format examples; templates folder unused",
+      "proposed_timeline": "Tasks reference template files by path",
+      "description": "Tasks (write-caption.md, create-calendar.md) should say 'Output: Use templates/caption-output.md as format' instead of embedding example structure.",
+      "effort_savings": "Reduce task doc size 20%, single source of truth",
+      "implementation": "Update task outputs section: 'Entregar arquivo {nome} using template squads/marketing-instagram-squad/templates/{template-name}.md'."
+    },
+    {
+      "id": "OPT-010",
+      "title": "Add Interaction Design to Component Workflow",
+      "area": "visual-design-squad: component-creation.md missing interaction phase",
+      "current_timeline": "Component workflow: Design (Stella) → Implement (Claude) → Test (Rio/Nova)",
+      "proposed_timeline": "Component workflow: Design (Stella) → Interaction (Iris) → Implement (Claude) → Test (Rio/Nova)",
+      "description": "page-to-production.md includes Iris (Day 3) for interaction specs. component-creation.md should also include Iris between design and implementation. Currently skipped, causing incomplete state specs.",
+      "effort_savings": "Ensures components have complete state definitions, reduces QA rework",
+      "implementation": "Add Day 1.5 to component-creation.md: Iris creates interaction-spec.md for component states/animations before Claude implements."
+    }
+  ],
+  "summary": {
+    "critical_issues": 2,
+    "high_issues": 3,
+    "medium_issues": 5,
+    "low_issues": 2,
+    "total_issues": 12,
+    "optimization_potential": "20-30% efficiency gain with implementation of top 5 optimizations",
+    "key_findings": [
+      "Framework definitions are duplicated across agents and squads, creating maintenance burden",
+      "5-day marketing workflow could compress to 4 days via parallelization",
+      "Context bloat from passing large documents (strategy-doc) could be reduced 70% with modularization",
+      "Visual design squad has redundant a11y/responsive audits (20-30% overlap)",
+      "Analytics agent is bottleneck for optimize-existing-profile; scales to max 2-3 concurrent profiles",
+      "Task dependencies are undeclared; no explicit 'blocks' relationships for orchestration",
+      "Workflow handoff sections are verbose; could be simplified by linking to documents",
+      "Templates exist but are shadowed by embedded task examples; no single source of truth"
+    ]
+  }
+}

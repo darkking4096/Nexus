@@ -1,0 +1,6 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+function App() {
+    return (_jsxs("div", { className: "min-h-screen bg-gray-50", children: [_jsx("header", { className: "bg-white shadow", children: _jsxs("div", { className: "max-w-7xl mx-auto px-4 py-6", children: [_jsx("h1", { className: "text-3xl font-bold text-gray-900", children: "NEXUS" }), _jsx("p", { className: "text-gray-600", children: "AI-Powered Instagram Management Platform" })] }) }), _jsx("main", { className: "max-w-7xl mx-auto px-4 py-6", children: _jsxs("div", { className: "bg-white rounded-lg shadow p-6", children: [_jsx("h2", { className: "text-xl font-semibold mb-4", children: "Foundation Setup Complete \u2705" }), _jsxs("ul", { className: "list-disc list-inside space-y-2 text-gray-700", children: [_jsx("li", { children: "Node.js + Express backend ready" }), _jsx("li", { children: "React 18 + Vite frontend ready" }), _jsx("li", { children: "TypeScript configured" }), _jsx("li", { children: "Tailwind CSS available" }), _jsx("li", { children: "Ready for Phase 2: Database Schema" })] })] }) })] }));
+}
+export default App;
+//# sourceMappingURL=App.js.map

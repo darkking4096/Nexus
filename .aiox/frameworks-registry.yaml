@@ -1,0 +1,237 @@
+---
+# Frameworks Registry — Single Source of Truth
+# All squads reference frameworks by ID, reducing duplication and maintenance burden.
+# Updated: 2026-04-07
+
+frameworks:
+  # MARKETING FRAMEWORKS (Marketing Instagram Squad)
+
+  storybrand-7pt:
+    name: "StoryBrand 7-Point Framework"
+    author: "Donald Miller"
+    domain: "marketing-positioning"
+    usage: "Define core brand story, customer as hero"
+    agents: ["profile-strategist", "copywriter"]
+    structure:
+      - "1. The Character (target audience)"
+      - "2. Has a Problem (customer pain)"
+      - "3. Meets a Guide (brand as guide)"
+      - "4. Who Gives a Plan (solution roadmap)"
+      - "5. Calls to Action (specific CTA)"
+      - "6. That Avoids Failure (risk mitigation)"
+      - "7. That Results in Success (desired outcome)"
+    context_tokens: ~150
+    reference: "Building a Story Brand"
+
+  value-equation-hormozi:
+    name: "Value Equation (Alex Hormozi)"
+    author: "Alex Hormozi"
+    domain: "pricing-positioning"
+    usage: "Define pricing strategy, value perception"
+    agents: ["profile-strategist", "copywriter"]
+    structure:
+      - "Perceived Value (how valuable?)"
+      - "÷ Price (cost to customer)"
+      - "÷ Certainty of Delivery (trust level)"
+      - "× Time to Result (speed of delivery)"
+    context_tokens: ~80
+    reference: "$100M Offers"
+
+  hook-story-offer:
+    name: "Hook-Story-Offer Framework"
+    author: "Russell Brunson (ClickFunnels)"
+    domain: "copywriting-sales"
+    usage: "Structure viral content + sales copy"
+    agents: ["copywriter", "trend-researcher"]
+    structure:
+      - "HOOK (0-3s): Pattern interrupt, curiosity"
+      - "STORY (3-15s): Why it matters, stakes"
+      - "OFFER (15-30s): Solution, CTA"
+    context_tokens: ~90
+    reference: "DotCom Secrets"
+
+  aida-model:
+    name: "AIDA Model"
+    author: "E. St. Elmo Lewis (1898)"
+    domain: "copywriting-sales"
+    usage: "Email/caption structure for conversion"
+    agents: ["copywriter"]
+    structure:
+      - "Attention (hook)"
+      - "Interest (why care?)"
+      - "Desire (emotional pull)"
+      - "Action (specific CTA)"
+    context_tokens: ~60
+    reference: "Original marketing framework"
+
+  stepps-jonah-berger:
+    name: "STEPPS (Jonah Berger)"
+    author: "Jonah Berger"
+    domain: "viral-content"
+    usage: "Analyze what makes content shareable"
+    agents: ["trend-researcher", "copywriter", "content-planner"]
+    structure:
+      - "Social Currency (status, insider)"
+      - "Triggers (reminders, context)"
+      - "Emotions (awe, anger, amusement, anxiety)"
+      - "Public (visible, obvious)"
+      - "Practical (useful, actionable)"
+      - "Stories (narrative, memorable)"
+    context_tokens: ~180
+    reference: "Contagious: Why Things Catch On"
+
+  aarrr-metrics:
+    name: "AARRR Growth Model"
+    author: "Dave McClure (500 Startups)"
+    domain: "analytics-growth"
+    usage: "Track user funnel metrics (Instagram focus: reach → engagement → saves → shares)"
+    agents: ["analytics-agent", "profile-strategist"]
+    structure:
+      - "Acquisition (reach, impressions)"
+      - "Activation (likes, comments)"
+      - "Retention (followers, repeat visits)"
+      - "Revenue (conversions, DMs)"
+      - "Referral (shares, tags)"
+    context_tokens: ~100
+    reference: "Startup Metrics for Pirates"
+
+  mrbeast-hook-engineering:
+    name: "Hook Engineering (MrBeast Method)"
+    author: "MrBeast (Jimmy Donaldson)"
+    domain: "video-content"
+    usage: "0-3s pattern interrupt for video hooks"
+    agents: ["trend-researcher", "copywriter"]
+    structure:
+      - "Visual Shock (unexpected image)"
+      - "Curiosity (unanswered question)"
+      - "Relevance (immediate personal value)"
+      - "Urgency (scarcity, deadline)"
+      - "Emotion (instant emotional hit)"
+    context_tokens: ~110
+    reference: "YouTube best practices"
+
+  gary-vee-pillars:
+    name: "Gary Vee Content Pillars"
+    author: "Gary Vaynerchuk"
+    domain: "content-strategy"
+    usage: "Define 3-5 content themes for consistency"
+    agents: ["content-planner", "profile-strategist"]
+    structure:
+      - "Pillar 1: Thought Leadership"
+      - "Pillar 2: Behind-the-Scenes"
+      - "Pillar 3: Entertainment/Education"
+      - "Pillar 4 (optional): Lifestyle"
+      - "Pillar 5 (optional): Community"
+    context_tokens: ~85
+    reference: "The Thanks a Thousand"
+
+  # DESIGN FRAMEWORKS (Visual Design Squad)
+
+  atomic-design:
+    name: "Atomic Design"
+    author: "Brad Frost"
+    domain: "design-systems"
+    usage: "Organize UI components from atoms to pages"
+    agents: ["visual-designer", "frontend-developer"]
+    structure:
+      - "Atoms: Buttons, labels, colors, typography"
+      - "Molecules: Form fields, card headers, button groups"
+      - "Organisms: Headers, footers, forms"
+      - "Templates: Page layouts without content"
+      - "Pages: Specific instances with real content"
+    context_tokens: ~120
+    reference: "Atomic Design Methodology"
+
+  design-of-everyday-things:
+    name: "Design of Everyday Things Principles"
+    author: "Don Norman"
+    domain: "ux-principles"
+    usage: "User-centered design, mental models, affordances"
+    agents: ["visual-designer", "ux-interaction-designer"]
+    structure:
+      - "Visibility (make functions visible)"
+      - "Feedback (communicate results)"
+      - "Constraints (prevent wrong actions)"
+      - "Consistency (predictable patterns)"
+      - "Standards (follow conventions)"
+    context_tokens: ~100
+    reference: "Design of Everyday Things"
+
+  design-tokens-dtcg:
+    name: "Design Tokens Community Group (DTCG)"
+    author: "DTCG (W3C-adjacent)"
+    domain: "design-systems"
+    usage: "Standardize design decisions in JSON"
+    agents: ["visual-designer"]
+    structure:
+      - "Colors (primary, secondary, neutral scale)"
+      - "Typography (scale, weights, line-heights)"
+      - "Spacing (units, scale)"
+      - "Shadows, border-radius, transitions"
+    context_tokens: ~110
+    reference: "design-tokens.com"
+
+  modular-scale-typography:
+    name: "Modular Scale (Typographic Harmony)"
+    author: "Tim Brown"
+    domain: "typography"
+    usage: "Create harmonious font size scales"
+    agents: ["visual-designer"]
+    structure:
+      - "Base size (e.g., 16px)"
+      - "Ratio (e.g., 1.25 Major Third)"
+      - "Calculate sizes: xs, sm, base, md, lg, xl, 2xl"
+    context_tokens: ~85
+    reference: "modularscale.com"
+
+  wcag-accessibility:
+    name: "WCAG 2.1 Level AA"
+    author: "W3C"
+    domain: "accessibility"
+    usage: "Ensure accessible, inclusive design"
+    agents: ["performance-a11y-specialist", "visual-designer"]
+    structure:
+      - "Contrast ratio ≥ 4.5:1 for text"
+      - "Keyboard navigation (Tab, Enter, Arrow keys)"
+      - "Screen reader compatible (semantic HTML)"
+      - "Focus visible (blue outline or highlight)"
+      - "Alt text for images"
+    context_tokens: ~95
+    reference: "w3.org/WAI/WCAG21/quickref"
+
+  mobile-first-responsive:
+    name: "Mobile-First Responsive Design"
+    author: "Luke Wroblewski"
+    domain: "responsive-design"
+    usage: "Design for mobile first, scale up to desktop"
+    agents: ["responsive-specialist", "visual-designer"]
+    structure:
+      - "Start with 375px (mobile)"
+      - "Progressive enhancement: 375 → 768 → 1440"
+      - "Fluid typography & spacing"
+      - "Flexible layouts (CSS Grid, Flexbox)"
+    context_tokens: ~90
+    reference: "Mobile First (Wroblewski)"
+
+  core-web-vitals:
+    name: "Core Web Vitals (Google Performance)"
+    author: "Google"
+    domain: "performance"
+    usage: "Measure and optimize web performance"
+    agents: ["performance-a11y-specialist"]
+    structure:
+      - "LCP (Largest Contentful Paint): < 2.5s"
+      - "FID (First Input Delay): < 100ms"
+      - "CLS (Cumulative Layout Shift): < 0.1"
+      - "INP (Interaction to Next Paint): < 200ms"
+    context_tokens: ~85
+    reference: "web.dev/vitals"
+
+summary:
+  total_frameworks: 18
+  marketing_frameworks: 8
+  design_frameworks: 10
+  avg_context_per_framework: ~105 tokens
+  total_registry_size: ~1.9K tokens
+  purpose: "Single source of truth; referenced by ID to avoid duplication"
+  updated_at: "2026-04-07"

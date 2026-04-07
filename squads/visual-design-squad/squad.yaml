@@ -1,0 +1,185 @@
+---
+squad:
+  id: visual-design-squad
+  name: Visual Design Squad
+  version: 1.0.0
+  description: |
+    Squad especializado em design visual, responsividade e performance.
+    5 agentes para entregar páginas pixel-perfect, acessíveis e performáticas.
+    Integrado com Uma (ux-design-expert) para handoff design → código.
+
+  domain: visual-design-frontend
+  specialty: css-responsive-performance-a11y
+  operation-mode: collaborative
+  status: active
+
+metadata:
+  created_at: 2026-04-07
+  author: Squad Creator Agent
+  version-history:
+    - version: 1.0.0
+      date: 2026-04-07
+      description: Initial squad creation - 5 agents, tasks, workflows, templates, and checklists. Production-ready.
+
+agents:
+  - id: visual-designer
+    name: Stella (Visual Designer)
+    file: agents/visual-designer.md
+    role: Maestria em design visual, tipografia, cores, design tokens
+    commands:
+      - design-visual
+      - create-tokens
+      - audit-visual
+      - brand-guide
+
+  - id: ux-interaction-designer
+    name: Iris (UX/Interaction Designer)
+    file: agents/ux-interaction-designer.md
+    role: Fluxos, micro-interações, animações, feedback visual, states
+    commands:
+      - design-interactions
+      - define-states
+      - create-flow
+      - animation-spec
+
+  - id: frontend-developer
+    name: Claude (Frontend Developer)
+    file: agents/frontend-developer.md
+    role: HTML semântico, CSS avançado, Tailwind CSS v4, componentes
+    commands:
+      - build-page
+      - build-component
+      - apply-tokens
+      - refactor-css
+
+  - id: responsive-specialist
+    name: Rio (Responsive Specialist)
+    file: agents/responsive-specialist.md
+    role: Breakpoints, layout fluido, mobile-first, imagens adaptativas
+    commands:
+      - responsive-audit
+      - optimize-images
+      - mobile-test
+      - fluid-design
+
+  - id: performance-a11y-specialist
+    name: Nova (Performance & Accessibility Specialist)
+    file: agents/performance-a11y-specialist.md
+    role: Core Web Vitals, WCAG 2.1 AA, otimizações, auditoria
+    commands:
+      - audit-performance
+      - audit-a11y
+      - optimize-cwv
+      - a11y-fixes
+
+tasks:
+  - id: visual-design-create-spec
+    agent: visual-designer
+    file: tasks/visual-design-create-spec.md
+  - id: visual-tokens-create
+    agent: visual-designer
+    file: tasks/visual-tokens-create.md
+  - id: visual-audit
+    agent: visual-designer
+    file: tasks/visual-audit.md
+  - id: interaction-design-spec
+    agent: ux-interaction-designer
+    file: tasks/interaction-design-spec.md
+  - id: interaction-states-define
+    agent: ux-interaction-designer
+    file: tasks/interaction-states-define.md
+  - id: interaction-flow-create
+    agent: ux-interaction-designer
+    file: tasks/interaction-flow-create.md
+  - id: frontend-implement-page
+    agent: frontend-developer
+    file: tasks/frontend-implement-page.md
+  - id: frontend-implement-component
+    agent: frontend-developer
+    file: tasks/frontend-implement-component.md
+  - id: frontend-apply-tokens
+    agent: frontend-developer
+    file: tasks/frontend-apply-tokens.md
+  - id: responsive-audit
+    agent: responsive-specialist
+    file: tasks/responsive-audit.md
+  - id: responsive-optimize-images
+    agent: responsive-specialist
+    file: tasks/responsive-optimize-images.md
+  - id: responsive-mobile-test
+    agent: responsive-specialist
+    file: tasks/responsive-mobile-test.md
+  - id: performance-audit
+    agent: performance-a11y-specialist
+    file: tasks/performance-audit.md
+  - id: a11y-audit
+    agent: performance-a11y-specialist
+    file: tasks/a11y-audit.md
+  - id: quality-gate-visual
+    agent: performance-a11y-specialist
+    file: tasks/quality-gate-visual.md
+
+dependencies:
+  frameworks-integration: ../../../.aiox/frameworks-extraction.md
+  ux-design-expert-integration: ../../../.aiox-core/development/agents/ux-design-expert.md
+  persona-instructions: ../../../.aiox/personas/
+
+references:
+  documentation:
+    - path: README.md
+      purpose: Quick start guide
+    - path: WORKFLOWS.md
+      purpose: Workflow definitions
+  integration-points:
+    - path: agents/
+      purpose: 5 agent personas
+    - path: tasks/
+      purpose: AIOX-compliant tasks
+    - path: templates/
+      purpose: Reusable templates
+    - path: config/
+      purpose: Design tokens, breakpoints, budgets
+  external-integration:
+    - name: ux-design-expert
+      relation: predecessor
+      handoff: design-specs → visual-implementation
+    - name: marketing-instagram-squad
+      relation: sibling
+      collaboration: design-landing-pages
+
+workflow-chains:
+  page-to-production:
+    steps:
+      - agent: visual-designer
+        task: visual-design-create-spec
+      - agent: ux-interaction-designer
+        task: interaction-design-spec
+      - agent: frontend-developer
+        task: frontend-implement-page
+      - agent: responsive-specialist
+        task: responsive-audit
+      - agent: performance-a11y-specialist
+        task: quality-gate-visual
+    duration_days: 5-7
+
+  component-creation:
+    steps:
+      - agent: visual-designer
+        task: visual-design-create-spec
+      - agent: frontend-developer
+        task: frontend-implement-component
+      - agent: responsive-specialist
+        task: responsive-audit
+      - agent: performance-a11y-specialist
+        task: a11y-audit
+    duration_days: 2-3
+
+  design-audit:
+    steps:
+      - agent: visual-designer
+        task: visual-audit
+      - agent: performance-a11y-specialist
+        task: performance-audit
+      - agent: performance-a11y-specialist
+        task: a11y-audit
+    duration_days: 1

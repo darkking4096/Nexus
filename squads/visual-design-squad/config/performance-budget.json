@@ -1,0 +1,200 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-04-07",
+  "description": "Performance budget for visual design pages",
+
+  "budgets": {
+    "lighthouse": {
+      "performance": {
+        "value": 90,
+        "unit": "score",
+        "description": "Lighthouse performance score >= 90"
+      },
+      "accessibility": {
+        "value": 90,
+        "unit": "score",
+        "description": "Lighthouse accessibility score >= 90"
+      },
+      "best-practices": {
+        "value": 90,
+        "unit": "score",
+        "description": "Lighthouse best practices score >= 90"
+      },
+      "seo": {
+        "value": 90,
+        "unit": "score",
+        "description": "Lighthouse SEO score >= 90"
+      }
+    },
+
+    "core-web-vitals": {
+      "lcp": {
+        "value": 2.5,
+        "unit": "seconds",
+        "description": "Largest Contentful Paint < 2.5s",
+        "threshold": "good"
+      },
+      "cls": {
+        "value": 0.1,
+        "unit": "decimal",
+        "description": "Cumulative Layout Shift < 0.1",
+        "threshold": "good"
+      },
+      "inp": {
+        "value": 200,
+        "unit": "milliseconds",
+        "description": "Interaction to Next Paint < 200ms",
+        "threshold": "good"
+      }
+    },
+
+    "file-sizes": {
+      "javascript": {
+        "value": 100,
+        "unit": "KB",
+        "description": "Total JavaScript size (budgeted per page)"
+      },
+      "css": {
+        "value": 50,
+        "unit": "KB",
+        "description": "Total CSS size (including critical)"
+      },
+      "images": {
+        "value": 200,
+        "unit": "KB",
+        "description": "Total image size per page"
+      },
+      "fonts": {
+        "value": 50,
+        "unit": "KB",
+        "description": "Total web fonts size"
+      },
+      "total": {
+        "value": 400,
+        "unit": "KB",
+        "description": "Total page size limit"
+      }
+    },
+
+    "metrics": {
+      "fcp": {
+        "value": 1.5,
+        "unit": "seconds",
+        "description": "First Contentful Paint < 1.5s"
+      },
+      "ttfb": {
+        "value": 0.5,
+        "unit": "seconds",
+        "description": "Time to First Byte < 0.5s"
+      },
+      "speed-index": {
+        "value": 2.5,
+        "unit": "seconds",
+        "description": "Speed Index < 2.5s"
+      },
+      "tbt": {
+        "value": 100,
+        "unit": "milliseconds",
+        "description": "Total Blocking Time < 100ms"
+      }
+    },
+
+    "images": {
+      "total-size": {
+        "value": 200,
+        "unit": "KB",
+        "description": "Total image size (optimized)"
+      },
+      "formats-required": [
+        "WebP",
+        "AVIF"
+      ],
+      "lazy-loading": "enabled",
+      "responsive-sizes": "required",
+      "compression": {
+        "jpeg": "80",
+        "webp": "75",
+        "avif": "60"
+      }
+    }
+  },
+
+  "monitoring": {
+    "tools": [
+      "Lighthouse CI",
+      "WebPageTest",
+      "Speedcurve",
+      "Google Analytics (RUM)",
+      "Sentry (error tracking)"
+    ],
+    "frequency": "Every commit (CI/CD)",
+    "alert-thresholds": {
+      "lighthouse-drop": 5,
+      "cwv-fail": "any metric in POOR",
+      "file-size-increase": "10%"
+    }
+  },
+
+  "device-specific": {
+    "mobile": {
+      "network": "Slow 4G",
+      "device": "Moto G4",
+      "cpu-throttling": "4x",
+      "focus": [
+        "LCP < 3s",
+        "CLS < 0.15",
+        "images optimized"
+      ]
+    },
+    "tablet": {
+      "network": "4G",
+      "device": "iPad",
+      "cpu-throttling": "2x"
+    },
+    "desktop": {
+      "network": "Fast 4G",
+      "device": "MacBook",
+      "cpu-throttling": "1x"
+    }
+  },
+
+  "testing-conditions": {
+    "throttling": {
+      "network": "Slow 4G",
+      "download": "1.6 Mbps",
+      "upload": "750 Kbps",
+      "latency": "150ms"
+    },
+    "device-simulation": {
+      "mobile": "Moto G4",
+      "tablet": "iPad",
+      "desktop": "MacBook Pro"
+    },
+    "cache": "Empty (no service worker cache)"
+  },
+
+  "benchmarks": {
+    "industry-average": {
+      "lighthouse": 60,
+      "lcp": 4.0,
+      "cls": 0.25,
+      "total-size": 2.0
+    },
+    "top-performers": {
+      "lighthouse": 95,
+      "lcp": 1.5,
+      "cls": 0.05,
+      "total-size": 300
+    }
+  },
+
+  "exceptions": {
+    "allowed": [
+      "Third-party scripts (tracking, ads)",
+      "Video content (if required)",
+      "High-resolution images (photography)"
+    ],
+    "documentation-required": true,
+    "approval-needed": "Product Owner"
+  }
+}

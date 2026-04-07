@@ -1,0 +1,320 @@
+<!-- Component Template: Button -->
+
+<!-- Primary Button (Default State) -->
+<button class="btn btn--primary">
+  Clique aqui
+</button>
+
+<!-- Primary Button (Hover State) -->
+<!-- Hover automatically via CSS -->
+
+<!-- Primary Button (Disabled State) -->
+<button class="btn btn--primary" disabled>
+  Desabilitado
+</button>
+
+<!-- Primary Button with Icon -->
+<button class="btn btn--primary">
+  <span class="btn__icon">→</span>
+  <span class="btn__text">Saiba Mais</span>
+</button>
+
+<!-- Secondary Button -->
+<button class="btn btn--secondary">
+  Cancelar
+</button>
+
+<!-- Tertiary Button (Ghost) -->
+<button class="btn btn--tertiary">
+  Link como botão
+</button>
+
+<!-- Button Sizes -->
+<button class="btn btn--primary btn--small">
+  Small
+</button>
+
+<button class="btn btn--primary btn--medium">
+  Medium
+</button>
+
+<button class="btn btn--primary btn--large">
+  Large
+</button>
+
+<!-- Button with Loading State -->
+<button class="btn btn--primary btn--loading" disabled>
+  <span class="btn__spinner"></span>
+  Carregando...
+</button>
+
+<!-- Component Template: Form Field -->
+
+<!-- Text Input -->
+<div class="form-field">
+  <label for="email" class="form-field__label">
+    Email
+  </label>
+  <input
+    id="email"
+    type="email"
+    class="form-field__input"
+    placeholder="seu.email@exemplo.com"
+    required
+  >
+</div>
+
+<!-- Text Input with Error -->
+<div class="form-field form-field--error">
+  <label for="username" class="form-field__label">
+    Usuário
+  </label>
+  <input
+    id="username"
+    type="text"
+    class="form-field__input"
+    placeholder="seu_usuario"
+    aria-invalid="true"
+    aria-describedby="username-error"
+  >
+  <span id="username-error" class="form-field__error">
+    Usuário já existe
+  </span>
+</div>
+
+<!-- Text Input with Success -->
+<div class="form-field form-field--success">
+  <label for="username-success" class="form-field__label">
+    Usuário
+  </label>
+  <input
+    id="username-success"
+    type="text"
+    class="form-field__input"
+    placeholder="seu_usuario"
+    value="novo_usuario"
+  >
+  <span class="form-field__success">
+    ✓ Usuário disponível
+  </span>
+</div>
+
+<!-- Text Input Disabled -->
+<div class="form-field">
+  <label for="disabled-field" class="form-field__label">
+    Campo Desabilitado
+  </label>
+  <input
+    id="disabled-field"
+    type="text"
+    class="form-field__input"
+    placeholder="Não editável"
+    disabled
+  >
+</div>
+
+<!-- Textarea -->
+<div class="form-field">
+  <label for="message" class="form-field__label">
+    Mensagem
+  </label>
+  <textarea
+    id="message"
+    class="form-field__textarea"
+    placeholder="Digite sua mensagem aqui"
+    rows="4"
+  ></textarea>
+</div>
+
+<!-- Select -->
+<div class="form-field">
+  <label for="country" class="form-field__label">
+    País
+  </label>
+  <select id="country" class="form-field__select">
+    <option value="">Selecione um país</option>
+    <option value="br">Brasil</option>
+    <option value="us">Estados Unidos</option>
+    <option value="pt">Portugal</option>
+  </select>
+</div>
+
+<!-- Checkbox -->
+<div class="form-field">
+  <input
+    id="agree"
+    type="checkbox"
+    class="form-field__checkbox"
+  >
+  <label for="agree" class="form-field__label form-field__label--checkbox">
+    Concordo com os termos e condições
+  </label>
+</div>
+
+<!-- Radio Buttons -->
+<fieldset class="form-field">
+  <legend class="form-field__legend">
+    Escolha uma opção
+  </legend>
+
+  <div class="form-field__radio-group">
+    <input
+      id="option-1"
+      type="radio"
+      name="options"
+      value="1"
+      class="form-field__radio"
+    >
+    <label for="option-1" class="form-field__label">
+      Opção 1
+    </label>
+  </div>
+
+  <div class="form-field__radio-group">
+    <input
+      id="option-2"
+      type="radio"
+      name="options"
+      value="2"
+      class="form-field__radio"
+    >
+    <label for="option-2" class="form-field__label">
+      Opção 2
+    </label>
+  </div>
+</fieldset>
+
+<!-- Component Template: Card -->
+
+<!-- Basic Card -->
+<article class="card">
+  <div class="card__header">
+    <h3 class="card__title">Título do Card</h3>
+  </div>
+
+  <div class="card__body">
+    <p class="card__description">
+      Descrição breve do card. Pode conter texto, imagens e componentes.
+    </p>
+  </div>
+
+  <div class="card__footer">
+    <a href="#" class="btn btn--secondary btn--small">
+      Saiba Mais
+    </a>
+  </div>
+</article>
+
+<!-- Card with Image -->
+<article class="card card--with-image">
+  <img
+    src="/images/card-image.webp"
+    alt="Card image"
+    class="card__image"
+    width="400"
+    height="300"
+    loading="lazy"
+  >
+
+  <div class="card__content">
+    <h3 class="card__title">Título com Imagem</h3>
+    <p class="card__description">
+      Descrição do card com imagem destacada.
+    </p>
+  </div>
+</article>
+
+<!-- Card Hover State -->
+<!-- Hover automatically via CSS, adds slight lift and shadow -->
+
+<!-- Component Template: Alert/Toast -->
+
+<!-- Success Alert -->
+<div class="alert alert--success" role="alert">
+  <span class="alert__icon">✓</span>
+  <span class="alert__message">
+    Ação concluída com sucesso!
+  </span>
+  <button class="alert__close" aria-label="Fechar alerta">
+    ×
+  </button>
+</div>
+
+<!-- Error Alert -->
+<div class="alert alert--error" role="alert">
+  <span class="alert__icon">!</span>
+  <span class="alert__message">
+    Ocorreu um erro. Tente novamente.
+  </span>
+  <button class="alert__close" aria-label="Fechar alerta">
+    ×
+  </button>
+</div>
+
+<!-- Warning Alert -->
+<div class="alert alert--warning" role="alert">
+  <span class="alert__icon">⚠</span>
+  <span class="alert__message">
+    Atenção: Esta ação não pode ser desfeita.
+  </span>
+  <button class="alert__close" aria-label="Fechar alerta">
+    ×
+  </button>
+</div>
+
+<!-- Info Alert -->
+<div class="alert alert--info" role="alert">
+  <span class="alert__icon">ℹ</span>
+  <span class="alert__message">
+    Informação útil para o usuário.
+  </span>
+  <button class="alert__close" aria-label="Fechar alerta">
+    ×
+  </button>
+</div>
+
+<!-- Component Template: Modal -->
+
+<!-- Modal Dialog -->
+<dialog class="modal" id="demo-modal" aria-labelledby="modal-title">
+  <div class="modal__content">
+    <div class="modal__header">
+      <h2 id="modal-title" class="modal__title">
+        Título do Modal
+      </h2>
+      <button
+        class="modal__close"
+        aria-label="Fechar modal"
+        onclick="document.getElementById('demo-modal').close()"
+      >
+        ×
+      </button>
+    </div>
+
+    <div class="modal__body">
+      <p>
+        Conteúdo do modal vai aqui. Pode ser qualquer conteúdo HTML.
+      </p>
+    </div>
+
+    <div class="modal__footer">
+      <button
+        class="btn btn--secondary"
+        onclick="document.getElementById('demo-modal').close()"
+      >
+        Cancelar
+      </button>
+      <button class="btn btn--primary">
+        Confirmar
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Button to open modal -->
+<button
+  class="btn btn--primary"
+  onclick="document.getElementById('demo-modal').showModal()"
+>
+  Abrir Modal
+</button>
