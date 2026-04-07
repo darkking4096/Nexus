@@ -1,0 +1,148 @@
+import { describe, it, expect, beforeAll } from 'vitest';
+import Database from 'better-sqlite3';
+import path from 'path';
+import initializeDatabase from '../src/config/database';
+import { User } from '../src/models/User';
+
+describe('User Model', () => {
+  let db: Database.Database;
+  let userModel: User;
+
+  beforeAll(() => {
+    // Use in-memory SQLite for testing
+    db = new Database(':memory:');
+    db.pragma('foreign_keys = ON');
+
+    // Create schema
+    db.exec(`
+      CREATE TABLE users (
+        id TEXT PRIMARY KEY,
+        email TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        name TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    userModel = new User(db);
+  });
+
+  it('should create a user', async () => {
+    const user = await userModel.create({
+      email: 'test@example.com',
+      password: 'securePassword123',
+      name: 'Test User',
+    });
+
+    expect(user.id).toBeTruthy();
+    expect(user.email).toBe('test@example.com');
+    expect(user.name).toBe('Test User');
+  });
+
+  it('should get user by ID', async () => {
+    const created = await userModel.create({
+      email: 'user2@example.com',
+      password: 'password123',
+    });
+
+    const retrieved = userModel.getById(created.id);
+
+    expect(retrieved).toBeTruthy();
+    expect(retrieved?.email).toBe('user2@example.com');
+  });
+
+  it('should get user by email', async () => {
+    const created = await userModel.create({
+      email: 'user3@example.com',
+      password: 'password123',
+      name: 'User Three',
+    });
+
+    const retrieved = userModel.getByEmail('user3@example.com');
+
+    expect(retrieved).toBeTruthy();
+    expect(retrieved?.id).toBe(created.id);
+    expect(retrieved?.password_hash).toBeTruthy();
+  });
+
+  it('should verify password correctly', async () => {
+    const password = 'mySecurePassword123';
+    const user = await userModel.create({
+      email: 'user4@example.com',
+      password,
+    });
+
+    const userWithHash = userModel.getByEmail('user4@example.com');
+    expect(userWithHash).toBeTruthy();
+
+    const isValid = await User.verifyPassword(password, userWithHash!.password_hash);
+    expect(isValid).toBe(true);
+  });
+
+  it('should reject invalid password', async () => {
+    const password = 'correctPassword123';
+    await userModel.create({
+      email: 'user5@example.com',
+      password,
+    });
+
+    const userWithHash = userModel.getByEmail('user5@example.com');
+    expect(userWithHash).toBeTruthy();
+
+    const isValid = await User.verifyPassword('wrongPassword', userWithHash!.password_hash);
+    expect(isValid).toBe(false);
+  });
+
+  it('should prevent duplicate emails', async () => {
+    const email = 'duplicate@example.com';
+    await userModel.create({
+      email,
+      password: 'password123',
+    });
+
+    expect(() => {
+      // This would fail because email is unique
+      return userModel.create({
+        email,
+        password: 'password456',
+      });
+    }).toThrow();
+  });
+
+  it('should check if email exists', async () => {
+    const email = 'exists@example.com';
+    await userModel.create({
+      email,
+      password: 'password123',
+    });
+
+    expect(userModel.emailExists(email)).toBe(true);
+    expect(userModel.emailExists('notexists@example.com')).toBe(false);
+  });
+
+  it('should update user', async () => {
+    const user = await userModel.create({
+      email: 'update@example.com',
+      password: 'password123',
+      name: 'Original Name',
+    });
+
+    const updated = await userModel.update(user.id, { name: 'Updated Name' });
+
+    expect(updated?.name).toBe('Updated Name');
+  });
+
+  it('should delete user', async () => {
+    const user = await userModel.create({
+      email: 'delete@example.com',
+      password: 'password123',
+    });
+
+    const deleted = userModel.delete(user.id);
+    expect(deleted).toBe(true);
+
+    const retrieved = userModel.getById(user.id);
+    expect(retrieved).toBeNull();
+  });
+});
