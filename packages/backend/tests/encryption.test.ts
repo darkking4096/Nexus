@@ -1,62 +1,117 @@
 import { describe, it, expect } from 'vitest';
-import { encrypt, decrypt, encryptJSON, decryptJSON } from '../src/utils/encryption';
+import { encrypt, decrypt, encryptJSON, decryptJSON, deriveKey } from '../src/utils/encryption';
 
-describe('Encryption', () => {
-  const masterKey = 'my-super-secret-key-min-32-characters-xxxxx';
+describe('Encryption Utils — AES-256-GCM', () => {
+  const testMasterKey = 'my-super-secret-master-key-for-testing';
+  const testPlaintext = 'Hello, World! This is sensitive data.';
 
-  it('should encrypt and decrypt plaintext', () => {
-    const plaintext = 'This is a secret message';
-    const encrypted = encrypt(plaintext, masterKey);
+  describe('encrypt/decrypt roundtrip', () => {
+    it('should encrypt and decrypt string correctly', () => {
+      const ciphertext = encrypt(testPlaintext, testMasterKey);
+      expect(ciphertext).toBeTruthy();
+      expect(typeof ciphertext).toBe('string');
 
-    expect(encrypted).toBeTruthy();
-    expect(encrypted).not.toBe(plaintext);
+      const decrypted = decrypt(ciphertext, testMasterKey);
+      expect(decrypted).toBe(testPlaintext);
+    });
 
-    const decrypted = decrypt(encrypted, masterKey);
-    expect(decrypted).toBe(plaintext);
+    it('should produce different ciphertexts for same plaintext (random IV)', () => {
+      const cipher1 = encrypt(testPlaintext, testMasterKey);
+      const cipher2 = encrypt(testPlaintext, testMasterKey);
+
+      expect(cipher1).not.toBe(cipher2);
+      expect(decrypt(cipher1, testMasterKey)).toBe(testPlaintext);
+      expect(decrypt(cipher2, testMasterKey)).toBe(testPlaintext);
+    });
+
+    it('should handle Buffer input', () => {
+      const buffer = Buffer.from(testPlaintext, 'utf-8');
+      const ciphertext = encrypt(buffer, testMasterKey);
+      const decrypted = decrypt(ciphertext, testMasterKey);
+
+      expect(decrypted).toBe(testPlaintext);
+    });
   });
 
-  it('should encrypt and decrypt buffer', () => {
-    const plaintext = Buffer.from('Binary data');
-    const encrypted = encrypt(plaintext, masterKey);
+  describe('encryptJSON/decryptJSON', () => {
+    const testObject = {
+      userId: '12345',
+      email: 'test@example.com',
+      role: 'admin',
+      metadata: { level: 5, verified: true },
+    };
 
-    expect(encrypted).toBeTruthy();
+    it('should encrypt and decrypt JSON correctly', () => {
+      const ciphertext = encryptJSON(testObject, testMasterKey);
+      expect(ciphertext).toBeTruthy();
 
-    const decrypted = decrypt(encrypted, masterKey);
-    expect(decrypted).toBe(plaintext.toString('utf-8'));
+      const decrypted = decryptJSON<typeof testObject>(ciphertext, testMasterKey);
+      expect(decrypted).toEqual(testObject);
+    });
+
+    it('should preserve nested objects', () => {
+      const ciphertext = encryptJSON(testObject, testMasterKey);
+      const decrypted = decryptJSON<typeof testObject>(ciphertext, testMasterKey);
+
+      expect(decrypted.metadata.level).toBe(5);
+      expect(decrypted.metadata.verified).toBe(true);
+    });
   });
 
-  it('should encrypt and decrypt JSON', () => {
-    const data = { userId: '123', email: 'user@example.com', roles: ['admin', 'user'] };
-    const encrypted = encryptJSON(data, masterKey);
+  describe('deriveKey', () => {
+    it('should derive consistent key with same salt', () => {
+      const salt = Buffer.from('fixed-salt-for-testing');
+      const key1 = deriveKey(testMasterKey, salt);
+      const key2 = deriveKey(testMasterKey, salt);
 
-    expect(encrypted).toBeTruthy();
+      expect(key1).toEqual(key2);
+      expect(key1.length).toBe(32);
+    });
 
-    const decrypted = decryptJSON(encrypted, masterKey);
-    expect(decrypted).toEqual(data);
+    it('should derive different keys from different master keys', () => {
+      const salt = Buffer.from('fixed-salt-for-testing');
+      const key1 = deriveKey('key-1', salt);
+      const key2 = deriveKey('key-2', salt);
+
+      expect(key1).not.toEqual(key2);
+    });
+
+    it('should generate random salt if not provided', () => {
+      const key1 = deriveKey(testMasterKey);
+      const key2 = deriveKey(testMasterKey);
+
+      expect(key1).not.toEqual(key2);
+    });
   });
 
-  it('should fail to decrypt with wrong key', () => {
-    const plaintext = 'Secret message';
-    const encrypted = encrypt(plaintext, masterKey);
+  describe('Security properties', () => {
+    it('should fail to decrypt with wrong master key', () => {
+      const ciphertext = encrypt(testPlaintext, testMasterKey);
+      const wrongKey = 'wrong-master-key';
 
-    const wrongKey = 'wrong-key-min-32-characters-xxx';
+      expect(() => {
+        decrypt(ciphertext, wrongKey);
+      }).toThrow();
+    });
 
-    expect(() => {
-      decrypt(encrypted, wrongKey);
-    }).toThrow();
-  });
+    it('should fail to decrypt with corrupted ciphertext', () => {
+      const ciphertext = encrypt(testPlaintext, testMasterKey);
+      const corrupted = ciphertext.slice(0, -10) + 'xxxxx';
 
-  it('should generate unique ciphertexts for same plaintext', () => {
-    const plaintext = 'Same message';
+      expect(() => {
+        decrypt(corrupted, testMasterKey);
+      }).toThrow();
+    });
 
-    const encrypted1 = encrypt(plaintext, masterKey);
-    const encrypted2 = encrypt(plaintext, masterKey);
+    it('should fail to decrypt modified ciphertext (auth tag verification)', () => {
+      const ciphertext = encrypt(testPlaintext, testMasterKey);
+      const chars = ciphertext.split('');
+      chars[10] = chars[10] === 'A' ? 'B' : 'A';
+      const modified = chars.join('');
 
-    // Different ciphertexts (due to random IV and salt)
-    expect(encrypted1).not.toBe(encrypted2);
-
-    // But both decrypt to same plaintext
-    expect(decrypt(encrypted1, masterKey)).toBe(plaintext);
-    expect(decrypt(encrypted2, masterKey)).toBe(plaintext);
+      expect(() => {
+        decrypt(modified, testMasterKey);
+      }).toThrow();
+    });
   });
 });

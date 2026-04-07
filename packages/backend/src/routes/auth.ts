@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, RequestHandler } from 'express';
 import Database from 'better-sqlite3';
 import { User } from '../models/User';
 import {
@@ -9,7 +9,7 @@ import {
   AuthRequest,
 } from '../middleware/authMiddleware';
 
-export function createAuthRoutes(db: Database.Database): Router {
+export function createAuthRoutes(db: Database.Database, loginLimiter?: RequestHandler): Router {
   const router = Router();
   const userModel = new User(db);
 
@@ -65,8 +65,9 @@ export function createAuthRoutes(db: Database.Database): Router {
   /**
    * POST /auth/login
    * Authenticate user with email and password
+   * Rate limited: max 5 attempts per 5 minutes per IP (security)
    */
-  router.post('/login', async (req: Request, res: Response) => {
+  router.post('/login', loginLimiter || ((_req, _res, next) => next()), async (req: Request, res: Response) => {
     try {
       const { email, password } = req.body;
 
@@ -95,7 +96,8 @@ export function createAuthRoutes(db: Database.Database): Router {
       const refreshToken = generateRefreshToken(userWithHash.id);
 
       // Return user data (without password hash)
-      const { password_hash: _, ...userData } = userWithHash;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password_hash: _passwordHash, ...userData } = userWithHash;
 
       res.json({
         ...userData,
