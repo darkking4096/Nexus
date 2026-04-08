@@ -8,6 +8,7 @@ import { createAuthRoutes } from './routes/auth';
 import { createProfilesRoutes } from './routes/profiles';
 import { createContentRoutes } from './routes/content';
 import { createResearchRoutes } from './routes/research';
+import { createAnalyticsRoutes } from './routes/analytics';
 
 dotenv.config();
 
@@ -59,6 +60,7 @@ app.use('/auth', createAuthRoutes(db, loginLimiter));
 app.use('/api/profiles', createProfilesRoutes(db));
 app.use('/api/content', createContentRoutes(db));
 app.use('/api/content', createResearchRoutes(db));
+app.use('/api/analytics', createAnalyticsRoutes(db));
 
 // 404 handler
 app.use((_req, res) => {

@@ -118,6 +118,36 @@ function createSchema(db: Database.Database): void {
     );
   `);
 
+  // metrics table (Story 1.6: analytics — followers, engagement, reach, impressions)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS metrics (
+      id TEXT PRIMARY KEY,
+      profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+      followers_count INTEGER,
+      engagement_rate REAL,
+      reach INTEGER,
+      impressions INTEGER,
+      collected_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  // post_metrics table (Story 1.6: analytics — per-post engagement)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS post_metrics (
+      id TEXT PRIMARY KEY,
+      content_id TEXT NOT NULL REFERENCES content(id) ON DELETE CASCADE,
+      profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+      likes INTEGER DEFAULT 0,
+      comments INTEGER DEFAULT 0,
+      shares INTEGER DEFAULT 0,
+      saves INTEGER DEFAULT 0,
+      reach INTEGER DEFAULT 0,
+      collected_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
   // Create indexes for common queries
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_profiles_user_id ON profiles(user_id);
@@ -128,6 +158,10 @@ function createSchema(db: Database.Database): void {
     CREATE INDEX IF NOT EXISTS idx_insta_sessions_profile_id ON insta_sessions(profile_id);
     CREATE INDEX IF NOT EXISTS idx_publish_logs_profile_id ON publish_logs(profile_id);
     CREATE INDEX IF NOT EXISTS idx_publish_logs_content_id ON publish_logs(content_id);
+    CREATE INDEX IF NOT EXISTS idx_metrics_profile_id ON metrics(profile_id);
+    CREATE INDEX IF NOT EXISTS idx_metrics_collected_at ON metrics(collected_at);
+    CREATE INDEX IF NOT EXISTS idx_post_metrics_content_id ON post_metrics(content_id);
+    CREATE INDEX IF NOT EXISTS idx_post_metrics_profile_id ON post_metrics(profile_id);
   `);
 }
 

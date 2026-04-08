@@ -1012,4 +1012,37 @@ If this is a long-running test, pass a timeout value as the last argument or con
        [34mrerun x5[39m
 [2K[1A[2K[G       [90mrerun x5[39m
 [2K[1A[2K[G       [2m[90mrerun x5[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m tests/AnalyticsService.test.ts[22m [34mx1[39m
+
+ [33m❯[39m tests/AnalyticsService.test.ts [2m ([22m[2m8 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[90m 35[2mms[22m[39m
+[31m   [33m❯[31m tests/AnalyticsService.test.ts[2m > [22mAnalyticsService[2m > [22mgetEngagementRate[2m > [22mshould return 0 if no metrics[39m
+[31m     → Profile no-metrics-profile not found[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 1 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/AnalyticsService.test.ts[2m > [22mAnalyticsService[2m > [22mgetEngagementRate[2m > [22mshould return 0 if no metrics
+[31m[1mError[22m: Profile no-metrics-profile not found[39m
+[36m [2m❯[22m AnalyticsService.getEngagementRate src/services/AnalyticsService.ts:[2m120:13[22m[39m
+    [90m118| [39m    [35mconst[39m profile [33m=[39m [35mthis[39m[33m.[39m[34mgetProfileWithOwnershipCheck[39m(profileId[33m,[39m userI…
+    [90m119| [39m    [35mif[39m ([33m![39mprofile) {
+    [90m120| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m`Profile [39m[36m${[39mprofileId[36m}[39m[32m not found`[39m)[33m;[39m
+    [90m   | [39m            [31m^[39m
+    [90m121| [39m    }
+    [90m122| [39m
+[90m [2m❯[22m tests/AnalyticsService.test.ts:[2m184:45[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m7 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 09:46:06
+[2m   Duration [22m 517ms
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x1[39m
+[2K[1A[2K[G       [90mrerun x1[39m
+[2K[1A[2K[G       [2m[90mrerun x1[39m[22m
 [2K[1A[2K[G
