@@ -1,0 +1,198 @@
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import Database from 'better-sqlite3';
+import { createCompetitorsRoutes } from '../competitors';
+import { createProfilesRoutes } from '../profiles';
+import express, { Express } from 'express';
+import { Profile } from '../../models/Profile';
+import { Competitor } from '../../models/Competitor';
+import request from 'supertest';
+
+describe('Competitors Routes', () => {
+  let app: Express;
+  let db: Database.Database;
+  let profileModel: Profile;
+  let competitorModel: Competitor;
+  let testProfileId: string;
+
+  beforeAll(() => {
+    // Create in-memory database
+    db = new Database(':memory:');
+
+    // Create tables
+    db.exec(`
+      CREATE TABLE profiles (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        instagram_username TEXT NOT NULL,
+        instagram_id TEXT,
+        access_token TEXT NOT NULL,
+        refresh_token TEXT,
+        token_expires_at TEXT,
+        display_name TEXT,
+        bio TEXT,
+        profile_picture_url TEXT,
+        followers_count INTEGER DEFAULT 0,
+        context_voice TEXT,
+        context_tone TEXT,
+        context_audience TEXT,
+        context_goals TEXT,
+        autopilot_enabled INTEGER DEFAULT 0,
+        autopilot_schedule TEXT,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );
+
+      CREATE TABLE competitors (
+        id TEXT PRIMARY KEY,
+        profile_id TEXT NOT NULL REFERENCES profiles(id),
+        instagram_username TEXT NOT NULL,
+        followers_count INTEGER,
+        top_posts_data TEXT,
+        last_updated TEXT,
+        created_at TEXT NOT NULL
+      );
+    `);
+
+    profileModel = new Profile(db);
+    competitorModel = new Competitor(db);
+
+    // Create test profile
+    const profile = profileModel.create({
+      user_id: 'test-user-123',
+      instagram_username: 'test_user',
+      access_token: 'token123',
+    });
+    testProfileId = profile.id;
+
+    // Setup Express app
+    app = express();
+    app.use(express.json());
+
+    // Mock auth middleware
+    app.use((req: Express.Request & { userId?: string }, res, next) => {
+      req.userId = 'test-user-123';
+      next();
+    });
+
+    app.use('/api/profiles', createProfilesRoutes(db));
+    app.use('/api/profiles/:profileId/competitors', createCompetitorsRoutes(db));
+  });
+
+  afterAll(() => {
+    db.close();
+  });
+
+  describe('POST /api/profiles/:profileId/competitors', () => {
+    it('should add a new competitor', async () => {
+      const response = await request(app)
+        .post(`/api/profiles/${testProfileId}/competitors`)
+        .send({
+          instagram_username: 'competitor_account',
+        });
+
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Competitor added successfully');
+      expect(response.body.competitor).toBeDefined();
+      expect(response.body.competitor.instagram_username).toBe('competitor_account');
+      expect(response.body.competitor.profile_id).toBe(testProfileId);
+    });
+
+    it('should validate instagram username is provided', async () => {
+      const response = await request(app)
+        .post(`/api/profiles/${testProfileId}/competitors`)
+        .send({});
+
+      expect(response.status).toBe(400);
+      expect(response.body.error).toContain('Instagram username is required');
+    });
+
+    it('should validate instagram username format', async () => {
+      const response = await request(app)
+        .post(`/api/profiles/${testProfileId}/competitors`)
+        .send({
+          instagram_username: 'invalid@username!',
+        });
+
+      expect(response.status).toBe(400);
+      expect(response.body.error).toContain('Invalid Instagram username format');
+    });
+
+    it('should prevent duplicate competitors', async () => {
+      // Add first competitor
+      await request(app)
+        .post(`/api/profiles/${testProfileId}/competitors`)
+        .send({
+          instagram_username: 'duplicate_competitor',
+        });
+
+      // Try to add duplicate
+      const response = await request(app)
+        .post(`/api/profiles/${testProfileId}/competitors`)
+        .send({
+          instagram_username: 'duplicate_competitor',
+        });
+
+      expect(response.status).toBe(409);
+      expect(response.body.error).toContain('Competitor already exists');
+    });
+
+    it('should return 404 for non-existent profile', async () => {
+      const response = await request(app)
+        .post(`/api/profiles/non-existent-id/competitors`)
+        .send({
+          instagram_username: 'test_competitor',
+        });
+
+      expect(response.status).toBe(404);
+    });
+  });
+
+  describe('GET /api/profiles/:profileId/competitors', () => {
+    it('should list all competitors for a profile', async () => {
+      const response = await request(app).get(`/api/profiles/${testProfileId}/competitors`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.count).toBe(typeof response.body.count === 'number');
+      expect(Array.isArray(response.body.competitors)).toBe(true);
+    });
+
+    it('should return 404 for non-existent profile', async () => {
+      const response = await request(app).get(`/api/profiles/non-existent-id/competitors`);
+
+      expect(response.status).toBe(404);
+    });
+  });
+
+  describe('DELETE /api/profiles/:profileId/competitors/:competitorId', () => {
+    let competitorId: string;
+
+    beforeAll(async () => {
+      const competitor = competitorModel.create({
+        profile_id: testProfileId,
+        instagram_username: 'delete_me',
+      });
+      competitorId = competitor.id;
+    });
+
+    it('should delete a competitor', async () => {
+      const response = await request(app).delete(
+        `/api/profiles/${testProfileId}/competitors/${competitorId}`
+      );
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Competitor deleted successfully');
+
+      // Verify deletion
+      const deleted = competitorModel.getById(competitorId);
+      expect(deleted).toBeNull();
+    });
+
+    it('should return 404 for non-existent competitor', async () => {
+      const response = await request(app).delete(
+        `/api/profiles/${testProfileId}/competitors/non-existent-id`
+      );
+
+      expect(response.status).toBe(404);
+    });
+  });
+});

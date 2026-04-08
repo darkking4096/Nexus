@@ -1,4 +1,4 @@
-import { Router, Response, RequestHandler } from 'express';
+import { Router, Response } from 'express';
 import Database from 'better-sqlite3';
 import rateLimit from 'express-rate-limit';
 import { InstaService } from '../services/InstaService.js';
@@ -230,6 +230,177 @@ export function createProfilesRoutes(
     } catch (error) {
       console.error('Get profile error:', error);
       res.status(500).json({ error: 'Failed to get profile' });
+    }
+  });
+
+  /**
+   * PATCH /api/profiles/:id/context
+   * Update profile context (voice, tone, audience, goals)
+   */
+  router.patch('/:id/context', verifyAccessToken, (req: AuthRequest, res: Response) => {
+    try {
+      const userId = req.userId;
+      if (!userId) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+      }
+
+      const profileId = req.params.id;
+      const { voice, tone, audience, goals } = req.body;
+
+      // Check ownership
+      const profile = profileModel.getById(profileId);
+      if (!profile) {
+        res.status(404).json({ error: 'Profile not found' });
+        return;
+      }
+
+      if (profile.user_id !== userId) {
+        res.status(403).json({ error: 'Access denied' });
+        return;
+      }
+
+      // Validate inputs
+      if (voice !== undefined && typeof voice !== 'string') {
+        res.status(400).json({ error: 'Voice must be a string' });
+        return;
+      }
+
+      if (tone !== undefined && !['professional', 'casual', 'friendly'].includes(tone)) {
+        res.status(400).json({ error: 'Valid tone required (professional, casual, friendly)' });
+        return;
+      }
+
+      if (audience !== undefined && typeof audience !== 'object') {
+        res.status(400).json({ error: 'Audience must be an object' });
+        return;
+      }
+
+      if (goals !== undefined && (!Array.isArray(goals) || goals.length === 0)) {
+        res.status(400).json({ error: 'Goals must be a non-empty array' });
+        return;
+      }
+
+      // Update context
+      const updatedProfile = profileModel.updateContext(profileId, {
+        voice: voice || profile.voice,
+        tone: tone || profile.tone,
+        audience: audience ? JSON.stringify(audience) : profile.audience,
+        goals: goals ? JSON.stringify(goals) : profile.goals,
+      });
+
+      if (!updatedProfile) {
+        res.status(500).json({ error: 'Failed to update profile context' });
+        return;
+      }
+
+      res.json({
+        message: 'Profile context updated successfully',
+        profile: stripSensitiveData(updatedProfile),
+      });
+    } catch (error) {
+      console.error('Update context error:', error);
+      res.status(500).json({ error: 'Failed to update profile context' });
+    }
+  });
+
+  /**
+   * PATCH /api/profiles/:id
+   * Update profile (display_name, bio)
+   */
+  router.patch('/:id', verifyAccessToken, (req: AuthRequest, res: Response) => {
+    try {
+      const userId = req.userId;
+      if (!userId) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+      }
+
+      const profileId = req.params.id;
+      const { display_name, bio } = req.body;
+
+      // Check ownership
+      const profile = profileModel.getById(profileId);
+      if (!profile) {
+        res.status(404).json({ error: 'Profile not found' });
+        return;
+      }
+
+      if (profile.user_id !== userId) {
+        res.status(403).json({ error: 'Access denied' });
+        return;
+      }
+
+      // Validate inputs
+      if (display_name !== undefined && typeof display_name !== 'string') {
+        res.status(400).json({ error: 'Display name must be a string' });
+        return;
+      }
+
+      if (bio !== undefined && typeof bio !== 'string') {
+        res.status(400).json({ error: 'Bio must be a string' });
+        return;
+      }
+
+      // Update profile
+      const updatedProfile = profileModel.updateProfile(profileId, {
+        display_name: display_name || profile.display_name,
+        bio: bio || profile.bio,
+      });
+
+      if (!updatedProfile) {
+        res.status(500).json({ error: 'Failed to update profile' });
+        return;
+      }
+
+      res.json({
+        message: 'Profile updated successfully',
+        profile: stripSensitiveData(updatedProfile),
+      });
+    } catch (error) {
+      console.error('Update profile error:', error);
+      res.status(500).json({ error: 'Failed to update profile' });
+    }
+  });
+
+  /**
+   * DELETE /api/profiles/:id
+   * Delete profile with cascade cleanup
+   */
+  router.delete('/:id', verifyAccessToken, (req: AuthRequest, res: Response) => {
+    try {
+      const userId = req.userId;
+      if (!userId) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+      }
+
+      const profileId = req.params.id;
+
+      // Check ownership
+      const profile = profileModel.getById(profileId);
+      if (!profile) {
+        res.status(404).json({ error: 'Profile not found' });
+        return;
+      }
+
+      if (profile.user_id !== userId) {
+        res.status(403).json({ error: 'Access denied' });
+        return;
+      }
+
+      // Delete profile (cascade cleanup handled by database)
+      const deleted = profileModel.deleteProfile(profileId);
+
+      if (!deleted) {
+        res.status(500).json({ error: 'Failed to delete profile' });
+        return;
+      }
+
+      res.json({ message: 'Profile deleted successfully' });
+    } catch (error) {
+      console.error('Delete profile error:', error);
+      res.status(500).json({ error: 'Failed to delete profile' });
     }
   });
 
