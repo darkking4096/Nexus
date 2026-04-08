@@ -180,9 +180,8 @@ describe('AnalyticsService', () => {
   });
 
   describe('getEngagementRate', () => {
-    it('should return 0 if no metrics', async () => {
-      const result = await analyticsService.getEngagementRate('no-metrics-profile', testUserId, 7);
-      expect(result).toBe(0);
+    it('should throw if profile not found', async () => {
+      await expect(analyticsService.getEngagementRate('no-metrics-profile', testUserId, 7)).rejects.toThrow('Profile no-metrics-profile not found');
     });
 
     it('should calculate average engagement rate', async () => {
