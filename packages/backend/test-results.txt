@@ -1537,4 +1537,155 @@ If this is a long-running test, pass a timeout value as the last argument or con
        [34mrerun x7[39m
 [2K[1A[2K[G       [90mrerun x7[39m
 [2K[1A[2K[G       [2m[90mrerun x7[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/SearchService.ts[22m [34mx8[39m
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return search results for trends[22m[39m
+[SearchService] Calling EXA MCP: "trends in fitness 2026" (10 results)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return consistent results on second call (cached)[22m[39m
+[SearchService] Calling EXA MCP: "trends in sustainable fashion 2026" (10 results)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould handle different niches[22m[39m
+[SearchService] Calling EXA MCP: "trends in meal prep 2026" (10 results)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould return competitor data[22m[39m
+[SearchService] Calling EXA MCP: "@fitnessguru instagram followers engagement" (5 results)
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould handle multiple competitors[22m[39m
+[SearchService] Calling EXA MCP: "@competitor1 instagram followers engagement" (5 results)
+[SearchService] Cached competitor data
+[SearchService] Calling EXA MCP: "@competitor2 instagram followers engagement" (5 results)
+[SearchService] Cached competitor data
+[SearchService] Calling EXA MCP: "@competitor3 instagram followers engagement" (5 results)
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould include recent posts in competitor data[22m[39m
+[SearchService] Calling EXA MCP: "@testcompetitor instagram followers engagement" (5 results)
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould return content ideas[22m[39m
+[SearchService] Calling EXA MCP: "viral productivity tips 2026" (10 results)
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould categorize content ideas[22m[39m
+[SearchService] Calling EXA MCP: "viral home decor 2026" (10 results)
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould have unique IDs for each idea[22m[39m
+[SearchService] Calling EXA MCP: "viral travel inspiration 2026" (10 results)
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould cache content ideas[22m[39m
+[SearchService] Calling EXA MCP: "viral viral videos 2026" (10 results)
+[SearchService] Cached: 10 ideas
+[SearchService] Calling EXA MCP: "viral viral videos 2026" (10 results)
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould handle empty query gracefully[22m[39m
+[SearchService] Calling EXA MCP: "trends in  2026" (10 results)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould return empty array instead of throwing[22m[39m
+[SearchService] Calling EXA MCP: "trends in test query 2026" (10 results)
+
+ [32m✓[39m tests/SearchService.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 51[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m12 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 10:32:19
+[2m   Duration [22m 888ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x8[39m
+[2K[1A[2K[G       [90mrerun x8[39m
+[2K[1A[2K[G       [2m[90mrerun x8[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/SearchService.ts[22m [34mx9[39m
+
+ [32m✓[39m tests/SearchService.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 81[2mms[22m[39m
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return search results for trends[22m[39m
+[SearchService] Calling EXA: "trends in fitness 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in fitness 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return consistent results on second call (cached)[22m[39m
+[SearchService] Calling EXA: "trends in sustainable fashion 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in sustainable fashion 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould handle different niches[22m[39m
+[SearchService] Calling EXA: "trends in meal prep 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in meal prep 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould return competitor data[22m[39m
+[SearchService] Calling EXA: "@fitnessguru instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@fitnessguru instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould handle multiple competitors[22m[39m
+[SearchService] Calling EXA: "@competitor1 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor1 instagram followers engagement"
+[SearchService] Cached competitor data
+[SearchService] Calling EXA: "@competitor2 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor2 instagram followers engagement"
+[SearchService] Cached competitor data
+[SearchService] Calling EXA: "@competitor3 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor3 instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould include recent posts in competitor data[22m[39m
+[SearchService] Calling EXA: "@testcompetitor instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@testcompetitor instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould return content ideas[22m[39m
+[SearchService] Calling EXA: "viral productivity tips 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral productivity tips 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould categorize content ideas[22m[39m
+[SearchService] Calling EXA: "viral home decor 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral home decor 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould have unique IDs for each idea[22m[39m
+[SearchService] Calling EXA: "viral travel inspiration 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral travel inspiration 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould cache content ideas[22m[39m
+[SearchService] Calling EXA: "viral viral videos 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral viral videos 2026"
+[SearchService] Cached: 10 ideas
+[SearchService] Calling EXA: "viral viral videos 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral viral videos 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould handle empty query gracefully[22m[39m
+[SearchService] Calling EXA: "trends in  2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in  2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould return empty array instead of throwing[22m[39m
+[SearchService] Calling EXA: "trends in test query 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in test query 2026"
+
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m12 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 10:32:33
+[2m   Duration [22m 425ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x9[39m
+[2K[1A[2K[G       [90mrerun x9[39m
+[2K[1A[2K[G       [2m[90mrerun x9[39m[22m
 [2K[1A[2K[G
