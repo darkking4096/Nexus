@@ -53,15 +53,37 @@ export class BenchmarkService {
   private db: Database.Database;
   private searchService: SearchService;
   private analyticsService: AnalyticsService;
+  private competitorSearchTimeoutMs: number;
 
   constructor(
     db: Database.Database,
     searchService: SearchService,
-    analyticsService: AnalyticsService
+    analyticsService: AnalyticsService,
+    options?: { competitorSearchTimeoutMs?: number }
   ) {
     this.db = db;
     this.searchService = searchService;
     this.analyticsService = analyticsService;
+    this.competitorSearchTimeoutMs = options?.competitorSearchTimeoutMs ?? 10000;
+  }
+
+  /**
+   * Helper: Execute promise with timeout protection
+   */
+  private async withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+    return Promise.race([
+      promise,
+      new Promise<T>((_, reject) =>
+        setTimeout(() => reject(new Error(`Operation timed out after ${timeoutMs}ms`)), timeoutMs)
+      ),
+    ]);
+  }
+
+  /**
+   * Validate competitor handle format (alphanumeric + @, _, max 30 chars)
+   */
+  private validateHandle(handle: string): boolean {
+    return /^@?[a-zA-Z0-9_]{1,30}$/.test(handle.trim());
   }
 
   /**
@@ -90,14 +112,22 @@ export class BenchmarkService {
       throw new Error('No competitor handles provided and no stored competitors found');
     }
 
-    // 3. Search for competitor metrics
-    const competitorDataList = await this.searchService.searchCompetitors(handles);
+    // 3. Search for competitor metrics (with configurable timeout)
+    const competitorDataList = await this.withTimeout(
+      this.searchService.searchCompetitors(handles),
+      this.competitorSearchTimeoutMs
+    );
     if (competitorDataList.length === 0) {
       throw new Error('No competitor data found');
     }
 
     // 4. Convert competitor data to metrics format
     const competitorMetrics = this.convertCompetitorDataToMetrics(competitorDataList);
+
+    // Ensure we have valid competitor data after validation
+    if (competitorMetrics.length === 0) {
+      throw new Error('No valid competitor data found after validation');
+    }
 
     // 5. Calculate benchmark
     const result = this.calculateBenchmark(profileMetrics, competitorMetrics);
@@ -202,6 +232,11 @@ export class BenchmarkService {
 
   /**
    * Get stored competitors for a profile (from profile context)
+   *
+   * **Schema Dependency:** Assumes `profiles.competitors_json` column exists.
+   * If column is missing in production schema, returns empty array gracefully.
+   * Database schema is managed by migrations and @data-engineer responsibility.
+   *
    * For now, returns empty array (future: persist in profiles table)
    */
   private getStoredCompetitors(profileId: string): string[] {
@@ -224,20 +259,30 @@ export class BenchmarkService {
 
   /**
    * Convert CompetitorData to Metrics format for benchmark calculation
-   * Maps competitor handles to estimated metrics
+   * Maps competitor handles to estimated metrics, validates handles against whitelist
    */
   private convertCompetitorDataToMetrics(competitorDataList: CompetitorData[]): Metrics[] {
-    return competitorDataList.map((competitor) => ({
-      id: `comp-${competitor.handle}`,
-      profile_id: competitor.handle,
-      followers_count: competitor.followersEstimate || 0,
-      engagement_rate: typeof competitor.engagementRate === 'string'
-        ? parseFloat(competitor.engagementRate)
-        : competitor.engagementRate || 0,
-      reach: 0, // Not always available from search results
-      impressions: 0, // Not always available from search results
-      collected_at: new Date().toISOString(),
-    }));
+    const validMetrics = competitorDataList
+      .filter((competitor) => {
+        if (!this.validateHandle(competitor.handle)) {
+          console.warn(`[BenchmarkService] Invalid handle format: ${competitor.handle}`);
+          return false;
+        }
+        return true;
+      })
+      .map((competitor) => ({
+        id: `comp-${competitor.handle}`,
+        profile_id: competitor.handle,
+        followers_count: competitor.followersEstimate || 0,
+        engagement_rate: typeof competitor.engagementRate === 'string'
+          ? parseFloat(competitor.engagementRate)
+          : competitor.engagementRate || 0,
+        reach: 0, // Not always available from search results
+        impressions: 0, // Not always available from search results
+        collected_at: new Date().toISOString(),
+      }));
+
+    return validMetrics;
   }
 }
 
