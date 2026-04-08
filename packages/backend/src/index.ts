@@ -5,6 +5,9 @@ import dotenv from 'dotenv';
 import path from 'path';
 import initializeDatabase from './config/database';
 import { createAuthRoutes } from './routes/auth';
+import { createProfilesRoutes } from './routes/profiles';
+import { createContentRoutes } from './routes/content';
+import { createResearchRoutes } from './routes/research';
 
 dotenv.config();
 
@@ -53,6 +56,9 @@ app.get('/health', (_req, res) => {
 });
 
 app.use('/auth', createAuthRoutes(db, loginLimiter));
+app.use('/api/profiles', createProfilesRoutes(db));
+app.use('/api/content', createContentRoutes(db));
+app.use('/api/content', createResearchRoutes(db));
 
 // 404 handler
 app.use((_req, res) => {

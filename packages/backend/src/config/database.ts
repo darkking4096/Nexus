@@ -74,6 +74,10 @@ function createSchema(db: Database.Database): void {
       status TEXT DEFAULT 'draft',
       scheduled_at DATETIME,
       published_at DATETIME,
+      instagram_post_id TEXT,
+      instagram_url TEXT,
+      publish_error TEXT,
+      retry_count INTEGER DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
@@ -90,6 +94,30 @@ function createSchema(db: Database.Database): void {
     );
   `);
 
+  // insta_sessions table (Story 1.2: encrypted Instagrapi sessions)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS insta_sessions (
+      id TEXT PRIMARY KEY,
+      profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+      session_data TEXT NOT NULL,
+      last_used_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  // publish_logs table (Story 1.3: publishing attempt tracking)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS publish_logs (
+      id TEXT PRIMARY KEY,
+      profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+      content_id TEXT REFERENCES content(id) ON DELETE CASCADE,
+      action TEXT NOT NULL,
+      status TEXT NOT NULL,
+      error_message TEXT,
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
   // Create indexes for common queries
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_profiles_user_id ON profiles(user_id);
@@ -97,6 +125,9 @@ function createSchema(db: Database.Database): void {
     CREATE INDEX IF NOT EXISTS idx_content_status ON content(status);
     CREATE INDEX IF NOT EXISTS idx_credentials_user_id ON credentials(user_id);
     CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+    CREATE INDEX IF NOT EXISTS idx_insta_sessions_profile_id ON insta_sessions(profile_id);
+    CREATE INDEX IF NOT EXISTS idx_publish_logs_profile_id ON publish_logs(profile_id);
+    CREATE INDEX IF NOT EXISTS idx_publish_logs_content_id ON publish_logs(content_id);
   `);
 }
 
