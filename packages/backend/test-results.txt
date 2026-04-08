@@ -2693,4 +2693,261 @@ undefined
        [34mrerun x8[39m
 [2K[1A[2K[G       [90mrerun x8[39m
 [2K[1A[2K[G       [2m[90mrerun x8[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/BenchmarkService.ts[22m [34mx9[39m
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 41[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 11:23:04
+[2m   Duration [22m 847ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x9[39m
+[2K[1A[2K[G       [90mrerun x9[39m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/BenchmarkService.ts[22m [34mx10[39m
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 20[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 11:23:07
+[2m   Duration [22m 465ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x10[39m
+[2K[1A[2K[G       [90mrerun x10[39m
+[2K[1A[2K[G       [2m[90mrerun x10[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/BenchmarkService.ts[22m [34mx11[39m
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 11:23:12
+[2m   Duration [22m 1.48s
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x11[39m
+[2K[1A[2K[G       [90mrerun x11[39m
+[2K[1A[2K[G       [2m[90mrerun x11[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/BenchmarkService.ts[22m [34mx12[39m
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 11:23:16
+[2m   Duration [22m 619ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x12[39m
+[2K[1A[2K[G       [90mrerun x12[39m
+[2K[1A[2K[G       [2m[90mrerun x12[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/BenchmarkService.ts[22m [34mx13[39m
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 21[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 11:23:22
+[2m   Duration [22m 708ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x13[39m
+[2K[1A[2K[G       [90mrerun x13[39m
+[2K[1A[2K[G       [2m[90mrerun x13[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/BenchmarkService.ts[22m [34mx14[39m
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 20[2mms[22m[39m
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 11:23:26
+[2m   Duration [22m 501ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x14[39m
+[2K[1A[2K[G       [90mrerun x14[39m
+[2K[1A[2K[G       [2m[90mrerun x14[39m[22m
 [2K[1A[2K[G

@@ -1,0 +1,180 @@
+storyId: 1.7
+storyTitle: Analytics Benchmark vs. Competitors
+verdict: CONCERNS
+executedBy: "@qa (Quinn)"
+executedAt: "2026-04-08T11:30:00Z"
+
+summary:
+  passed_checks: 4
+  concerns_checks: 3
+  total_checks: 7
+  can_merge: true
+  blocking_issues: false
+
+quality_checks:
+  - name: Code Review
+    severity: PASS
+    description: Patterns, readability, maintainability
+    findings:
+      - pattern: Service Layer architecture properly followed
+      - code_clarity: Excellent — JSDoc, descriptive names, clear separation
+      - separation_of_concerns: getBenchmark() orchestrates, calculateBenchmark() isolated
+    recommendation: Approve
+
+  - name: Unit Tests
+    severity: PASS
+    description: Adequate coverage, all passing
+    findings:
+      - total_tests: 8
+      - error_cases: 3 (profile no metrics, no competitors, no data)
+      - happy_path: 2 (2 competitors medium, 3+ competitors high)
+      - edge_cases: 3 (single, 4+, zero metrics)
+      - all_passing: true
+      - test_framework: vitest with vi.spyOn mocks
+    recommendation: Approve
+
+  - name: Acceptance Criteria
+    severity: PASS
+    description: All acceptance criteria met per story
+    findings:
+      - total_ac: 7
+      - endpoint: "GET /api/analytics/{profileId}/benchmark created ✓"
+      - integrations: "SearchService + AnalyticsService ✓"
+      - calculations: "vs_avg, vs_best, breakdown ✓"
+      - tests: "8 tests covering AC ✓"
+      - linting: "0 errors ✓"
+      - typecheck: "0 errors ✓"
+    recommendation: Approve
+
+  - name: No Regressions
+    severity: CONCERNS
+    description: Existing functionality preserved
+    findings:
+      - new_routes: Additive, does not modify existing
+      - dependency_changes: None (SearchService, AnalyticsService unchanged)
+      - schema_dependency: "BenchmarkService.ts:209 queries profiles.competitors_json"
+      - concern: Column may not exist in production schema
+    issues:
+      - severity: MEDIUM
+        id: REG-001
+        description: Schema dependency on profiles.competitors_json column
+        location: BenchmarkService.ts:209-212
+        risk: Runtime 'no such table' error if column missing
+        recommendation: "Verify migration includes column before merge"
+        owner: "@dev / @data-engineer"
+    recommendation: Conditional approval — verify schema first
+
+  - name: Performance
+    severity: CONCERNS
+    description: Within acceptable limits
+    findings:
+      - algorithm_complexity: "O(n×m) where n=competitors, m=metrics"
+      - calculation_speed: "Trivial for 3-5 competitors (~1ms)"
+      - database_query: "Single query in getStoredCompetitors()"
+      - external_api: "searchService.searchCompetitors() dependency"
+    issues:
+      - severity: MEDIUM
+        id: PERF-001
+        description: "No timeout protection for searchService.searchCompetitors()"
+        location: "BenchmarkService.ts:94"
+        risk: "Dev Notes identify this (risk #2) — web search may hang"
+        recommendation: "Add timeout/retry or cache fallback in next iteration"
+        owner: "@architect / @dev"
+    recommendation: Conditional approval — document as tech debt for Story 2.x
+
+  - name: Security
+    severity: CONCERNS
+    description: OWASP basics verified
+    findings:
+      - access_control: "verifyAccessToken middleware applied ✓"
+      - injection: "competitors parameter split/trimmed safely ✓"
+      - ownership: "AnalyticsService validates userId ownership ✓"
+      - sql_injection: "No direct SQL, delegated to services ✓"
+      - competitor_handles: "NOT validated — could contain special characters"
+    issues:
+      - severity: MEDIUM
+        id: SEC-001
+        description: "Competitor handles not sanitized (XSS risk)"
+        location: "BenchmarkService.ts:100 (convertCompetitorDataToMetrics)"
+        risk: "If handles contain <script> or other XSS payloads, API response vulnerable"
+        recommendation: "Add whitelist validation for handles (alphanumeric + @_)"
+        owner: "@dev"
+    recommendation: Conditional approval — add sanitization before production
+
+  - name: Documentation
+    severity: PASS
+    description: Updated if necessary
+    findings:
+      - jsdoc: "Complete for all functions and interfaces ✓"
+      - error_patterns: "Documented in Dev Notes (treatment of errors) ✓"
+      - algorithm: "Comparison algorithm documented in Dev Notes ✓"
+      - dependencies: "Integration points documented ✓"
+      - story_record: "Dev Agent Record comprehensive ✓"
+    recommendation: Approve
+
+issues_summary:
+  total_issues: 3
+  blocking: false
+  by_severity:
+    CRITICAL: 0
+    HIGH: 0
+    MEDIUM: 3
+
+detailed_issues:
+  - id: REG-001
+    title: Schema Dependency Verification
+    severity: MEDIUM
+    category: regression
+    description: "BenchmarkService.getStoredCompetitors() assumes profiles table has competitors_json column. Tests fail gracefully in in-memory DB, but production may lack this column."
+    recommendation: "Verify migration/schema includes this column. If not, either: (a) add migration, or (b) refactor to not use stored competitors fallback."
+    owner: "@dev or @data-engineer"
+    blocking: false
+
+  - id: PERF-001
+    title: Missing Timeout for Competitor Search
+    severity: MEDIUM
+    category: performance
+    description: "searchService.searchCompetitors() calls external API (EXA) but has no timeout protection. Story 1.7 dev notes identify this risk (Medium probability, Medium impact) but implementation doesn't mitigate."
+    recommendation: "Add timeout configuration in next iteration (Story 2.x). Document as tech debt."
+    owner: "@architect / @dev"
+    blocking: false
+
+  - id: SEC-001
+    title: Competitor Handle Input Validation
+    severity: MEDIUM
+    category: security
+    description: "Competitor handles from SearchService are not validated before being mapped to profile_id in convertCompetitorDataToMetrics(). If handles contain XSS payloads, API response may be vulnerable."
+    recommendation: "Add whitelist validation: handles must match ^[@a-zA-Z0-9_]+$ before processing."
+    owner: "@dev"
+    blocking: false
+
+gate_decision:
+  verdict: CONCERNS
+  status: "CONDITIONAL APPROVAL"
+  can_merge: true
+  requires_before_merge:
+    - "Confirm profiles.competitors_json schema exists (or update migration)"
+  post_merge_debt:
+    - "Add timeout protection for searchService.searchCompetitors()"
+    - "Add handle sanitization (alphanumeric + @_ whitelist)"
+
+recommendation: |
+  Approve for merge with understanding that 3 MEDIUM severity observations
+  exist. None are blocking. Recommend creating Story 2.x task to address:
+  1) Schema validation
+  2) Timeout protection
+  3) Input sanitization
+
+  Implementation is solid, tests comprehensive, code patterns excellent.
+  Ready for staging environment testing before production release.
+
+notes:
+  - CodeRabbit unavailable in WSL — manual 7-check analysis conducted
+  - All 64 backend tests passing including 8 BenchmarkService tests
+  - TypeScript typecheck: 0 errors
+  - ESLint: 0 errors
+  - Graceful error handling observed (getStoredCompetitors try-catch pattern)
+
+change_log:
+  - "2026-04-08 11:30 UTC — QA gate executed, verdict: CONCERNS (3 observations)"
+  - "2026-04-08 11:30 UTC — Updated story 1.7 Done checklist"
