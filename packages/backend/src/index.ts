@@ -9,6 +9,7 @@ import { createProfilesRoutes } from './routes/profiles';
 import { createContentRoutes } from './routes/content';
 import { createResearchRoutes } from './routes/research';
 import { createAnalyticsRoutes } from './routes/analytics';
+import { createSearchRoutes } from './routes/search';
 
 dotenv.config();
 
@@ -61,6 +62,7 @@ app.use('/api/profiles', createProfilesRoutes(db));
 app.use('/api/content', createContentRoutes(db));
 app.use('/api/content', createResearchRoutes(db));
 app.use('/api/analytics', createAnalyticsRoutes(db));
+app.use('/api/search', createSearchRoutes(db));
 
 // 404 handler
 app.use((_req, res) => {

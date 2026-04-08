@@ -1045,4 +1045,496 @@ If this is a long-running test, pass a timeout value as the last argument or con
        [34mrerun x1[39m
 [2K[1A[2K[G       [90mrerun x1[39m
 [2K[1A[2K[G       [2m[90mrerun x1[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m tests/AnalyticsService.test.ts[22m [34mx2[39m
+
+ [32m✓[39m tests/AnalyticsService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 09:59:55
+[2m   Duration [22m 282ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x2[39m
+[2K[1A[2K[G       [90mrerun x2[39m
+[2K[1A[2K[G       [2m[90mrerun x2[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m tests/SearchService.test.ts[22m [34mx1[39m
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[22m[39m
+[SearchService] EXA MCP availability check: fallback mode (mock searches)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return search results for trends[22m[39m
+[SearchService] Search (MOCK): trends in fitness → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return consistent results on second call (cached)[22m[39m
+[SearchService] Search (MOCK): trends in sustainable fashion → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould handle different niches[22m[39m
+[SearchService] Search (MOCK): trends in meal prep → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould return competitor data[22m[39m
+[SearchService] Competitor search (MOCK): @fitnessguru
+[SearchService] Cached: competitor:@fitnessguru
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould handle multiple competitors[22m[39m
+[SearchService] Competitor search (MOCK): @competitor1
+[SearchService] Cached: competitor:@competitor1
+[SearchService] Competitor search (MOCK): @competitor2
+[SearchService] Cached: competitor:@competitor2
+[SearchService] Competitor search (MOCK): @competitor3
+[SearchService] Cached: competitor:@competitor3
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould include recent posts in competitor data[22m[39m
+[SearchService] Competitor search (MOCK): @testcompetitor
+[SearchService] Cached: competitor:@testcompetitor
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould return content ideas[22m[39m
+[SearchService] Content search (MOCK): productivity tips → 5 ideas
+[SearchService] Cached: content:productivity tips (5 ideas)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould categorize content ideas[22m[39m
+[SearchService] Content search (MOCK): home decor → 5 ideas
+[SearchService] Cached: content:home decor (5 ideas)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould have unique IDs for each idea[22m[39m
+[SearchService] Content search (MOCK): travel inspiration → 5 ideas
+[SearchService] Cached: content:travel inspiration (5 ideas)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould cache content ideas[22m[39m
+[SearchService] Content search (MOCK): viral videos → 5 ideas
+[SearchService] Cached: content:viral videos (5 ideas)
+[SearchService] Content search (MOCK): viral videos → 5 ideas
+[SearchService] Cached: content:viral videos (5 ideas)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould handle empty query gracefully[22m[39m
+[SearchService] Search (MOCK): trends in  → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould return empty array instead of throwing[22m[39m
+[SearchService] Search (MOCK): trends in test query → 5 results
+
+ [32m✓[39m tests/SearchService.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 56[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m12 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 10:18:28
+[2m   Duration [22m 571ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x1[39m
+[2K[1A[2K[G       [90mrerun x1[39m
+[2K[1A[2K[G       [2m[90mrerun x1[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/SearchService.ts[22m [34mx2[39m
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[22m[39m
+[SearchService] EXA MCP availability check: fallback mode (mock searches)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return search results for trends[22m[39m
+[SearchService] Search (MOCK): trends in fitness → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return consistent results on second call (cached)[22m[39m
+[SearchService] Search (MOCK): trends in sustainable fashion → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould handle different niches[22m[39m
+[SearchService] Search (MOCK): trends in meal prep → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould return competitor data[22m[39m
+[SearchService] Competitor search (MOCK): @fitnessguru
+[SearchService] Cached: competitor:@fitnessguru
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould handle multiple competitors[22m[39m
+[SearchService] Competitor search (MOCK): @competitor1
+[SearchService] Cached: competitor:@competitor1
+[SearchService] Competitor search (MOCK): @competitor2
+[SearchService] Cached: competitor:@competitor2
+[SearchService] Competitor search (MOCK): @competitor3
+[SearchService] Cached: competitor:@competitor3
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould include recent posts in competitor data[22m[39m
+[SearchService] Competitor search (MOCK): @testcompetitor
+[SearchService] Cached: competitor:@testcompetitor
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould return content ideas[22m[39m
+[SearchService] Content search (MOCK): productivity tips → 5 ideas
+[SearchService] Cached: content:productivity tips (5 ideas)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould categorize content ideas[22m[39m
+[SearchService] Content search (MOCK): home decor → 5 ideas
+[SearchService] Cached: content:home decor (5 ideas)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould have unique IDs for each idea[22m[39m
+[SearchService] Content search (MOCK): travel inspiration → 5 ideas
+[SearchService] Cached: content:travel inspiration (5 ideas)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould cache content ideas[22m[39m
+[SearchService] Content search (MOCK): viral videos → 5 ideas
+[SearchService] Cached: content:viral videos (5 ideas)
+[SearchService] Content search (MOCK): viral videos → 5 ideas
+[SearchService] Cached: content:viral videos (5 ideas)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould handle empty query gracefully[22m[39m
+[SearchService] Search (MOCK): trends in  → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould return empty array instead of throwing[22m[39m
+[SearchService] Search (MOCK): trends in test query → 5 results
+
+ [32m✓[39m tests/SearchService.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 32[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m12 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 10:18:44
+[2m   Duration [22m 658ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x2[39m
+[2K[1A[2K[G       [90mrerun x2[39m
+[2K[1A[2K[G       [2m[90mrerun x2[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/SearchService.ts[22m [34mx3[39m
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[22m[39m
+[SearchService] EXA MCP availability check: fallback mode (mock searches)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return search results for trends[22m[39m
+[SearchService] Search (MOCK): trends in fitness → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return consistent results on second call (cached)[22m[39m
+[SearchService] Search (MOCK): trends in sustainable fashion → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould handle different niches[22m[39m
+[SearchService] Search (MOCK): trends in meal prep → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould return competitor data[22m[39m
+[SearchService] Competitor search (MOCK): @fitnessguru
+[SearchService] Cached: competitor:@fitnessguru
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould handle multiple competitors[22m[39m
+[SearchService] Competitor search (MOCK): @competitor1
+[SearchService] Cached: competitor:@competitor1
+[SearchService] Competitor search (MOCK): @competitor2
+[SearchService] Cached: competitor:@competitor2
+[SearchService] Competitor search (MOCK): @competitor3
+[SearchService] Cached: competitor:@competitor3
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould include recent posts in competitor data[22m[39m
+[SearchService] Competitor search (MOCK): @testcompetitor
+[SearchService] Cached: competitor:@testcompetitor
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould return content ideas[22m[39m
+[SearchService] Content search (MOCK): productivity tips → 5 ideas
+[SearchService] Cached: content:productivity tips (5 ideas)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould categorize content ideas[22m[39m
+[SearchService] Content search (MOCK): home decor → 5 ideas
+[SearchService] Cached: content:home decor (5 ideas)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould have unique IDs for each idea[22m[39m
+[SearchService] Content search (MOCK): travel inspiration → 5 ideas
+[SearchService] Cached: content:travel inspiration (5 ideas)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould cache content ideas[22m[39m
+[SearchService] Content search (MOCK): viral videos → 5 ideas
+[SearchService] Cached: content:viral videos (5 ideas)
+[SearchService] Content search (MOCK): viral videos → 5 ideas
+[SearchService] Cached: content:viral videos (5 ideas)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould handle empty query gracefully[22m[39m
+[SearchService] Search (MOCK): trends in  → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould return empty array instead of throwing[22m[39m
+[SearchService] Search (MOCK): trends in test query → 5 results
+
+ [32m✓[39m tests/SearchService.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 28[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m12 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 10:18:48
+[2m   Duration [22m 297ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x3[39m
+[2K[1A[2K[G       [90mrerun x3[39m
+[2K[1A[2K[G       [2m[90mrerun x3[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/SearchService.ts[22m [34mx4[39m
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[22m[39m
+[SearchService] EXA MCP availability check: fallback mode (mock searches)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return search results for trends[22m[39m
+[SearchService] Search (MOCK): trends in fitness → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return consistent results on second call (cached)[22m[39m
+[SearchService] Search (MOCK): trends in sustainable fashion → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould handle different niches[22m[39m
+[SearchService] Search (MOCK): trends in meal prep → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould return competitor data[22m[39m
+[SearchService] Competitor search (MOCK): @fitnessguru
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould handle multiple competitors[22m[39m
+[SearchService] Competitor search (MOCK): @competitor1
+[SearchService] Cached competitor data
+[SearchService] Competitor search (MOCK): @competitor2
+[SearchService] Cached competitor data
+[SearchService] Competitor search (MOCK): @competitor3
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould include recent posts in competitor data[22m[39m
+[SearchService] Competitor search (MOCK): @testcompetitor
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould return content ideas[22m[39m
+[SearchService] Content search (MOCK): productivity tips → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould categorize content ideas[22m[39m
+[SearchService] Content search (MOCK): home decor → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould have unique IDs for each idea[22m[39m
+[SearchService] Content search (MOCK): travel inspiration → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould cache content ideas[22m[39m
+[SearchService] Content search (MOCK): viral videos → 5 ideas
+[SearchService] Cached: 5 ideas
+[SearchService] Content search (MOCK): viral videos → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould handle empty query gracefully[22m[39m
+[SearchService] Search (MOCK): trends in  → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould return empty array instead of throwing[22m[39m
+[SearchService] Search (MOCK): trends in test query → 5 results
+
+ [32m✓[39m tests/SearchService.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 27[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m12 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 10:18:54
+[2m   Duration [22m 630ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x4[39m
+[2K[1A[2K[G       [90mrerun x4[39m
+[2K[1A[2K[G       [2m[90mrerun x4[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/SearchService.ts[22m [34mx5[39m
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[22m[39m
+[SearchService] EXA MCP availability check: fallback mode (mock searches)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return search results for trends[22m[39m
+[SearchService] Search (MOCK): trends in fitness → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return consistent results on second call (cached)[22m[39m
+[SearchService] Search (MOCK): trends in sustainable fashion → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould handle different niches[22m[39m
+[SearchService] Search (MOCK): trends in meal prep → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould return competitor data[22m[39m
+[SearchService] Competitor search (MOCK): @fitnessguru
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould handle multiple competitors[22m[39m
+[SearchService] Competitor search (MOCK): @competitor1
+[SearchService] Cached competitor data
+[SearchService] Competitor search (MOCK): @competitor2
+[SearchService] Cached competitor data
+[SearchService] Competitor search (MOCK): @competitor3
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould include recent posts in competitor data[22m[39m
+[SearchService] Competitor search (MOCK): @testcompetitor
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould return content ideas[22m[39m
+[SearchService] Content search (MOCK): productivity tips → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould categorize content ideas[22m[39m
+[SearchService] Content search (MOCK): home decor → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould have unique IDs for each idea[22m[39m
+[SearchService] Content search (MOCK): travel inspiration → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould cache content ideas[22m[39m
+[SearchService] Content search (MOCK): viral videos → 5 ideas
+[SearchService] Cached: 5 ideas
+[SearchService] Content search (MOCK): viral videos → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould handle empty query gracefully[22m[39m
+[SearchService] Search (MOCK): trends in  → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould return empty array instead of throwing[22m[39m
+[SearchService] Search (MOCK): trends in test query → 5 results
+
+ [32m✓[39m tests/SearchService.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 44[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m12 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 10:19:12
+[2m   Duration [22m 306ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x5[39m
+[2K[1A[2K[G       [90mrerun x5[39m
+[2K[1A[2K[G       [2m[90mrerun x5[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/SearchService.ts[22m [34mx6[39m
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[22m[39m
+[SearchService] EXA MCP availability check: fallback mode (mock searches)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return search results for trends[22m[39m
+[SearchService] Search (MOCK): trends in fitness → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return consistent results on second call (cached)[22m[39m
+[SearchService] Search (MOCK): trends in sustainable fashion → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould handle different niches[22m[39m
+[SearchService] Search (MOCK): trends in meal prep → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould return competitor data[22m[39m
+[SearchService] Competitor search (MOCK): @fitnessguru
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould handle multiple competitors[22m[39m
+[SearchService] Competitor search (MOCK): @competitor1
+[SearchService] Cached competitor data
+[SearchService] Competitor search (MOCK): @competitor2
+[SearchService] Cached competitor data
+[SearchService] Competitor search (MOCK): @competitor3
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould include recent posts in competitor data[22m[39m
+[SearchService] Competitor search (MOCK): @testcompetitor
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould return content ideas[22m[39m
+[SearchService] Content search (MOCK): productivity tips → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould categorize content ideas[22m[39m
+[SearchService] Content search (MOCK): home decor → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould have unique IDs for each idea[22m[39m
+[SearchService] Content search (MOCK): travel inspiration → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould cache content ideas[22m[39m
+[SearchService] Content search (MOCK): viral videos → 5 ideas
+[SearchService] Cached: 5 ideas
+[SearchService] Content search (MOCK): viral videos → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould handle empty query gracefully[22m[39m
+[SearchService] Search (MOCK): trends in  → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould return empty array instead of throwing[22m[39m
+[SearchService] Search (MOCK): trends in test query → 5 results
+
+ [32m✓[39m tests/SearchService.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m12 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 10:19:15
+[2m   Duration [22m 425ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x6[39m
+[2K[1A[2K[G       [90mrerun x6[39m
+[2K[1A[2K[G       [2m[90mrerun x6[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/SearchService.ts[22m [34mx7[39m
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[22m[39m
+[SearchService] EXA MCP availability check: fallback mode (mock searches)
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return search results for trends[22m[39m
+[SearchService] Search (MOCK): trends in fitness → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return consistent results on second call (cached)[22m[39m
+[SearchService] Search (MOCK): trends in sustainable fashion → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould handle different niches[22m[39m
+[SearchService] Search (MOCK): trends in meal prep → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould return competitor data[22m[39m
+[SearchService] Competitor search (MOCK): @fitnessguru
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould handle multiple competitors[22m[39m
+[SearchService] Competitor search (MOCK): @competitor1
+[SearchService] Cached competitor data
+[SearchService] Competitor search (MOCK): @competitor2
+[SearchService] Cached competitor data
+[SearchService] Competitor search (MOCK): @competitor3
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould include recent posts in competitor data[22m[39m
+[SearchService] Competitor search (MOCK): @testcompetitor
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould return content ideas[22m[39m
+[SearchService] Content search (MOCK): productivity tips → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould categorize content ideas[22m[39m
+[SearchService] Content search (MOCK): home decor → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould have unique IDs for each idea[22m[39m
+[SearchService] Content search (MOCK): travel inspiration → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould cache content ideas[22m[39m
+[SearchService] Content search (MOCK): viral videos → 5 ideas
+[SearchService] Cached: 5 ideas
+[SearchService] Content search (MOCK): viral videos → 5 ideas
+[SearchService] Cached: 5 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould handle empty query gracefully[22m[39m
+[SearchService] Search (MOCK): trends in  → 5 results
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould return empty array instead of throwing[22m[39m
+[SearchService] Search (MOCK): trends in test query → 5 results
+
+ [32m✓[39m tests/SearchService.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 29[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m12 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 10:19:33
+[2m   Duration [22m 488ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x7[39m
+[2K[1A[2K[G       [90mrerun x7[39m
+[2K[1A[2K[G       [2m[90mrerun x7[39m[22m
 [2K[1A[2K[G
