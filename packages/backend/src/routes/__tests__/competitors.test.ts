@@ -5,6 +5,7 @@ import { createProfilesRoutes } from '../profiles';
 import express, { Express } from 'express';
 import { Profile } from '../../models/Profile';
 import { Competitor } from '../../models/Competitor';
+import { generateAccessToken } from '../../middleware/authMiddleware';
 import request from 'supertest';
 
 describe('Competitors Routes', () => {
@@ -13,6 +14,7 @@ describe('Competitors Routes', () => {
   let profileModel: Profile;
   let competitorModel: Competitor;
   let testProfileId: string;
+  let testToken: string;
 
   beforeAll(() => {
     // Create in-memory database
@@ -55,6 +57,7 @@ describe('Competitors Routes', () => {
 
     profileModel = new Profile(db);
     competitorModel = new Competitor(db);
+    testToken = generateAccessToken('test-user-123');
 
     // Create test profile
     const profile = profileModel.create({
@@ -68,12 +71,6 @@ describe('Competitors Routes', () => {
     app = express();
     app.use(express.json());
 
-    // Mock auth middleware
-    app.use((req: Express.Request & { userId?: string }, _res, next) => {
-      req.userId = 'test-user-123';
-      next();
-    });
-
     app.use('/api/profiles', createProfilesRoutes(db));
     app.use('/api/profiles/:profileId/competitors', createCompetitorsRoutes(db));
   });
@@ -86,6 +83,7 @@ describe('Competitors Routes', () => {
     it('should add a new competitor', async () => {
       const response = await request(app)
         .post(`/api/profiles/${testProfileId}/competitors`)
+        .set('Authorization', `Bearer ${testToken}`)
         .send({
           instagram_username: 'competitor_account',
         });
@@ -100,6 +98,7 @@ describe('Competitors Routes', () => {
     it('should validate instagram username is provided', async () => {
       const response = await request(app)
         .post(`/api/profiles/${testProfileId}/competitors`)
+        .set('Authorization', `Bearer ${testToken}`)
         .send({});
 
       expect(response.status).toBe(400);
@@ -109,6 +108,7 @@ describe('Competitors Routes', () => {
     it('should validate instagram username format', async () => {
       const response = await request(app)
         .post(`/api/profiles/${testProfileId}/competitors`)
+        .set('Authorization', `Bearer ${testToken}`)
         .send({
           instagram_username: 'invalid@username!',
         });
@@ -121,6 +121,7 @@ describe('Competitors Routes', () => {
       // Add first competitor
       await request(app)
         .post(`/api/profiles/${testProfileId}/competitors`)
+        .set('Authorization', `Bearer ${testToken}`)
         .send({
           instagram_username: 'duplicate_competitor',
         });
@@ -128,6 +129,7 @@ describe('Competitors Routes', () => {
       // Try to add duplicate
       const response = await request(app)
         .post(`/api/profiles/${testProfileId}/competitors`)
+        .set('Authorization', `Bearer ${testToken}`)
         .send({
           instagram_username: 'duplicate_competitor',
         });
@@ -139,6 +141,7 @@ describe('Competitors Routes', () => {
     it('should return 404 for non-existent profile', async () => {
       const response = await request(app)
         .post(`/api/profiles/non-existent-id/competitors`)
+        .set('Authorization', `Bearer ${testToken}`)
         .send({
           instagram_username: 'test_competitor',
         });
@@ -149,15 +152,19 @@ describe('Competitors Routes', () => {
 
   describe('GET /api/profiles/:profileId/competitors', () => {
     it('should list all competitors for a profile', async () => {
-      const response = await request(app).get(`/api/profiles/${testProfileId}/competitors`);
+      const response = await request(app)
+        .get(`/api/profiles/${testProfileId}/competitors`)
+        .set('Authorization', `Bearer ${testToken}`);
 
       expect(response.status).toBe(200);
-      expect(response.body.count).toBe(typeof response.body.count === 'number');
+      expect(typeof response.body.count).toBe('number');
       expect(Array.isArray(response.body.competitors)).toBe(true);
     });
 
     it('should return 404 for non-existent profile', async () => {
-      const response = await request(app).get(`/api/profiles/non-existent-id/competitors`);
+      const response = await request(app)
+        .get(`/api/profiles/non-existent-id/competitors`)
+        .set('Authorization', `Bearer ${testToken}`);
 
       expect(response.status).toBe(404);
     });
@@ -175,9 +182,11 @@ describe('Competitors Routes', () => {
     });
 
     it('should delete a competitor', async () => {
-      const response = await request(app).delete(
+      const response = await request(app)
+        .delete(
         `/api/profiles/${testProfileId}/competitors/${competitorId}`
-      );
+      )
+        .set('Authorization', `Bearer ${testToken}`);
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe('Competitor deleted successfully');
@@ -188,9 +197,11 @@ describe('Competitors Routes', () => {
     });
 
     it('should return 404 for non-existent competitor', async () => {
-      const response = await request(app).delete(
+      const response = await request(app)
+        .delete(
         `/api/profiles/${testProfileId}/competitors/non-existent-id`
-      );
+      )
+        .set('Authorization', `Bearer ${testToken}`);
 
       expect(response.status).toBe(404);
     });

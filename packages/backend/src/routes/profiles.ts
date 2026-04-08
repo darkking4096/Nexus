@@ -261,8 +261,8 @@ export function createProfilesRoutes(
       }
 
       // Validate inputs
-      if (voice !== undefined && typeof voice !== 'string') {
-        res.status(400).json({ error: 'Voice must be a string' });
+      if (voice !== undefined && (typeof voice !== 'string' || voice.trim() === '')) {
+        res.status(400).json({ error: 'Voice must be a non-empty string' });
         return;
       }
 

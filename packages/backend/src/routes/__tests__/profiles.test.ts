@@ -3,12 +3,14 @@ import Database from 'better-sqlite3';
 import { createProfilesRoutes } from '../profiles';
 import express, { Express } from 'express';
 import { Profile } from '../../models/Profile';
+import { generateAccessToken } from '../../middleware/authMiddleware';
 import request from 'supertest';
 
 describe('Profile Routes - Context Configuration', () => {
   let app: Express;
   let db: Database.Database;
   let profileModel: Profile;
+  let testToken: string;
 
   beforeAll(() => {
     // Create in-memory database for testing
@@ -40,16 +42,11 @@ describe('Profile Routes - Context Configuration', () => {
     `);
 
     profileModel = new Profile(db);
+    testToken = generateAccessToken('test-user-123');
 
     // Create Express app with routes
     app = express();
     app.use(express.json());
-
-    // Mock auth middleware
-    app.use((req: Express.Request & { userId?: string }, _res, next) => {
-      req.userId = 'test-user-123';
-      next();
-    });
 
     app.use('/api/profiles', createProfilesRoutes(db));
   });
@@ -73,6 +70,7 @@ describe('Profile Routes - Context Configuration', () => {
     it('should update profile context successfully', async () => {
       const response = await request(app)
         .patch(`/api/profiles/${profileId}/context`)
+        .set('Authorization', `Bearer ${testToken}`)
         .send({
           voice: 'Professional and inspiring voice',
           tone: 'professional',
@@ -90,6 +88,7 @@ describe('Profile Routes - Context Configuration', () => {
     it('should validate voice is required', async () => {
       const response = await request(app)
         .patch(`/api/profiles/${profileId}/context`)
+        .set('Authorization', `Bearer ${testToken}`)
         .send({
           voice: '',
           tone: 'professional',
@@ -102,6 +101,7 @@ describe('Profile Routes - Context Configuration', () => {
     it('should validate tone is one of allowed values', async () => {
       const response = await request(app)
         .patch(`/api/profiles/${profileId}/context`)
+        .set('Authorization', `Bearer ${testToken}`)
         .send({
           voice: 'Test voice',
           tone: 'invalid-tone',
@@ -115,6 +115,7 @@ describe('Profile Routes - Context Configuration', () => {
     it('should return 404 for non-existent profile', async () => {
       const response = await request(app)
         .patch(`/api/profiles/non-existent-id/context`)
+        .set('Authorization', `Bearer ${testToken}`)
         .send({
           voice: 'Test voice',
           tone: 'professional',
@@ -127,6 +128,7 @@ describe('Profile Routes - Context Configuration', () => {
     it('should update only provided fields', async () => {
       const response = await request(app)
         .patch(`/api/profiles/${profileId}/context`)
+        .set('Authorization', `Bearer ${testToken}`)
         .send({
           voice: 'Updated voice only',
         });
@@ -151,6 +153,7 @@ describe('Profile Routes - Context Configuration', () => {
     it('should update profile display_name and bio', async () => {
       const response = await request(app)
         .patch(`/api/profiles/${profileId}`)
+        .set('Authorization', `Bearer ${testToken}`)
         .send({
           display_name: 'My Brand',
           bio: 'Marketing expert',
@@ -164,6 +167,7 @@ describe('Profile Routes - Context Configuration', () => {
     it('should validate display_name type', async () => {
       const response = await request(app)
         .patch(`/api/profiles/${profileId}`)
+        .set('Authorization', `Bearer ${testToken}`)
         .send({
           display_name: 123,
         });
@@ -185,7 +189,9 @@ describe('Profile Routes - Context Configuration', () => {
     });
 
     it('should delete profile successfully', async () => {
-      const response = await request(app).delete(`/api/profiles/${profileId}`);
+      const response = await request(app)
+        .delete(`/api/profiles/${profileId}`)
+        .set('Authorization', `Bearer ${testToken}`);
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe('Profile deleted successfully');
@@ -196,7 +202,9 @@ describe('Profile Routes - Context Configuration', () => {
     });
 
     it('should return 404 for non-existent profile', async () => {
-      const response = await request(app).delete(`/api/profiles/non-existent-id`);
+      const response = await request(app)
+        .delete(`/api/profiles/non-existent-id`)
+        .set('Authorization', `Bearer ${testToken}`);
 
       expect(response.status).toBe(404);
     });

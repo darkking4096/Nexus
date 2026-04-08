@@ -6,6 +6,7 @@ import express, { Express } from 'express';
 import { Profile } from '../../models/Profile';
 import { ProfileAsset } from '../../models/ProfileAsset';
 import { AssetService } from '../../services/AssetService.js';
+import { generateAccessToken } from '../../middleware/authMiddleware';
 import request from 'supertest';
 
 describe('Assets Routes', () => {
@@ -14,6 +15,7 @@ describe('Assets Routes', () => {
   let profileModel: Profile;
   let assetModel: ProfileAsset;
   let testProfileId: string;
+  let testToken: string;
 
   beforeAll(() => {
     // Create in-memory database
@@ -57,6 +59,7 @@ describe('Assets Routes', () => {
 
     profileModel = new Profile(db);
     assetModel = new ProfileAsset(db);
+    testToken = generateAccessToken('test-user-123');
 
     // Create test profile
     const profile = profileModel.create({
@@ -70,12 +73,6 @@ describe('Assets Routes', () => {
     app = express();
     app.use(express.json());
 
-    // Mock auth middleware
-    app.use((req: Express.Request & { userId?: string }, _res, next) => {
-      req.userId = 'test-user-123';
-      next();
-    });
-
     app.use('/api/profiles', createProfilesRoutes(db));
     app.use('/api/profiles/:profileId/assets', createAssetsRoutes(db));
   });
@@ -86,23 +83,29 @@ describe('Assets Routes', () => {
 
   describe('GET /api/profiles/:profileId/assets', () => {
     it('should list assets for a profile', async () => {
-      const response = await request(app).get(`/api/profiles/${testProfileId}/assets`);
+      const response = await request(app)
+        .get(`/api/profiles/${testProfileId}/assets`)
+        .set('Authorization', `Bearer ${testToken}`);
 
       expect(response.status).toBe(200);
-      expect(response.body.count).toBe(typeof response.body.count === 'number');
+      expect(typeof response.body.count).toBe('number');
       expect(Array.isArray(response.body.assets)).toBe(true);
     });
 
     it('should return 404 for non-existent profile', async () => {
-      const response = await request(app).get(`/api/profiles/non-existent-id/assets`);
+      const response = await request(app)
+        .get(`/api/profiles/non-existent-id/assets`)
+        .set('Authorization', `Bearer ${testToken}`);
 
       expect(response.status).toBe(404);
     });
 
     it('should filter assets by type', async () => {
-      const response = await request(app).get(
+      const response = await request(app)
+        .get(
         `/api/profiles/${testProfileId}/assets?type=image`
-      );
+      )
+        .set('Authorization', `Bearer ${testToken}`);
 
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body.assets)).toBe(true);
@@ -125,9 +128,11 @@ describe('Assets Routes', () => {
     });
 
     it('should delete an asset', async () => {
-      const response = await request(app).delete(
+      const response = await request(app)
+        .delete(
         `/api/profiles/${testProfileId}/assets/${assetId}`
-      );
+      )
+        .set('Authorization', `Bearer ${testToken}`);
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe('Asset deleted successfully');
@@ -138,9 +143,11 @@ describe('Assets Routes', () => {
     });
 
     it('should return 404 for non-existent asset', async () => {
-      const response = await request(app).delete(
+      const response = await request(app)
+        .delete(
         `/api/profiles/${testProfileId}/assets/non-existent-id`
-      );
+      )
+        .set('Authorization', `Bearer ${testToken}`);
 
       expect(response.status).toBe(404);
     });
