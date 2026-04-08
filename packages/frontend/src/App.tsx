@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { ProfileWizard } from './pages/ProfileWizard';
 import { Layout } from './components/Layout';
 import { useAuth } from './hooks/useAuth';
 
@@ -23,6 +24,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile-wizard"
+            element={
+              <ProtectedRoute>
+                <ProfileWizard />
               </ProtectedRoute>
             }
           />

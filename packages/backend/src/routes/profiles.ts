@@ -34,6 +34,97 @@ export function createProfilesRoutes(
   const limiter = connectLimiter || defaultConnectLimiter;
 
   /**
+   * POST /api/profiles/create
+   * Create new profile with wizard data
+   * Combines Instagram connection + context configuration in one step
+   */
+  router.post('/create', verifyAccessToken, async (req: AuthRequest, res: Response) => {
+    try {
+      const userId = req.userId;
+      if (!userId) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+      }
+
+      const {
+        instagram_username,
+        instagram_password,
+        display_name,
+        voice_description,
+        tone,
+        audience,
+        goals,
+      } = req.body;
+
+      // Validation
+      if (!instagram_username || !instagram_password) {
+        res.status(400).json({ error: 'Instagram username and password required' });
+        return;
+      }
+
+      if (!display_name || typeof display_name !== 'string') {
+        res.status(400).json({ error: 'Display name required' });
+        return;
+      }
+
+      if (!voice_description || typeof voice_description !== 'string') {
+        res.status(400).json({ error: 'Voice description required' });
+        return;
+      }
+
+      if (!tone || !['professional', 'casual', 'friendly'].includes(tone)) {
+        res.status(400).json({ error: 'Valid tone required (professional, casual, friendly)' });
+        return;
+      }
+
+      if (!audience || typeof audience !== 'object') {
+        res.status(400).json({ error: 'Audience configuration required' });
+        return;
+      }
+
+      if (!goals || !Array.isArray(goals) || goals.length === 0) {
+        res.status(400).json({ error: 'At least one goal required' });
+        return;
+      }
+
+      // Connect Instagram account first
+      const profile = await instaService.connectAccount(userId, instagram_username, instagram_password);
+
+      // Update profile with context
+      const updatedProfile = profileModel.updateContext(profile.id, {
+        voice: voice_description,
+        tone,
+        audience: JSON.stringify(audience),
+        goals: JSON.stringify(goals),
+      });
+
+      if (!updatedProfile) {
+        res.status(500).json({ error: 'Failed to update profile context' });
+        return;
+      }
+
+      res.status(201).json({
+        message: 'Profile created successfully',
+        profile_id: updatedProfile.id,
+        profile: stripSensitiveData(updatedProfile),
+      });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('Create profile error:', errorMessage);
+
+      if (errorMessage.includes('PERSONAL_ACCOUNT_NOT_SUPPORTED')) {
+        res.status(403).json({ error: errorMessage });
+      } else if (errorMessage.includes('already connected')) {
+        res.status(409).json({ error: errorMessage });
+      } else if (errorMessage.includes('Invalid email or password') || errorMessage.includes('Login failed')) {
+        res.status(401).json({ error: 'Invalid Instagram credentials' });
+      } else {
+        res.status(500).json({ error: 'Failed to create profile' });
+      }
+    }
+  });
+
+  /**
    * POST /api/profiles/connect
    * Connect Instagram account to user profile
    * Rate limited: 3 attempts per 5 minutes
