@@ -71,7 +71,7 @@ describe('Assets Routes', () => {
     app.use(express.json());
 
     // Mock auth middleware
-    app.use((req: Express.Request & { userId?: string }, res, next) => {
+    app.use((req: Express.Request & { userId?: string }, _res, next) => {
       req.userId = 'test-user-123';
       next();
     });

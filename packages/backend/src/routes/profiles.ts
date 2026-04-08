@@ -1,4 +1,4 @@
-import { Router, Response } from 'express';
+import { Router, Response, RequestHandler } from 'express';
 import Database from 'better-sqlite3';
 import rateLimit from 'express-rate-limit';
 import { InstaService } from '../services/InstaService.js';
@@ -283,10 +283,10 @@ export function createProfilesRoutes(
 
       // Update context
       const updatedProfile = profileModel.updateContext(profileId, {
-        voice: voice || profile.voice,
-        tone: tone || profile.tone,
-        audience: audience ? JSON.stringify(audience) : profile.audience,
-        goals: goals ? JSON.stringify(goals) : profile.goals,
+        voice: voice || profile.context_voice,
+        tone: tone || profile.context_tone,
+        audience: audience ? JSON.stringify(audience) : profile.context_audience,
+        goals: goals ? JSON.stringify(goals) : profile.context_goals,
       });
 
       if (!updatedProfile) {

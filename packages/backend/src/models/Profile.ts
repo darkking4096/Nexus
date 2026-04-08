@@ -154,10 +154,10 @@ export class Profile {
   updateContext(
     id: string,
     context: Partial<{
-      voice: string;
-      tone: string;
-      audience: string;
-      goals: string;
+      voice: string | null;
+      tone: string | null;
+      audience: string | null;
+      goals: string | null;
     }>
   ): ProfileData | null {
     const now = new Date().toISOString();

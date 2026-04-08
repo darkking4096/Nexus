@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 export interface AuthRequest extends Request {
   userId?: string;
   token?: string;
+  file?: Express.Multer.File;
 }
 
 /**

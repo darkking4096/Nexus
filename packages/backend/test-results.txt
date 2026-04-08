@@ -3362,4 +3362,1261 @@ undefined
        [34mrerun x6[39m
 [2K[1A[2K[G       [90mrerun x6[39m
 [2K[1A[2K[G       [2m[90mrerun x6[39m[22m
-[2K[1A[2K[G
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m package.json[22m
+
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m❯[39m src/routes/__tests__/profiles.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 196[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/competitors.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 208[2mms[22m[39m
+ [32m✓[39m tests/PublishService.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[33m 2835[2mms[22m[39m
+ [32m✓[39m tests/InstaService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[33m 8871[2mms[22m[39m
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould connect a business account successfully[22m[39m
+[InstaService] Connection attempt: username=test_business, user=test-user-123
+[InstaService] Connection successful: profile=8dd494cc-d610-40e1-a249-17afaa6f311e, instagram=test_business, followers=1000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject personal accounts[22m[39m
+[InstaService] Connection attempt: username=personal_account, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject invalid credentials[22m[39m
+[InstaService] Connection attempt: username=bad_user, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould handle service unavailable[22m[39m
+[InstaService] Connection attempt: username=test, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould allow creator accounts[22m[39m
+[InstaService] Connection attempt: username=creator_account, user=test-user-123
+[InstaService] Connection successful: profile=978c149e-0ef7-428b-91a8-7a8933dd50f7, instagram=creator_account, followers=5000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould prevent duplicate accounts from different users[22m[39m
+[InstaService] Connection attempt: username=shared_account, user=test-user-123
+[InstaService] Connection successful: profile=a1384d49-b6e7-41bf-a5ad-6470438b4521, instagram=shared_account, followers=100
+[InstaService] Connection attempt: username=shared_account, user=another-user
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould retrieve and decrypt session[22m[39m
+[InstaService] Connection attempt: username=decrypt_test, user=test-user-123
+[InstaService] Connection successful: profile=b7ed1edd-cd8d-4414-bc35-56db25cb7c34, instagram=decrypt_test, followers=100
+
+ [32m✓[39m tests/encryption.test.ts [2m ([22m[2m11 tests[22m[2m)[22m[33m 18998[2mms[22m[39m
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[33m 344[2mms[22m[39m
+ [32m✓[39m tests/SearchService.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 48[2mms[22m[39m
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return search results for trends[22m[39m
+[SearchService] Calling EXA: "trends in fitness 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in fitness 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return consistent results on second call (cached)[22m[39m
+[SearchService] Calling EXA: "trends in sustainable fashion 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in sustainable fashion 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould handle different niches[22m[39m
+[SearchService] Calling EXA: "trends in meal prep 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in meal prep 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould return competitor data[22m[39m
+[SearchService] Calling EXA: "@fitnessguru instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@fitnessguru instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould handle multiple competitors[22m[39m
+[SearchService] Calling EXA: "@competitor1 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor1 instagram followers engagement"
+[SearchService] Cached competitor data
+[SearchService] Calling EXA: "@competitor2 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor2 instagram followers engagement"
+[SearchService] Cached competitor data
+[SearchService] Calling EXA: "@competitor3 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor3 instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould include recent posts in competitor data[22m[39m
+[SearchService] Calling EXA: "@testcompetitor instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@testcompetitor instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould return content ideas[22m[39m
+[SearchService] Calling EXA: "viral productivity tips 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral productivity tips 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould categorize content ideas[22m[39m
+[SearchService] Calling EXA: "viral home decor 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral home decor 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould have unique IDs for each idea[22m[39m
+[SearchService] Calling EXA: "viral travel inspiration 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral travel inspiration 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould cache content ideas[22m[39m
+[SearchService] Calling EXA: "viral viral videos 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral viral videos 2026"
+[SearchService] Cached: 10 ideas
+[SearchService] Calling EXA: "viral viral videos 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral viral videos 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould handle empty query gracefully[22m[39m
+[SearchService] Calling EXA: "trends in  2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in  2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould return empty array instead of throwing[22m[39m
+[SearchService] Calling EXA: "trends in test query 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in test query 2026"
+
+ [32m✓[39m tests/ResearchService.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32m✓[39m tests/AnalyticsService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+ [32m✓[39m tests/user.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[33m 15829[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 3 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/profiles.test.ts[2m > [22mProfile Routes - Context Configuration
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/profiles.test.ts:[2m54:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/competitors.test.ts[2m > [22mCompetitors Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/competitors.test.ts:[2m77:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts [2m[ src/routes/__tests__/assets.test.ts ][22m
+[31m[1mError[22m: Failed to load url multer (resolved id: multer) in C:/Users/HomePC/Desktop/Marketing/packages/backend/src/routes/assets.ts. Does the file exist?[39m
+[90m [2m❯[22m loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m51969:17[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m8 passed[39m[22m[90m (11)[39m
+[2m      Tests [22m [1m[32m64 passed[39m[22m[90m (82)[39m
+[2m   Start at [22m 15:53:20
+[2m   Duration [22m 66.46s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m package.json[22m
+
+ [33m❯[39m src/routes/__tests__/competitors.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[33m 605[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/profiles.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 292[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould connect a business account successfully[22m[39m
+[InstaService] Connection attempt: username=test_business, user=test-user-123
+[InstaService] Connection successful: profile=0f04f562-d497-4588-8d70-39113ea90fce, instagram=test_business, followers=1000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject personal accounts[22m[39m
+[InstaService] Connection attempt: username=personal_account, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject invalid credentials[22m[39m
+[InstaService] Connection attempt: username=bad_user, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould handle service unavailable[22m[39m
+[InstaService] Connection attempt: username=test, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould allow creator accounts[22m[39m
+[InstaService] Connection attempt: username=creator_account, user=test-user-123
+[InstaService] Connection successful: profile=4c685a84-3c27-4511-b490-db8f8f130e37, instagram=creator_account, followers=5000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould prevent duplicate accounts from different users[22m[39m
+[InstaService] Connection attempt: username=shared_account, user=test-user-123
+[InstaService] Connection successful: profile=ba3f2b7c-c6f3-4d07-8cc1-5d34477b74b2, instagram=shared_account, followers=100
+[InstaService] Connection attempt: username=shared_account, user=another-user
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould retrieve and decrypt session[22m[39m
+[InstaService] Connection attempt: username=decrypt_test, user=test-user-123
+[InstaService] Connection successful: profile=7bd08300-9e2b-4eff-973f-f93308793925, instagram=decrypt_test, followers=100
+
+ [32m✓[39m tests/InstaService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[33m 4560[2mms[22m[39m
+ [32m✓[39m tests/user.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[33m 9551[2mms[22m[39m
+ [32m✓[39m tests/encryption.test.ts [2m ([22m[2m11 tests[22m[2m)[22m[33m 18120[2mms[22m[39m
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 64[2mms[22m[39m
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/PublishService.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[33m 1901[2mms[22m[39m
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return search results for trends[22m[39m
+[SearchService] Calling EXA: "trends in fitness 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in fitness 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return consistent results on second call (cached)[22m[39m
+[SearchService] Calling EXA: "trends in sustainable fashion 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in sustainable fashion 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould handle different niches[22m[39m
+[SearchService] Calling EXA: "trends in meal prep 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in meal prep 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould return competitor data[22m[39m
+[SearchService] Calling EXA: "@fitnessguru instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@fitnessguru instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould handle multiple competitors[22m[39m
+[SearchService] Calling EXA: "@competitor1 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor1 instagram followers engagement"
+[SearchService] Cached competitor data
+[SearchService] Calling EXA: "@competitor2 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor2 instagram followers engagement"
+[SearchService] Cached competitor data
+[SearchService] Calling EXA: "@competitor3 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor3 instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould include recent posts in competitor data[22m[39m
+[SearchService] Calling EXA: "@testcompetitor instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@testcompetitor instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould return content ideas[22m[39m
+[SearchService] Calling EXA: "viral productivity tips 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral productivity tips 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould categorize content ideas[22m[39m
+[SearchService] Calling EXA: "viral home decor 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral home decor 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould have unique IDs for each idea[22m[39m
+[SearchService] Calling EXA: "viral travel inspiration 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral travel inspiration 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould cache content ideas[22m[39m
+[SearchService] Calling EXA: "viral viral videos 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral viral videos 2026"
+[SearchService] Cached: 10 ideas
+[SearchService] Calling EXA: "viral viral videos 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral viral videos 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould handle empty query gracefully[22m[39m
+[SearchService] Calling EXA: "trends in  2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in  2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould return empty array instead of throwing[22m[39m
+[SearchService] Calling EXA: "trends in test query 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in test query 2026"
+
+ [32m✓[39m tests/SearchService.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 23[2mms[22m[39m
+ [32m✓[39m tests/AnalyticsService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+ [32m✓[39m tests/ResearchService.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 3 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts[2m > [22mAssets Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/assets.test.ts:[2m79:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/profiles.test.ts[2m > [22mProfile Routes - Context Configuration
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/profiles.test.ts:[2m54:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/competitors.test.ts[2m > [22mCompetitors Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/competitors.test.ts:[2m77:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m8 passed[39m[22m[90m (11)[39m
+[2m      Tests [22m [1m[32m64 passed[39m[22m[90m (92)[39m
+[2m   Start at [22m 15:54:41
+[2m   Duration [22m 66.10s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m package.json[22m
+
+ [33m❯[39m src/routes/__tests__/competitors.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 295[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/profiles.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+ [32m✓[39m tests/encryption.test.ts [2m ([22m[2m11 tests[22m[2m)[22m[33m 9118[2mms[22m[39m
+ [32m✓[39m tests/user.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[33m 2780[2mms[22m[39m
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould connect a business account successfully[22m[39m
+[InstaService] Connection attempt: username=test_business, user=test-user-123
+[InstaService] Connection successful: profile=1334c7c1-b943-4353-b69d-bf90a79ffb04, instagram=test_business, followers=1000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject personal accounts[22m[39m
+[InstaService] Connection attempt: username=personal_account, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject invalid credentials[22m[39m
+[InstaService] Connection attempt: username=bad_user, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould handle service unavailable[22m[39m
+[InstaService] Connection attempt: username=test, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould allow creator accounts[22m[39m
+[InstaService] Connection attempt: username=creator_account, user=test-user-123
+[InstaService] Connection successful: profile=20a8b4e3-4256-457e-ac1b-2ca451765a46, instagram=creator_account, followers=5000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould prevent duplicate accounts from different users[22m[39m
+[InstaService] Connection attempt: username=shared_account, user=test-user-123
+[InstaService] Connection successful: profile=b4b45698-50d5-43f3-959b-7b0f411be3b8, instagram=shared_account, followers=100
+[InstaService] Connection attempt: username=shared_account, user=another-user
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould retrieve and decrypt session[22m[39m
+[InstaService] Connection attempt: username=decrypt_test, user=test-user-123
+[InstaService] Connection successful: profile=52df348a-2f63-4193-8865-c3c269e5a4ea, instagram=decrypt_test, followers=100
+
+ [32m✓[39m tests/InstaService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[33m 1189[2mms[22m[39m
+ [32m✓[39m tests/PublishService.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[33m 470[2mms[22m[39m
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[33m 373[2mms[22m[39m
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return search results for trends[22m[39m
+[SearchService] Calling EXA: "trends in fitness 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in fitness 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return consistent results on second call (cached)[22m[39m
+[SearchService] Calling EXA: "trends in sustainable fashion 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in sustainable fashion 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould handle different niches[22m[39m
+[SearchService] Calling EXA: "trends in meal prep 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in meal prep 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould return competitor data[22m[39m
+[SearchService] Calling EXA: "@fitnessguru instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@fitnessguru instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould handle multiple competitors[22m[39m
+[SearchService] Calling EXA: "@competitor1 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor1 instagram followers engagement"
+[SearchService] Cached competitor data
+[SearchService] Calling EXA: "@competitor2 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor2 instagram followers engagement"
+[SearchService] Cached competitor data
+[SearchService] Calling EXA: "@competitor3 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor3 instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould include recent posts in competitor data[22m[39m
+[SearchService] Calling EXA: "@testcompetitor instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@testcompetitor instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould return content ideas[22m[39m
+[SearchService] Calling EXA: "viral productivity tips 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral productivity tips 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould categorize content ideas[22m[39m
+[SearchService] Calling EXA: "viral home decor 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral home decor 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould have unique IDs for each idea[22m[39m
+[SearchService] Calling EXA: "viral travel inspiration 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral travel inspiration 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould cache content ideas[22m[39m
+[SearchService] Calling EXA: "viral viral videos 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral viral videos 2026"
+[SearchService] Cached: 10 ideas
+[SearchService] Calling EXA: "viral viral videos 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral viral videos 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould handle empty query gracefully[22m[39m
+[SearchService] Calling EXA: "trends in  2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in  2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould return empty array instead of throwing[22m[39m
+[SearchService] Calling EXA: "trends in test query 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in test query 2026"
+
+ [32m✓[39m tests/SearchService.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+ [32m✓[39m tests/ResearchService.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+ [32m✓[39m tests/AnalyticsService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 3 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/competitors.test.ts[2m > [22mCompetitors Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/competitors.test.ts:[2m77:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/profiles.test.ts[2m > [22mProfile Routes - Context Configuration
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/profiles.test.ts:[2m54:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts[2m > [22mAssets Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/assets.test.ts:[2m79:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m8 passed[39m[22m[90m (11)[39m
+[2m      Tests [22m [1m[32m64 passed[39m[22m[90m (92)[39m
+[2m   Start at [22m 15:55:36
+[2m   Duration [22m 45.17s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/routes/profiles.ts[22m
+
+ [33m❯[39m src/routes/__tests__/competitors.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/profiles.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 134[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 3 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/profiles.test.ts[2m > [22mProfile Routes - Context Configuration
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/profiles.test.ts:[2m54:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/competitors.test.ts[2m > [22mCompetitors Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/competitors.test.ts:[2m77:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts[2m > [22mAssets Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/assets.test.ts:[2m79:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[90m (3)[39m
+[2m      Tests [22m [90m (28)[39m
+[2m   Start at [22m 15:56:25
+[2m   Duration [22m 13.79s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/middleware/authMiddleware.ts[22m
+
+ [33m❯[39m src/routes/__tests__/profiles.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 47[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 36[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/competitors.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 44[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 3 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/profiles.test.ts[2m > [22mProfile Routes - Context Configuration
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/profiles.test.ts:[2m54:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/competitors.test.ts[2m > [22mCompetitors Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/competitors.test.ts:[2m77:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts[2m > [22mAssets Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/assets.test.ts:[2m79:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[90m (3)[39m
+[2m      Tests [22m [90m (28)[39m
+[2m   Start at [22m 15:56:36
+[2m   Duration [22m 10.93s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/routes/__tests__/assets.test.ts[22m [34mx12[39m
+
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 64[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 1 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts[2m > [22mAssets Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/assets.test.ts:[2m79:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [90m (10)[39m
+[2m   Start at [22m 15:56:53
+[2m   Duration [22m 1.89s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x12[39m
+[2K[1A[2K[G       [90mrerun x12[39m
+[2K[1A[2K[G       [2m[90mrerun x12[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/routes/__tests__/competitors.test.ts[22m [34mx9[39m
+
+ [33m❯[39m src/routes/__tests__/competitors.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 1 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/competitors.test.ts[2m > [22mCompetitors Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/competitors.test.ts:[2m77:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [90m (9)[39m
+[2m   Start at [22m 15:56:59
+[2m   Duration [22m 2.30s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x9[39m
+[2K[1A[2K[G       [90mrerun x9[39m
+[2K[1A[2K[G       [2m[90mrerun x9[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/routes/__tests__/profiles.test.ts[22m [34mx9[39m
+
+ [33m❯[39m src/routes/__tests__/profiles.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 53[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 1 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/profiles.test.ts[2m > [22mProfile Routes - Context Configuration
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/profiles.test.ts:[2m54:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [90m (9)[39m
+[2m   Start at [22m 15:57:07
+[2m   Duration [22m 1.53s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x9[39m
+[2K[1A[2K[G       [90mrerun x9[39m
+[2K[1A[2K[G       [2m[90mrerun x9[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m package.json[22m
+
+ [33m❯[39m src/routes/__tests__/competitors.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/profiles.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 118[2mms[22m[39m
+ [32m✓[39m tests/InstaService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[33m 3765[2mms[22m[39m
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould connect a business account successfully[22m[39m
+[InstaService] Connection attempt: username=test_business, user=test-user-123
+[InstaService] Connection successful: profile=b5a31ffd-f47d-4ebd-abf7-0a24301637cb, instagram=test_business, followers=1000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject personal accounts[22m[39m
+[InstaService] Connection attempt: username=personal_account, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject invalid credentials[22m[39m
+[InstaService] Connection attempt: username=bad_user, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould handle service unavailable[22m[39m
+[InstaService] Connection attempt: username=test, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould allow creator accounts[22m[39m
+[InstaService] Connection attempt: username=creator_account, user=test-user-123
+[InstaService] Connection successful: profile=1086ccda-6e10-4498-8b5f-82a5c3732782, instagram=creator_account, followers=5000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould prevent duplicate accounts from different users[22m[39m
+[InstaService] Connection attempt: username=shared_account, user=test-user-123
+[InstaService] Connection successful: profile=2a24cf0a-93e9-4dcd-8381-b1e0e9dc18b7, instagram=shared_account, followers=100
+[InstaService] Connection attempt: username=shared_account, user=another-user
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould retrieve and decrypt session[22m[39m
+[InstaService] Connection attempt: username=decrypt_test, user=test-user-123
+[InstaService] Connection successful: profile=57538fdb-6911-497c-a3d0-8326e701e62b, instagram=decrypt_test, followers=100
+
+ [32m✓[39m tests/user.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[33m 7220[2mms[22m[39m
+ [32m✓[39m tests/encryption.test.ts [2m ([22m[2m11 tests[22m[2m)[22m[33m 12536[2mms[22m[39m
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 51[2mms[22m[39m
+ [32m✓[39m tests/PublishService.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[33m 3162[2mms[22m[39m
+ [32m✓[39m tests/AnalyticsService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return search results for trends[22m[39m
+[SearchService] Calling EXA: "trends in fitness 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in fitness 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return consistent results on second call (cached)[22m[39m
+[SearchService] Calling EXA: "trends in sustainable fashion 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in sustainable fashion 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould handle different niches[22m[39m
+[SearchService] Calling EXA: "trends in meal prep 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in meal prep 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould return competitor data[22m[39m
+[SearchService] Calling EXA: "@fitnessguru instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@fitnessguru instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould handle multiple competitors[22m[39m
+[SearchService] Calling EXA: "@competitor1 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor1 instagram followers engagement"
+[SearchService] Cached competitor data
+[SearchService] Calling EXA: "@competitor2 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor2 instagram followers engagement"
+[SearchService] Cached competitor data
+[SearchService] Calling EXA: "@competitor3 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor3 instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould include recent posts in competitor data[22m[39m
+[SearchService] Calling EXA: "@testcompetitor instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@testcompetitor instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould return content ideas[22m[39m
+[SearchService] Calling EXA: "viral productivity tips 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral productivity tips 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould categorize content ideas[22m[39m
+[SearchService] Calling EXA: "viral home decor 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral home decor 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould have unique IDs for each idea[22m[39m
+[SearchService] Calling EXA: "viral travel inspiration 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral travel inspiration 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould cache content ideas[22m[39m
+[SearchService] Calling EXA: "viral viral videos 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral viral videos 2026"
+[SearchService] Cached: 10 ideas
+[SearchService] Calling EXA: "viral viral videos 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral viral videos 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould handle empty query gracefully[22m[39m
+[SearchService] Calling EXA: "trends in  2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in  2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould return empty array instead of throwing[22m[39m
+[SearchService] Calling EXA: "trends in test query 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in test query 2026"
+
+ [32m✓[39m tests/SearchService.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+ [32m✓[39m tests/ResearchService.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 23[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 3 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts[2m > [22mAssets Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/assets.test.ts:[2m79:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/competitors.test.ts[2m > [22mCompetitors Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/competitors.test.ts:[2m77:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/profiles.test.ts[2m > [22mProfile Routes - Context Configuration
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/profiles.test.ts:[2m54:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m8 passed[39m[22m[90m (11)[39m
+[2m      Tests [22m [1m[32m64 passed[39m[22m[90m (92)[39m
+[2m   Start at [22m 15:57:19
+[2m   Duration [22m 46.84s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m package.json[22m
+
+ [33m❯[39m src/routes/__tests__/profiles.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 46[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/competitors.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 43[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 103[2mms[22m[39m
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould connect a business account successfully[22m[39m
+[InstaService] Connection attempt: username=test_business, user=test-user-123
+[InstaService] Connection successful: profile=c7621335-9176-4d9c-a766-ffb24874e5e9, instagram=test_business, followers=1000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject personal accounts[22m[39m
+[InstaService] Connection attempt: username=personal_account, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject invalid credentials[22m[39m
+[InstaService] Connection attempt: username=bad_user, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould handle service unavailable[22m[39m
+[InstaService] Connection attempt: username=test, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould allow creator accounts[22m[39m
+[InstaService] Connection attempt: username=creator_account, user=test-user-123
+[InstaService] Connection successful: profile=252fe4d1-5369-42f5-b3d8-3dac8682f6d3, instagram=creator_account, followers=5000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould prevent duplicate accounts from different users[22m[39m
+[InstaService] Connection attempt: username=shared_account, user=test-user-123
+[InstaService] Connection successful: profile=b6f8d723-5530-419c-a1e4-885727fc884b, instagram=shared_account, followers=100
+[InstaService] Connection attempt: username=shared_account, user=another-user
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould retrieve and decrypt session[22m[39m
+[InstaService] Connection attempt: username=decrypt_test, user=test-user-123
+[InstaService] Connection successful: profile=4cf1c9d7-a058-458e-8422-05246eea16c4, instagram=decrypt_test, followers=100
+
+ [32m✓[39m tests/InstaService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[33m 4413[2mms[22m[39m
+ [32m✓[39m tests/user.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[33m 9670[2mms[22m[39m
+ [32m✓[39m tests/PublishService.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[33m 476[2mms[22m[39m
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 47[2mms[22m[39m
+ [32m✓[39m tests/ResearchService.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32m✓[39m tests/encryption.test.ts [2m ([22m[2m11 tests[22m[2m)[22m[33m 17294[2mms[22m[39m
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return search results for trends[22m[39m
+[SearchService] Calling EXA: "trends in fitness 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in fitness 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould return consistent results on second call (cached)[22m[39m
+[SearchService] Calling EXA: "trends in sustainable fashion 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in sustainable fashion 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchTrends[2m > [22m[2mshould handle different niches[22m[39m
+[SearchService] Calling EXA: "trends in meal prep 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in meal prep 2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould return competitor data[22m[39m
+[SearchService] Calling EXA: "@fitnessguru instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@fitnessguru instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould handle multiple competitors[22m[39m
+[SearchService] Calling EXA: "@competitor1 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor1 instagram followers engagement"
+[SearchService] Cached competitor data
+[SearchService] Calling EXA: "@competitor2 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor2 instagram followers engagement"
+[SearchService] Cached competitor data
+[SearchService] Calling EXA: "@competitor3 instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@competitor3 instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchCompetitors[2m > [22m[2mshould include recent posts in competitor data[22m[39m
+[SearchService] Calling EXA: "@testcompetitor instagram followers engagement" (5 results)
+[SearchService] EXA returned 5 results for: "@testcompetitor instagram followers engagement"
+[SearchService] Cached competitor data
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould return content ideas[22m[39m
+[SearchService] Calling EXA: "viral productivity tips 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral productivity tips 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould categorize content ideas[22m[39m
+[SearchService] Calling EXA: "viral home decor 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral home decor 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould have unique IDs for each idea[22m[39m
+[SearchService] Calling EXA: "viral travel inspiration 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral travel inspiration 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2msearchContent[2m > [22m[2mshould cache content ideas[22m[39m
+[SearchService] Calling EXA: "viral viral videos 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral viral videos 2026"
+[SearchService] Cached: 10 ideas
+[SearchService] Calling EXA: "viral viral videos 2026" (10 results)
+[SearchService] EXA returned 10 results for: "viral viral videos 2026"
+[SearchService] Cached: 10 ideas
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould handle empty query gracefully[22m[39m
+[SearchService] Calling EXA: "trends in  2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in  2026"
+
+[90mstdout[2m | tests/SearchService.test.ts[2m > [22m[2mSearchService[2m > [22m[2merror handling[2m > [22m[2mshould return empty array instead of throwing[22m[39m
+[SearchService] Calling EXA: "trends in test query 2026" (10 results)
+[SearchService] EXA returned 10 results for: "trends in test query 2026"
+
+ [32m✓[39m tests/SearchService.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 22[2mms[22m[39m
+ [32m✓[39m tests/AnalyticsService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 94[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 3 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/competitors.test.ts[2m > [22mCompetitors Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/competitors.test.ts:[2m77:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/profiles.test.ts[2m > [22mProfile Routes - Context Configuration
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/profiles.test.ts:[2m54:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts[2m > [22mAssets Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/assets.test.ts:[2m79:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m8 passed[39m[22m[90m (11)[39m
+[2m      Tests [22m [1m[32m64 passed[39m[22m[90m (92)[39m
+[2m   Start at [22m 15:58:26
+[2m   Duration [22m 52.64s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/models/Profile.ts[22m
+
+ [33m❯[39m src/routes/__tests__/competitors.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 69[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 113[2mms[22m[39m
+ [33m❯[39m src/routes/__tests__/profiles.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+ [32m✓[39m tests/InstaService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[33m 1691[2mms[22m[39m
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould connect a business account successfully[22m[39m
+[InstaService] Connection attempt: username=test_business, user=test-user-123
+[InstaService] Connection successful: profile=4758744e-ae4e-46ba-8dd5-85e4e9cb9604, instagram=test_business, followers=1000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject personal accounts[22m[39m
+[InstaService] Connection attempt: username=personal_account, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject invalid credentials[22m[39m
+[InstaService] Connection attempt: username=bad_user, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould handle service unavailable[22m[39m
+[InstaService] Connection attempt: username=test, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould allow creator accounts[22m[39m
+[InstaService] Connection attempt: username=creator_account, user=test-user-123
+[InstaService] Connection successful: profile=6be12034-e22e-44c3-b0e5-f4b8250357c5, instagram=creator_account, followers=5000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould prevent duplicate accounts from different users[22m[39m
+[InstaService] Connection attempt: username=shared_account, user=test-user-123
+[InstaService] Connection successful: profile=b567c0c8-8598-4ff3-a99b-23a8db736285, instagram=shared_account, followers=100
+[InstaService] Connection attempt: username=shared_account, user=another-user
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould retrieve and decrypt session[22m[39m
+[InstaService] Connection attempt: username=decrypt_test, user=test-user-123
+[InstaService] Connection successful: profile=f48ab732-4040-44e5-9ceb-1e60b7d6e699, instagram=decrypt_test, followers=100
+
+ [32m✓[39m tests/PublishService.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[33m 1153[2mms[22m[39m
+ [32m✓[39m tests/AnalyticsService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 139[2mms[22m[39m
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+ [32m✓[39m tests/ResearchService.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 3 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/profiles.test.ts[2m > [22mProfile Routes - Context Configuration
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/profiles.test.ts:[2m54:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/competitors.test.ts[2m > [22mCompetitors Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/competitors.test.ts:[2m77:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts[2m > [22mAssets Routes
+[31m[1mError[22m: ENCRYPTION_KEY environment variable is required[39m
+[36m [2m❯[22m new InstaService src/services/InstaService.ts:[2m51:13[22m[39m
+    [90m 49| [39m
+    [90m 50| [39m    [35mif[39m ([33m![39m[35mthis[39m[33m.[39mencryptionKey) {
+    [90m 51| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m'ENCRYPTION_KEY environment variable is required[39m…
+    [90m   | [39m            [31m^[39m
+    [90m 52| [39m    }
+    [90m 53| [39m  }
+[90m [2m❯[22m Module.createProfilesRoutes src/routes/profiles.ts:[2m23:24[22m[39m
+[90m [2m❯[22m src/routes/__tests__/assets.test.ts:[2m79:30[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m5 passed[39m[22m[90m (8)[39m
+[2m      Tests [22m [1m[32m32 passed[39m[22m[90m (60)[39m
+[2m   Start at [22m 15:59:01
+[2m   Duration [22m 17.99s
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
