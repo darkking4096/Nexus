@@ -2950,4 +2950,416 @@ undefined
        [34mrerun x14[39m
 [2K[1A[2K[G       [90mrerun x14[39m
 [2K[1A[2K[G       [2m[90mrerun x14[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/models/Profile.ts[22m
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[33m 457[2mms[22m[39m
+ [32m✓[39m tests/PublishService.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[33m 1862[2mms[22m[39m
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould connect a business account successfully[22m[39m
+[InstaService] Connection attempt: username=test_business, user=test-user-123
+[InstaService] Connection successful: profile=790733c9-d1b9-45cb-9135-78d0c2187278, instagram=test_business, followers=1000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject personal accounts[22m[39m
+[InstaService] Connection attempt: username=personal_account, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject invalid credentials[22m[39m
+[InstaService] Connection attempt: username=bad_user, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould handle service unavailable[22m[39m
+[InstaService] Connection attempt: username=test, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould allow creator accounts[22m[39m
+[InstaService] Connection attempt: username=creator_account, user=test-user-123
+[InstaService] Connection successful: profile=e846532b-4be5-447a-b333-82a88b1df93b, instagram=creator_account, followers=5000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould prevent duplicate accounts from different users[22m[39m
+[InstaService] Connection attempt: username=shared_account, user=test-user-123
+[InstaService] Connection successful: profile=cb394a87-e324-4679-82ce-4aeeb3a372d3, instagram=shared_account, followers=100
+[InstaService] Connection attempt: username=shared_account, user=another-user
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould retrieve and decrypt session[22m[39m
+[InstaService] Connection attempt: username=decrypt_test, user=test-user-123
+[InstaService] Connection successful: profile=22e0c2af-f002-4863-8807-61483735c52e, instagram=decrypt_test, followers=100
+
+ [32m✓[39m tests/InstaService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[33m 3409[2mms[22m[39m
+ [32m✓[39m tests/AnalyticsService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 49[2mms[22m[39m
+ [32m✓[39m tests/ResearchService.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 127[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m      Tests [22m [1m[32m32 passed[39m[22m[90m (32)[39m
+[2m   Start at [22m 15:09:06
+[2m   Duration [22m 23.56s
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/models/Profile.ts[22m
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 109[2mms[22m[39m
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/PublishService.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[33m 674[2mms[22m[39m
+ [32m✓[39m tests/ResearchService.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 36[2mms[22m[39m
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould connect a business account successfully[22m[39m
+[InstaService] Connection attempt: username=test_business, user=test-user-123
+[InstaService] Connection successful: profile=70c11f11-42f2-4b17-8c1b-a8bde53a3b7f, instagram=test_business, followers=1000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject personal accounts[22m[39m
+[InstaService] Connection attempt: username=personal_account, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject invalid credentials[22m[39m
+[InstaService] Connection attempt: username=bad_user, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould handle service unavailable[22m[39m
+[InstaService] Connection attempt: username=test, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould allow creator accounts[22m[39m
+[InstaService] Connection attempt: username=creator_account, user=test-user-123
+[InstaService] Connection successful: profile=4ca830dd-14ea-4e52-a235-445cf54d82db, instagram=creator_account, followers=5000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould prevent duplicate accounts from different users[22m[39m
+[InstaService] Connection attempt: username=shared_account, user=test-user-123
+[InstaService] Connection successful: profile=701ff37e-e7e1-4906-b670-6717a815c873, instagram=shared_account, followers=100
+[InstaService] Connection attempt: username=shared_account, user=another-user
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould retrieve and decrypt session[22m[39m
+[InstaService] Connection attempt: username=decrypt_test, user=test-user-123
+[InstaService] Connection successful: profile=0c4f7d2c-7300-4db1-b991-38b2486b1812, instagram=decrypt_test, followers=100
+
+ [32m✓[39m tests/InstaService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[33m 2079[2mms[22m[39m
+ [32m✓[39m tests/AnalyticsService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 130[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m      Tests [22m [1m[32m32 passed[39m[22m[90m (32)[39m
+[2m   Start at [22m 15:09:30
+[2m   Duration [22m 8.30s
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/models/Profile.ts[22m
+
+ [32m✓[39m tests/AnalyticsService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 28[2mms[22m[39m
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 84[2mms[22m[39m
+ [32m✓[39m tests/ResearchService.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 66[2mms[22m[39m
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould connect a business account successfully[22m[39m
+[InstaService] Connection attempt: username=test_business, user=test-user-123
+[InstaService] Connection successful: profile=2ca140b5-0d3f-402c-b83e-f8bc2927f5c2, instagram=test_business, followers=1000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject personal accounts[22m[39m
+[InstaService] Connection attempt: username=personal_account, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould reject invalid credentials[22m[39m
+[InstaService] Connection attempt: username=bad_user, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould handle service unavailable[22m[39m
+[InstaService] Connection attempt: username=test, user=test-user-123
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould allow creator accounts[22m[39m
+[InstaService] Connection attempt: username=creator_account, user=test-user-123
+[InstaService] Connection successful: profile=63d57d03-0151-4aea-b38a-c81c20cf270f, instagram=creator_account, followers=5000
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould prevent duplicate accounts from different users[22m[39m
+[InstaService] Connection attempt: username=shared_account, user=test-user-123
+[InstaService] Connection successful: profile=dfc743d2-6be7-4136-be40-060eb6af7744, instagram=shared_account, followers=100
+[InstaService] Connection attempt: username=shared_account, user=another-user
+
+[90mstdout[2m | tests/InstaService.test.ts[2m > [22m[2mInstaService[2m > [22m[2mshould retrieve and decrypt session[22m[39m
+[InstaService] Connection attempt: username=decrypt_test, user=test-user-123
+[InstaService] Connection successful: profile=0c2a2e6c-dfd9-43a0-bfab-526b6964f396, instagram=decrypt_test, followers=100
+
+ [32m✓[39m tests/InstaService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[33m 2969[2mms[22m[39m
+ [32m✓[39m tests/PublishService.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[33m 3112[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m      Tests [22m [1m[32m32 passed[39m[22m[90m (32)[39m
+[2m   Start at [22m 15:09:44
+[2m   Duration [22m 11.34s
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/routes/__tests__/profiles.test.ts[22m [34mx1[39m
+
+ [33m❯[39m src/routes/__tests__/profiles.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 1 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/profiles.test.ts [2m[ src/routes/__tests__/profiles.test.ts ][22m
+[31m[1mError[22m: Failed to load url @jest/globals (resolved id: @jest/globals) in C:/Users/HomePC/Desktop/Marketing/packages/backend/src/routes/__tests__/profiles.test.ts. Does the file exist?[39m
+[90m [2m❯[22m loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m51969:17[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [2mno tests[22m
+[2m   Start at [22m 15:11:21
+[2m   Duration [22m 0ms
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x1[39m
+[2K[1A[2K[G       [90mrerun x1[39m
+[2K[1A[2K[G       [2m[90mrerun x1[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/routes/__tests__/competitors.test.ts[22m [34mx1[39m
+
+ [33m❯[39m src/routes/__tests__/competitors.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 1 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/competitors.test.ts [2m[ src/routes/__tests__/competitors.test.ts ][22m
+[31m[1mError[22m: Failed to load url @jest/globals (resolved id: @jest/globals) in C:/Users/HomePC/Desktop/Marketing/packages/backend/src/routes/__tests__/profiles.test.ts. Does the file exist?[39m
+[90m [2m❯[22m loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m51969:17[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [2mno tests[22m
+[2m   Start at [22m 15:12:16
+[2m   Duration [22m 0ms
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x1[39m
+[2K[1A[2K[G       [90mrerun x1[39m
+[2K[1A[2K[G       [2m[90mrerun x1[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/routes/__tests__/assets.test.ts[22m [34mx1[39m
+
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 1 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts [2m[ src/routes/__tests__/assets.test.ts ][22m
+[31m[1mError[22m: Failed to load url @jest/globals (resolved id: @jest/globals) in C:/Users/HomePC/Desktop/Marketing/packages/backend/src/routes/__tests__/profiles.test.ts. Does the file exist?[39m
+[90m [2m❯[22m loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m51969:17[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [2mno tests[22m
+[2m   Start at [22m 15:13:36
+[2m   Duration [22m 0ms
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x1[39m
+[2K[1A[2K[G       [90mrerun x1[39m
+[2K[1A[2K[G       [2m[90mrerun x1[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/routes/profiles.ts[22m
+
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m❯[39m src/routes/__tests__/profiles.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m❯[39m src/routes/__tests__/competitors.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 3 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/profiles.test.ts [2m[ src/routes/__tests__/profiles.test.ts ][22m
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/competitors.test.ts [2m[ src/routes/__tests__/competitors.test.ts ][22m
+[31m[1mError[22m: Failed to load url supertest (resolved id: supertest) in C:/Users/HomePC/Desktop/Marketing/packages/backend/src/routes/__tests__/profiles.test.ts. Does the file exist?[39m
+[90m [2m❯[22m loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m51969:17[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts [2m[ src/routes/__tests__/assets.test.ts ][22m
+[31m[1mError[22m: Failed to load url @jest/globals (resolved id: @jest/globals) in C:/Users/HomePC/Desktop/Marketing/packages/backend/src/routes/__tests__/competitors.test.ts. Does the file exist?[39m
+[90m [2m❯[22m loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m51969:17[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[90m (3)[39m
+[2m      Tests [22m [2mno tests[22m
+[2m   Start at [22m 15:34:02
+[2m   Duration [22m 1ms
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/routes/__tests__/profiles.test.ts[22m
+
+ [33m❯[39m src/routes/__tests__/profiles.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m❯[39m src/routes/__tests__/competitors.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 3 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/competitors.test.ts [2m[ src/routes/__tests__/competitors.test.ts ][22m
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/profiles.test.ts [2m[ src/routes/__tests__/profiles.test.ts ][22m
+[31m[1mError[22m: Failed to load url supertest (resolved id: supertest) in C:/Users/HomePC/Desktop/Marketing/packages/backend/src/routes/__tests__/profiles.test.ts. Does the file exist?[39m
+[90m [2m❯[22m loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m51969:17[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts [2m[ src/routes/__tests__/assets.test.ts ][22m
+[31m[1mError[22m: Failed to load url multer (resolved id: multer) in C:/Users/HomePC/Desktop/Marketing/packages/backend/src/routes/assets.ts. Does the file exist?[39m
+[90m [2m❯[22m loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m51969:17[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[90m (3)[39m
+[2m      Tests [22m [2mno tests[22m
+[2m   Start at [22m 15:34:17
+[2m   Duration [22m 0ms
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/routes/__tests__/assets.test.ts[22m [34mx4[39m
+
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 1 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts [2m[ src/routes/__tests__/assets.test.ts ][22m
+[31m[1mError[22m: Failed to load url multer (resolved id: multer) in C:/Users/HomePC/Desktop/Marketing/packages/backend/src/routes/assets.ts. Does the file exist?[39m
+[90m [2m❯[22m loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m51969:17[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [2mno tests[22m
+[2m   Start at [22m 15:34:27
+[2m   Duration [22m 0ms
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x4[39m
+[2K[1A[2K[G       [90mrerun x4[39m
+[2K[1A[2K[G       [2m[90mrerun x4[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/routes/__tests__/assets.test.ts[22m [34mx5[39m
+
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 1 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts [2m[ src/routes/__tests__/assets.test.ts ][22m
+[31m[1mError[22m: Failed to load url multer (resolved id: multer) in C:/Users/HomePC/Desktop/Marketing/packages/backend/src/routes/assets.ts. Does the file exist?[39m
+[90m [2m❯[22m loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m51969:17[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [2mno tests[22m
+[2m   Start at [22m 15:34:36
+[2m   Duration [22m 0ms
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x5[39m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/routes/__tests__/assets.test.ts[22m [34mx6[39m
+
+ [33m❯[39m src/routes/__tests__/assets.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Suites 1 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/routes/__tests__/assets.test.ts [2m[ src/routes/__tests__/assets.test.ts ][22m
+[31m[1mError[22m: Failed to load url multer (resolved id: multer) in C:/Users/HomePC/Desktop/Marketing/packages/backend/src/routes/assets.ts. Does the file exist?[39m
+[90m [2m❯[22m loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:[2m51969:17[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [2mno tests[22m
+[2m   Start at [22m 15:34:39
+[2m   Duration [22m 0ms
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x6[39m
+[2K[1A[2K[G       [90mrerun x6[39m
+[2K[1A[2K[G       [2m[90mrerun x6[39m[22m
 [2K[1A[2K[G

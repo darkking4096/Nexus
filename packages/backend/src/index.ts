@@ -6,6 +6,8 @@ import path from 'path';
 import initializeDatabase from './config/database';
 import { createAuthRoutes } from './routes/auth';
 import { createProfilesRoutes } from './routes/profiles';
+import { createCompetitorsRoutes } from './routes/competitors';
+import { createAssetsRoutes } from './routes/assets';
 import { createContentRoutes } from './routes/content';
 import { createResearchRoutes } from './routes/research';
 import { createAnalyticsRoutes } from './routes/analytics';
@@ -59,6 +61,8 @@ app.get('/health', (_req, res) => {
 
 app.use('/auth', createAuthRoutes(db, loginLimiter));
 app.use('/api/profiles', createProfilesRoutes(db));
+app.use('/api/profiles/:profileId/competitors', createCompetitorsRoutes(db));
+app.use('/api/profiles/:profileId/assets', createAssetsRoutes(db));
 app.use('/api/content', createContentRoutes(db));
 app.use('/api/content', createResearchRoutes(db));
 app.use('/api/analytics', createAnalyticsRoutes(db));

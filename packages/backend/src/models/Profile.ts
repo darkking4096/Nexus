@@ -9,6 +9,7 @@ export interface ProfileData {
   access_token: string;
   refresh_token: string | null;
   token_expires_at: string | null;
+  display_name: string | null;
   bio: string | null;
   profile_picture_url: string | null;
   followers_count: number;
@@ -196,9 +197,44 @@ export class Profile {
   }
 
   /**
+   * Update profile display_name and bio
+   */
+  updateProfile(
+    id: string,
+    updates: Partial<{ display_name: string; bio: string }>
+  ): ProfileData | null {
+    const now = new Date().toISOString();
+    const fields: string[] = [];
+    const values: unknown[] = [];
+
+    if (updates.display_name !== undefined) {
+      fields.push('display_name = ?');
+      values.push(updates.display_name || null);
+    }
+    if (updates.bio !== undefined) {
+      fields.push('bio = ?');
+      values.push(updates.bio || null);
+    }
+
+    if (fields.length === 0) {
+      return this.getById(id);
+    }
+
+    fields.push('updated_at = ?');
+    values.push(now);
+    values.push(id);
+
+    const sql = `UPDATE profiles SET ${fields.join(', ')} WHERE id = ?`;
+    const stmt = this.db.prepare(sql);
+    stmt.run(...values);
+
+    return this.getById(id);
+  }
+
+  /**
    * Delete profile
    */
-  delete(id: string): boolean {
+  deleteProfile(id: string): boolean {
     const stmt = this.db.prepare(`DELETE FROM profiles WHERE id = ?`);
     const result = stmt.run(id);
     return result.changes > 0;
@@ -218,6 +254,7 @@ export class Profile {
       access_token: r.access_token as string,
       refresh_token: (r.refresh_token as string) || null,
       token_expires_at: (r.token_expires_at as string) || null,
+      display_name: (r.display_name as string) || null,
       bio: (r.bio as string) || null,
       profile_picture_url: (r.profile_picture_url as string) || null,
       followers_count: (r.followers_count as number) || 0,
