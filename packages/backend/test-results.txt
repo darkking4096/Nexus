@@ -1688,4 +1688,1009 @@ If this is a long-running test, pass a timeout value as the last argument or con
        [34mrerun x9[39m
 [2K[1A[2K[G       [90mrerun x9[39m
 [2K[1A[2K[G       [2m[90mrerun x9[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m tests/BenchmarkService.test.ts[22m [34mx1[39m
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 32[2mms[22m[39m
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould be implemented and return BenchmarkResult[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 10:54:36
+[2m   Duration [22m 664ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x1[39m
+[2K[1A[2K[G       [90mrerun x1[39m
+[2K[1A[2K[G       [2m[90mrerun x1[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/BenchmarkService.ts[22m [34mx2[39m
+
+ [33m❯[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m [2m|[22m [31m4 failed[39m[2m)[22m[90m 48[2mms[22m[39m
+[31m   [33m❯[31m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22mgetBenchmark[2m > [22mshould calculate benchmark with provided competitor handles[39m
+[31m     → promise resolved "{ profile: { …(4) }, …(4) }" instead of rejecting[39m
+[31m   [33m❯[31m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle single competitor[39m
+[31m     → promise resolved "{ profile: { …(4) }, …(4) }" instead of rejecting[39m
+[31m   [33m❯[31m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle multiple competitors (3+)[39m
+[31m     → promise resolved "{ profile: { …(4) }, …(4) }" instead of rejecting[39m
+[31m   [33m❯[31m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle zero metrics gracefully[39m
+[31m     → promise resolved "{ …(5) }" instead of rejecting[39m
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould be implemented and return BenchmarkResult[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+
+[31m⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 4 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22mgetBenchmark[2m > [22mshould calculate benchmark with provided competitor handles
+[31m[1mAssertionError[22m: promise resolved "{ profile: { …(4) }, …(4) }" instead of rejecting[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [Error: rejected promise][39m
+[31m+ Object {[39m
+[31m+   "breakdown": Object {[39m
+[31m+     "competitors_analyzed": 2,[39m
+[31m+     "confidence": "medium",[39m
+[31m+     "data_collection_timestamp": "2026-04-08T13:59:01.695Z",[39m
+[31m+   },[39m
+[31m+   "comparison": Object {[39m
+[31m+     "vs_avg": Object {[39m
+[31m+       "engagement_rate": "-12.5%",[39m
+[31m+       "followers": "-21.1%",[39m
+[31m+       "impressions": "N/A",[39m
+[31m+       "reach": "N/A",[39m
+[31m+     },[39m
+[31m+     "vs_best": Object {[39m
+[31m+       "engagement_rate": "-31.1%",[39m
+[31m+       "followers": "-40%",[39m
+[31m+       "impressions": "N/A",[39m
+[31m+       "reach": "N/A",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "competitors_avg": Object {[39m
+[31m+     "engagement_rate": 4.8,[39m
+[31m+     "followers": 19000,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "competitors_best": Object {[39m
+[31m+     "engagement_rate": 6.1,[39m
+[31m+     "followers": 25000,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "profile": Object {[39m
+[31m+     "engagement_rate": 4.2,[39m
+[31m+     "followers": 15000,[39m
+[31m+     "impressions": 120000,[39m
+[31m+     "reach": 45000,[39m
+[31m+   },[39m
+[31m+ }[39m
+
+[36m [2m❯[22m tests/BenchmarkService.test.ts:[2m110:7[22m[39m
+    [90m108| [39m      [35mawait[39m [34mexpect[39m(
+    [90m109| [39m        benchmarkService[33m.[39m[34mgetBenchmark[39m(profileId[33m,[39m userId[33m,[39m [[32m'@competitor[39m…
+    [90m110| [39m      )[33m.[39mrejects[33m.[39m[34mtoThrow[39m([32m'calculateBenchmark not yet implemented'[39m)[33m;[39m
+    [90m   | [39m      [31m^[39m
+    [90m111| [39m    })[33m;[39m
+    [90m112| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle single competitor
+[31m[1mAssertionError[22m: promise resolved "{ profile: { …(4) }, …(4) }" instead of rejecting[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [Error: rejected promise][39m
+[31m+ Object {[39m
+[31m+   "breakdown": Object {[39m
+[31m+     "competitors_analyzed": 1,[39m
+[31m+     "confidence": "low",[39m
+[31m+     "data_collection_timestamp": "2026-04-08T13:59:01.708Z",[39m
+[31m+   },[39m
+[31m+   "comparison": Object {[39m
+[31m+     "vs_avg": Object {[39m
+[31m+       "engagement_rate": "+20%",[39m
+[31m+       "followers": "+15.4%",[39m
+[31m+       "impressions": "N/A",[39m
+[31m+       "reach": "N/A",[39m
+[31m+     },[39m
+[31m+     "vs_best": Object {[39m
+[31m+       "engagement_rate": "+20%",[39m
+[31m+       "followers": "+15.4%",[39m
+[31m+       "impressions": "N/A",[39m
+[31m+       "reach": "N/A",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "competitors_avg": Object {[39m
+[31m+     "engagement_rate": 3.5,[39m
+[31m+     "followers": 13000,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "competitors_best": Object {[39m
+[31m+     "engagement_rate": 3.5,[39m
+[31m+     "followers": 13000,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "profile": Object {[39m
+[31m+     "engagement_rate": 4.2,[39m
+[31m+     "followers": 15000,[39m
+[31m+     "impressions": 120000,[39m
+[31m+     "reach": 45000,[39m
+[31m+   },[39m
+[31m+ }[39m
+
+[36m [2m❯[22m tests/BenchmarkService.test.ts:[2m197:86[22m[39m
+    [90m195| [39m      vi[33m.[39m[34mspyOn[39m(searchService[33m,[39m [32m'searchCompetitors'[39m)[33m.[39m[34mmockResolvedValue[39m(c…
+    [90m196| [39m
+    [90m197| [39m      [35mawait[39m [34mexpect[39m(benchmarkService[33m.[39m[34mgetBenchmark[39m(profileId[33m,[39m userId[33m,[39m [[32m'[39m…
+    [90m   | [39m                                                                                     [31m^[39m
+    [90m198| [39m    })[33m;[39m
+    [90m199| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle multiple competitors (3+)
+[31m[1mAssertionError[22m: promise resolved "{ profile: { …(4) }, …(4) }" instead of rejecting[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [Error: rejected promise][39m
+[31m+ Object {[39m
+[31m+   "breakdown": Object {[39m
+[31m+     "competitors_analyzed": 4,[39m
+[31m+     "confidence": "high",[39m
+[31m+     "data_collection_timestamp": "2026-04-08T13:59:01.712Z",[39m
+[31m+   },[39m
+[31m+   "comparison": Object {[39m
+[31m+     "vs_avg": Object {[39m
+[31m+       "engagement_rate": "-0.6%",[39m
+[31m+       "followers": "-11.8%",[39m
+[31m+       "impressions": "N/A",[39m
+[31m+       "reach": "N/A",[39m
+[31m+     },[39m
+[31m+     "vs_best": Object {[39m
+[31m+       "engagement_rate": "-31.1%",[39m
+[31m+       "followers": "-40%",[39m
+[31m+       "impressions": "N/A",[39m
+[31m+       "reach": "N/A",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "competitors_avg": Object {[39m
+[31m+     "engagement_rate": 4.2,[39m
+[31m+     "followers": 17000,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "competitors_best": Object {[39m
+[31m+     "engagement_rate": 6.1,[39m
+[31m+     "followers": 25000,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "profile": Object {[39m
+[31m+     "engagement_rate": 4.2,[39m
+[31m+     "followers": 15000,[39m
+[31m+     "impressions": 120000,[39m
+[31m+     "reach": 45000,[39m
+[31m+   },[39m
+[31m+ }[39m
+
+[36m [2m❯[22m tests/BenchmarkService.test.ts:[2m226:7[22m[39m
+    [90m224| [39m      [35mawait[39m [34mexpect[39m(
+    [90m225| [39m        benchmarkService[33m.[39m[34mgetBenchmark[39m(profileId[33m,[39m userId[33m,[39m [[32m'@comp1'[39m[33m,[39m [32m'@[39m…
+    [90m226| [39m      )[33m.[39mrejects[33m.[39m[34mtoThrow[39m()[33m;[39m
+    [90m   | [39m      [31m^[39m
+    [90m227| [39m    })[33m;[39m
+    [90m228| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle zero metrics gracefully
+[31m[1mAssertionError[22m: promise resolved "{ …(5) }" instead of rejecting[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [Error: rejected promise][39m
+[31m+ Object {[39m
+[31m+   "breakdown": Object {[39m
+[31m+     "competitors_analyzed": 1,[39m
+[31m+     "confidence": "low",[39m
+[31m+     "data_collection_timestamp": "2026-04-08T13:59:01.714Z",[39m
+[31m+   },[39m
+[31m+   "comparison": Object {[39m
+[31m+     "vs_avg": Object {[39m
+[31m+       "engagement_rate": "0%",[39m
+[31m+       "followers": "0%",[39m
+[31m+       "impressions": "0%",[39m
+[31m+       "reach": "0%",[39m
+[31m+     },[39m
+[31m+     "vs_best": Object {[39m
+[31m+       "engagement_rate": "0%",[39m
+[31m+       "followers": "0%",[39m
+[31m+       "impressions": "0%",[39m
+[31m+       "reach": "0%",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "competitors_avg": Object {[39m
+[31m+     "engagement_rate": 0,[39m
+[31m+     "followers": 0,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "competitors_best": Object {[39m
+[31m+     "engagement_rate": 0,[39m
+[31m+     "followers": 0,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "profile": Object {[39m
+[31m+     "engagement_rate": 0,[39m
+[31m+     "followers": 0,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+ }[39m
+
+[36m [2m❯[22m tests/BenchmarkService.test.ts:[2m250:86[22m[39m
+    [90m248| [39m      vi[33m.[39m[34mspyOn[39m(searchService[33m,[39m [32m'searchCompetitors'[39m)[33m.[39m[34mmockResolvedValue[39m(c…
+    [90m249| [39m
+    [90m250| [39m      [35mawait[39m [34mexpect[39m(benchmarkService[33m.[39m[34mgetBenchmark[39m(profileId[33m,[39m userId[33m,[39m [[32m'[39m…
+    [90m   | [39m                                                                                     [31m^[39m
+    [90m251| [39m    })[33m;[39m
+    [90m252| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m4 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 10:58:59
+[2m   Duration [22m 520ms
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x2[39m
+[2K[1A[2K[G       [90mrerun x2[39m
+[2K[1A[2K[G       [2m[90mrerun x2[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m tests/BenchmarkService.test.ts[22m [34mx3[39m
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould be implemented and return BenchmarkResult[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [33m❯[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m [2m|[22m [31m4 failed[39m[2m)[22m[90m 51[2mms[22m[39m
+[31m   [33m❯[31m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22mgetBenchmark[2m > [22mshould calculate benchmark with provided competitor handles[39m
+[31m     → expected undefined to be 2 // Object.is equality[39m
+[31m   [33m❯[31m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle single competitor[39m
+[31m     → promise resolved "{ profile: { …(4) }, …(4) }" instead of rejecting[39m
+[31m   [33m❯[31m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle multiple competitors (3+)[39m
+[31m     → promise resolved "{ profile: { …(4) }, …(4) }" instead of rejecting[39m
+[31m   [33m❯[31m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle zero metrics gracefully[39m
+[31m     → promise resolved "{ …(5) }" instead of rejecting[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 4 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22mgetBenchmark[2m > [22mshould calculate benchmark with provided competitor handles
+[31m[1mAssertionError[22m: expected undefined to be 2 // Object.is equality[39m
+
+[32m- Expected:[39m 
+2
+
+[31m+ Received:[39m 
+undefined
+
+[36m [2m❯[22m tests/BenchmarkService.test.ts:[2m111:43[22m[39m
+    [90m109| [39m      [34mexpect[39m(result)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+    [90m110| [39m      [34mexpect[39m(result[33m.[39mprofile[33m.[39mfollowers)[33m.[39m[34mtoBe[39m([34m15000[39m)[33m;[39m
+    [90m111| [39m      [34mexpect[39m(result[33m.[39mcompetitors_analyzed)[33m.[39m[34mtoBe[39m([34m2[39m)[33m;[39m
+    [90m   | [39m                                          [31m^[39m
+    [90m112| [39m      [34mexpect[39m(result[33m.[39mbreakdown[33m.[39mconfidence)[33m.[39m[34mtoBe[39m([32m'medium'[39m)[33m;[39m
+    [90m113| [39m      [34mexpect[39m(result[33m.[39mcomparison[33m.[39mvs_avg[33m.[39mfollowers)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle single competitor
+[31m[1mAssertionError[22m: promise resolved "{ profile: { …(4) }, …(4) }" instead of rejecting[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [Error: rejected promise][39m
+[31m+ Object {[39m
+[31m+   "breakdown": Object {[39m
+[31m+     "competitors_analyzed": 1,[39m
+[31m+     "confidence": "low",[39m
+[31m+     "data_collection_timestamp": "2026-04-08T14:02:23.957Z",[39m
+[31m+   },[39m
+[31m+   "comparison": Object {[39m
+[31m+     "vs_avg": Object {[39m
+[31m+       "engagement_rate": "+20%",[39m
+[31m+       "followers": "+15.4%",[39m
+[31m+       "impressions": "N/A",[39m
+[31m+       "reach": "N/A",[39m
+[31m+     },[39m
+[31m+     "vs_best": Object {[39m
+[31m+       "engagement_rate": "+20%",[39m
+[31m+       "followers": "+15.4%",[39m
+[31m+       "impressions": "N/A",[39m
+[31m+       "reach": "N/A",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "competitors_avg": Object {[39m
+[31m+     "engagement_rate": 3.5,[39m
+[31m+     "followers": 13000,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "competitors_best": Object {[39m
+[31m+     "engagement_rate": 3.5,[39m
+[31m+     "followers": 13000,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "profile": Object {[39m
+[31m+     "engagement_rate": 4.2,[39m
+[31m+     "followers": 15000,[39m
+[31m+     "impressions": 120000,[39m
+[31m+     "reach": 45000,[39m
+[31m+   },[39m
+[31m+ }[39m
+
+[36m [2m❯[22m tests/BenchmarkService.test.ts:[2m200:86[22m[39m
+    [90m198| [39m      vi[33m.[39m[34mspyOn[39m(searchService[33m,[39m [32m'searchCompetitors'[39m)[33m.[39m[34mmockResolvedValue[39m(c…
+    [90m199| [39m
+    [90m200| [39m      [35mawait[39m [34mexpect[39m(benchmarkService[33m.[39m[34mgetBenchmark[39m(profileId[33m,[39m userId[33m,[39m [[32m'[39m…
+    [90m   | [39m                                                                                     [31m^[39m
+    [90m201| [39m    })[33m;[39m
+    [90m202| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle multiple competitors (3+)
+[31m[1mAssertionError[22m: promise resolved "{ profile: { …(4) }, …(4) }" instead of rejecting[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [Error: rejected promise][39m
+[31m+ Object {[39m
+[31m+   "breakdown": Object {[39m
+[31m+     "competitors_analyzed": 4,[39m
+[31m+     "confidence": "high",[39m
+[31m+     "data_collection_timestamp": "2026-04-08T14:02:23.963Z",[39m
+[31m+   },[39m
+[31m+   "comparison": Object {[39m
+[31m+     "vs_avg": Object {[39m
+[31m+       "engagement_rate": "-0.6%",[39m
+[31m+       "followers": "-11.8%",[39m
+[31m+       "impressions": "N/A",[39m
+[31m+       "reach": "N/A",[39m
+[31m+     },[39m
+[31m+     "vs_best": Object {[39m
+[31m+       "engagement_rate": "-31.1%",[39m
+[31m+       "followers": "-40%",[39m
+[31m+       "impressions": "N/A",[39m
+[31m+       "reach": "N/A",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "competitors_avg": Object {[39m
+[31m+     "engagement_rate": 4.2,[39m
+[31m+     "followers": 17000,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "competitors_best": Object {[39m
+[31m+     "engagement_rate": 6.1,[39m
+[31m+     "followers": 25000,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "profile": Object {[39m
+[31m+     "engagement_rate": 4.2,[39m
+[31m+     "followers": 15000,[39m
+[31m+     "impressions": 120000,[39m
+[31m+     "reach": 45000,[39m
+[31m+   },[39m
+[31m+ }[39m
+
+[36m [2m❯[22m tests/BenchmarkService.test.ts:[2m229:7[22m[39m
+    [90m227| [39m      [35mawait[39m [34mexpect[39m(
+    [90m228| [39m        benchmarkService[33m.[39m[34mgetBenchmark[39m(profileId[33m,[39m userId[33m,[39m [[32m'@comp1'[39m[33m,[39m [32m'@[39m…
+    [90m229| [39m      )[33m.[39mrejects[33m.[39m[34mtoThrow[39m()[33m;[39m
+    [90m   | [39m      [31m^[39m
+    [90m230| [39m    })[33m;[39m
+    [90m231| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle zero metrics gracefully
+[31m[1mAssertionError[22m: promise resolved "{ …(5) }" instead of rejecting[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [Error: rejected promise][39m
+[31m+ Object {[39m
+[31m+   "breakdown": Object {[39m
+[31m+     "competitors_analyzed": 1,[39m
+[31m+     "confidence": "low",[39m
+[31m+     "data_collection_timestamp": "2026-04-08T14:02:23.965Z",[39m
+[31m+   },[39m
+[31m+   "comparison": Object {[39m
+[31m+     "vs_avg": Object {[39m
+[31m+       "engagement_rate": "0%",[39m
+[31m+       "followers": "0%",[39m
+[31m+       "impressions": "0%",[39m
+[31m+       "reach": "0%",[39m
+[31m+     },[39m
+[31m+     "vs_best": Object {[39m
+[31m+       "engagement_rate": "0%",[39m
+[31m+       "followers": "0%",[39m
+[31m+       "impressions": "0%",[39m
+[31m+       "reach": "0%",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "competitors_avg": Object {[39m
+[31m+     "engagement_rate": 0,[39m
+[31m+     "followers": 0,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "competitors_best": Object {[39m
+[31m+     "engagement_rate": 0,[39m
+[31m+     "followers": 0,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "profile": Object {[39m
+[31m+     "engagement_rate": 0,[39m
+[31m+     "followers": 0,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+ }[39m
+
+[36m [2m❯[22m tests/BenchmarkService.test.ts:[2m253:86[22m[39m
+    [90m251| [39m      vi[33m.[39m[34mspyOn[39m(searchService[33m,[39m [32m'searchCompetitors'[39m)[33m.[39m[34mmockResolvedValue[39m(c…
+    [90m252| [39m
+    [90m253| [39m      [35mawait[39m [34mexpect[39m(benchmarkService[33m.[39m[34mgetBenchmark[39m(profileId[33m,[39m userId[33m,[39m [[32m'[39m…
+    [90m   | [39m                                                                                     [31m^[39m
+    [90m254| [39m    })[33m;[39m
+    [90m255| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m4 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 11:02:22
+[2m   Duration [22m 463ms
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x3[39m
+[2K[1A[2K[G       [90mrerun x3[39m
+[2K[1A[2K[G       [2m[90mrerun x3[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m tests/BenchmarkService.test.ts[22m [34mx4[39m
+
+ [33m❯[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m [2m|[22m [31m4 failed[39m[2m)[22m[90m 74[2mms[22m[39m
+[31m   [33m❯[31m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22mgetBenchmark[2m > [22mshould calculate benchmark with provided competitor handles[39m
+[31m     → expected undefined to be 2 // Object.is equality[39m
+[31m   [33m❯[31m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle single competitor[39m
+[31m     → promise resolved "{ profile: { …(4) }, …(4) }" instead of rejecting[39m
+[31m   [33m❯[31m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle multiple competitors (3+)[39m
+[31m     → promise resolved "{ profile: { …(4) }, …(4) }" instead of rejecting[39m
+[31m   [33m❯[31m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle zero metrics gracefully[39m
+[31m     → promise resolved "{ …(5) }" instead of rejecting[39m
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+
+[31m⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 4 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22mgetBenchmark[2m > [22mshould calculate benchmark with provided competitor handles
+[31m[1mAssertionError[22m: expected undefined to be 2 // Object.is equality[39m
+
+[32m- Expected:[39m 
+2
+
+[31m+ Received:[39m 
+undefined
+
+[36m [2m❯[22m tests/BenchmarkService.test.ts:[2m111:43[22m[39m
+    [90m109| [39m      [34mexpect[39m(result)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+    [90m110| [39m      [34mexpect[39m(result[33m.[39mprofile[33m.[39mfollowers)[33m.[39m[34mtoBe[39m([34m15000[39m)[33m;[39m
+    [90m111| [39m      [34mexpect[39m(result[33m.[39mcompetitors_analyzed)[33m.[39m[34mtoBe[39m([34m2[39m)[33m;[39m
+    [90m   | [39m                                          [31m^[39m
+    [90m112| [39m      [34mexpect[39m(result[33m.[39mbreakdown[33m.[39mconfidence)[33m.[39m[34mtoBe[39m([32m'medium'[39m)[33m;[39m
+    [90m113| [39m      [34mexpect[39m(result[33m.[39mcomparison[33m.[39mvs_avg[33m.[39mfollowers)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle single competitor
+[31m[1mAssertionError[22m: promise resolved "{ profile: { …(4) }, …(4) }" instead of rejecting[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [Error: rejected promise][39m
+[31m+ Object {[39m
+[31m+   "breakdown": Object {[39m
+[31m+     "competitors_analyzed": 1,[39m
+[31m+     "confidence": "low",[39m
+[31m+     "data_collection_timestamp": "2026-04-08T14:02:31.545Z",[39m
+[31m+   },[39m
+[31m+   "comparison": Object {[39m
+[31m+     "vs_avg": Object {[39m
+[31m+       "engagement_rate": "+20%",[39m
+[31m+       "followers": "+15.4%",[39m
+[31m+       "impressions": "N/A",[39m
+[31m+       "reach": "N/A",[39m
+[31m+     },[39m
+[31m+     "vs_best": Object {[39m
+[31m+       "engagement_rate": "+20%",[39m
+[31m+       "followers": "+15.4%",[39m
+[31m+       "impressions": "N/A",[39m
+[31m+       "reach": "N/A",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "competitors_avg": Object {[39m
+[31m+     "engagement_rate": 3.5,[39m
+[31m+     "followers": 13000,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "competitors_best": Object {[39m
+[31m+     "engagement_rate": 3.5,[39m
+[31m+     "followers": 13000,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "profile": Object {[39m
+[31m+     "engagement_rate": 4.2,[39m
+[31m+     "followers": 15000,[39m
+[31m+     "impressions": 120000,[39m
+[31m+     "reach": 45000,[39m
+[31m+   },[39m
+[31m+ }[39m
+
+[36m [2m❯[22m tests/BenchmarkService.test.ts:[2m201:86[22m[39m
+    [90m199| [39m      vi[33m.[39m[34mspyOn[39m(searchService[33m,[39m [32m'searchCompetitors'[39m)[33m.[39m[34mmockResolvedValue[39m(c…
+    [90m200| [39m
+    [90m201| [39m      [35mawait[39m [34mexpect[39m(benchmarkService[33m.[39m[34mgetBenchmark[39m(profileId[33m,[39m userId[33m,[39m [[32m'[39m…
+    [90m   | [39m                                                                                     [31m^[39m
+    [90m202| [39m    })[33m;[39m
+    [90m203| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle multiple competitors (3+)
+[31m[1mAssertionError[22m: promise resolved "{ profile: { …(4) }, …(4) }" instead of rejecting[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [Error: rejected promise][39m
+[31m+ Object {[39m
+[31m+   "breakdown": Object {[39m
+[31m+     "competitors_analyzed": 4,[39m
+[31m+     "confidence": "high",[39m
+[31m+     "data_collection_timestamp": "2026-04-08T14:02:31.558Z",[39m
+[31m+   },[39m
+[31m+   "comparison": Object {[39m
+[31m+     "vs_avg": Object {[39m
+[31m+       "engagement_rate": "-0.6%",[39m
+[31m+       "followers": "-11.8%",[39m
+[31m+       "impressions": "N/A",[39m
+[31m+       "reach": "N/A",[39m
+[31m+     },[39m
+[31m+     "vs_best": Object {[39m
+[31m+       "engagement_rate": "-31.1%",[39m
+[31m+       "followers": "-40%",[39m
+[31m+       "impressions": "N/A",[39m
+[31m+       "reach": "N/A",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "competitors_avg": Object {[39m
+[31m+     "engagement_rate": 4.2,[39m
+[31m+     "followers": 17000,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "competitors_best": Object {[39m
+[31m+     "engagement_rate": 6.1,[39m
+[31m+     "followers": 25000,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "profile": Object {[39m
+[31m+     "engagement_rate": 4.2,[39m
+[31m+     "followers": 15000,[39m
+[31m+     "impressions": 120000,[39m
+[31m+     "reach": 45000,[39m
+[31m+   },[39m
+[31m+ }[39m
+
+[36m [2m❯[22m tests/BenchmarkService.test.ts:[2m230:7[22m[39m
+    [90m228| [39m      [35mawait[39m [34mexpect[39m(
+    [90m229| [39m        benchmarkService[33m.[39m[34mgetBenchmark[39m(profileId[33m,[39m userId[33m,[39m [[32m'@comp1'[39m[33m,[39m [32m'@[39m…
+    [90m230| [39m      )[33m.[39mrejects[33m.[39m[34mtoThrow[39m()[33m;[39m
+    [90m   | [39m      [31m^[39m
+    [90m231| [39m    })[33m;[39m
+    [90m232| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22medge cases[2m > [22mshould handle zero metrics gracefully
+[31m[1mAssertionError[22m: promise resolved "{ …(5) }" instead of rejecting[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [Error: rejected promise][39m
+[31m+ Object {[39m
+[31m+   "breakdown": Object {[39m
+[31m+     "competitors_analyzed": 1,[39m
+[31m+     "confidence": "low",[39m
+[31m+     "data_collection_timestamp": "2026-04-08T14:02:31.561Z",[39m
+[31m+   },[39m
+[31m+   "comparison": Object {[39m
+[31m+     "vs_avg": Object {[39m
+[31m+       "engagement_rate": "0%",[39m
+[31m+       "followers": "0%",[39m
+[31m+       "impressions": "0%",[39m
+[31m+       "reach": "0%",[39m
+[31m+     },[39m
+[31m+     "vs_best": Object {[39m
+[31m+       "engagement_rate": "0%",[39m
+[31m+       "followers": "0%",[39m
+[31m+       "impressions": "0%",[39m
+[31m+       "reach": "0%",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "competitors_avg": Object {[39m
+[31m+     "engagement_rate": 0,[39m
+[31m+     "followers": 0,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "competitors_best": Object {[39m
+[31m+     "engagement_rate": 0,[39m
+[31m+     "followers": 0,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+   "profile": Object {[39m
+[31m+     "engagement_rate": 0,[39m
+[31m+     "followers": 0,[39m
+[31m+     "impressions": 0,[39m
+[31m+     "reach": 0,[39m
+[31m+   },[39m
+[31m+ }[39m
+
+[36m [2m❯[22m tests/BenchmarkService.test.ts:[2m254:86[22m[39m
+    [90m252| [39m      vi[33m.[39m[34mspyOn[39m(searchService[33m,[39m [32m'searchCompetitors'[39m)[33m.[39m[34mmockResolvedValue[39m(c…
+    [90m253| [39m
+    [90m254| [39m      [35mawait[39m [34mexpect[39m(benchmarkService[33m.[39m[34mgetBenchmark[39m(profileId[33m,[39m userId[33m,[39m [[32m'[39m…
+    [90m   | [39m                                                                                     [31m^[39m
+    [90m255| [39m    })[33m;[39m
+    [90m256| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m4 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 11:02:30
+[2m   Duration [22m 401ms
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x4[39m
+[2K[1A[2K[G       [90mrerun x4[39m
+[2K[1A[2K[G       [2m[90mrerun x4[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m tests/BenchmarkService.test.ts[22m [34mx5[39m
+
+ [33m❯[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[90m 52[2mms[22m[39m
+[31m   [33m❯[31m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22mgetBenchmark[2m > [22mshould calculate benchmark with provided competitor handles[39m
+[31m     → expected undefined to be 2 // Object.is equality[39m
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+
+[31m⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 1 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/BenchmarkService.test.ts[2m > [22mBenchmarkService[2m > [22mgetBenchmark[2m > [22mshould calculate benchmark with provided competitor handles
+[31m[1mAssertionError[22m: expected undefined to be 2 // Object.is equality[39m
+
+[32m- Expected:[39m 
+2
+
+[31m+ Received:[39m 
+undefined
+
+[36m [2m❯[22m tests/BenchmarkService.test.ts:[2m111:43[22m[39m
+    [90m109| [39m      [34mexpect[39m(result)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+    [90m110| [39m      [34mexpect[39m(result[33m.[39mprofile[33m.[39mfollowers)[33m.[39m[34mtoBe[39m([34m15000[39m)[33m;[39m
+    [90m111| [39m      [34mexpect[39m(result[33m.[39mcompetitors_analyzed)[33m.[39m[34mtoBe[39m([34m2[39m)[33m;[39m
+    [90m   | [39m                                          [31m^[39m
+    [90m112| [39m      [34mexpect[39m(result[33m.[39mbreakdown[33m.[39mconfidence)[33m.[39m[34mtoBe[39m([32m'medium'[39m)[33m;[39m
+    [90m113| [39m      [34mexpect[39m(result[33m.[39mcomparison[33m.[39mvs_avg[33m.[39mfollowers)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m7 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 11:02:41
+[2m   Duration [22m 454ms
+
+
+[1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x5[39m
+[2K[1A[2K[G       [90mrerun x5[39m
+[2K[1A[2K[G       [2m[90mrerun x5[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m tests/BenchmarkService.test.ts[22m [34mx6[39m
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 21[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 11:02:45
+[2m   Duration [22m 529ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x6[39m
+[2K[1A[2K[G       [90mrerun x6[39m
+[2K[1A[2K[G       [2m[90mrerun x6[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/BenchmarkService.ts[22m [34mx7[39m
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 42[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 11:06:16
+[2m   Duration [22m 518ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x7[39m
+[2K[1A[2K[G       [90mrerun x7[39m
+[2K[1A[2K[G       [2m[90mrerun x7[39m[22m
+[2K[1A[2K[G[3Jc
+[7m[1m[34m RERUN [39m[22m[27m[2m src/services/BenchmarkService.ts[22m [34mx8[39m
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if profile has no metrics[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstderr[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitors provided and none stored[22m[39m
+[BenchmarkService] Failed to get stored competitors: SqliteError: no such table: profiles
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould throw error if no competitor data found[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mgetBenchmark[2m > [22m[2mshould calculate benchmark with provided competitor handles[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2mcalculateBenchmark (integration)[2m > [22m[2mshould calculate and return BenchmarkResult with 3 competitors[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle single competitor (low confidence)[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle multiple competitors (3+) with high confidence[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+[90mstdout[2m | tests/BenchmarkService.test.ts[2m > [22m[2mBenchmarkService[2m > [22m[2medge cases[2m > [22m[2mshould handle zero metrics gracefully[22m[39m
+[SearchService] EXA MCP availability check: ENABLED via WebSearch
+
+ [32m✓[39m tests/BenchmarkService.test.ts [2m ([22m[2m8 tests[22m[2m)[22m[90m 78[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 11:06:22
+[2m   Duration [22m 605ms
+
+
+[1m[7m[32m PASS [39m[27m[22m[32m Waiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+       [34mrerun x8[39m
+[2K[1A[2K[G       [90mrerun x8[39m
+[2K[1A[2K[G       [2m[90mrerun x8[39m[22m
 [2K[1A[2K[G
