@@ -46,7 +46,14 @@ export class User {
       VALUES (?, ?, ?, ?, ?, ?)
     `);
 
-    stmt.run(id, input.email, passwordHash, input.name || null, now, now);
+    try {
+      stmt.run(id, input.email, passwordHash, input.name || null, now, now);
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('UNIQUE constraint failed')) {
+        throw new Error(`User with email ${input.email} already exists`);
+      }
+      throw error;
+    }
 
     return this.getById(id)!;
   }
@@ -59,7 +66,8 @@ export class User {
       SELECT id, email, name, created_at, updated_at FROM users WHERE id = ?
     `);
 
-    return stmt.get(id) as UserData | null;
+    const result = stmt.get(id) as UserData | undefined;
+    return result || null;
   }
 
   /**

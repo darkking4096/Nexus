@@ -1,6 +1,17 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { LoginPage } from './pages/LoginPage';
+import { SignupPage } from './pages/SignupPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { Layout } from './components/Layout';
+import { useAuth } from './hooks/useAuth';
+const ProtectedRoute = ({ children }) => {
+    const { isAuthenticated } = useAuth();
+    return isAuthenticated ? _jsx(Layout, { children: children }) : _jsx(Navigate, { to: "/login", replace: true });
+};
 function App() {
-    return (_jsxs("div", { className: "min-h-screen bg-gray-50", children: [_jsx("header", { className: "bg-white shadow", children: _jsxs("div", { className: "max-w-7xl mx-auto px-4 py-6", children: [_jsx("h1", { className: "text-3xl font-bold text-gray-900", children: "NEXUS" }), _jsx("p", { className: "text-gray-600", children: "AI-Powered Instagram Management Platform" })] }) }), _jsx("main", { className: "max-w-7xl mx-auto px-4 py-6", children: _jsxs("div", { className: "bg-white rounded-lg shadow p-6", children: [_jsx("h2", { className: "text-xl font-semibold mb-4", children: "Foundation Setup Complete \u2705" }), _jsxs("ul", { className: "list-disc list-inside space-y-2 text-gray-700", children: [_jsx("li", { children: "Node.js + Express backend ready" }), _jsx("li", { children: "React 18 + Vite frontend ready" }), _jsx("li", { children: "TypeScript configured" }), _jsx("li", { children: "Tailwind CSS available" }), _jsx("li", { children: "Ready for Phase 2: Database Schema" })] })] }) })] }));
+    return (_jsx(AuthProvider, { children: _jsx(Router, { children: _jsxs(Routes, { children: [_jsx(Route, { path: "/login", element: _jsx(LoginPage, {}) }), _jsx(Route, { path: "/signup", element: _jsx(SignupPage, {}) }), _jsx(Route, { path: "/dashboard", element: _jsx(ProtectedRoute, { children: _jsx(DashboardPage, {}) }) }), _jsx(Route, { path: "/", element: _jsx(Navigate, { to: "/dashboard", replace: true }) })] }) }) }));
 }
 export default App;
 //# sourceMappingURL=App.js.map

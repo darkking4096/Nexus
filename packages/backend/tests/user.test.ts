@@ -101,13 +101,13 @@ describe('User Model', () => {
       password: 'password123',
     });
 
-    expect(() => {
-      // This would fail because email is unique
-      return userModel.create({
+    // This would fail because email is unique
+    await expect(
+      userModel.create({
         email,
         password: 'password456',
-      });
-    }).toThrow();
+      })
+    ).rejects.toThrow();
   });
 
   it('should check if email exists', async () => {
