@@ -114,7 +114,7 @@ Isso permite **aprender fazendo** (learning by doing) conforme você implementa.
 |---------|-------|
 | Épicos | 7 ✅ |
 | Stories | 43 ✅ |
-| Status | **Todas em Draft** |
+| Status | **Epic 1: 6/6 Done ✅** \| **Epic 2: 5/5 Done ✅** \| **Epic 3-7: 32 em Draft** |
 | Tempo estimado (MVP) | 8-9 semanas |
 | Dependências externas | 5+ (Instagram API, Playwright, Nando Banana, EXA, Claude) |
 | Linguagens | JavaScript/TypeScript (99%), Python (Instagrapi) |

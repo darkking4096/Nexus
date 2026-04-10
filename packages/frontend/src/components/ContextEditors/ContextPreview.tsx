@@ -13,6 +13,10 @@ export const ContextPreview: React.FC<ContextPreviewProps> = ({
   audience,
   goals,
 }) => {
+  const typedAudience = audience as Record<string, string | string[]>;
+  const ageValue = typedAudience.age;
+  const interestsValue = typedAudience.interests;
+
   return (
     <div className="context-preview">
       <h3>Context Preview</h3>
@@ -33,14 +37,14 @@ export const ContextPreview: React.FC<ContextPreviewProps> = ({
         <h4>Target Audience</h4>
         {audience && Object.keys(audience).length > 0 ? (
           <ul>
-            {audience.age && (
+            {ageValue && (
               <li>
-                <strong>Age Range:</strong> {audience.age}
+                <strong>Age Range:</strong> {ageValue}
               </li>
             )}
-            {audience.interests && Array.isArray(audience.interests) && (
+            {Array.isArray(interestsValue) && interestsValue.length > 0 && (
               <li>
-                <strong>Interests:</strong> {audience.interests.join(', ')}
+                <strong>Interests:</strong> {interestsValue.join(', ')}
               </li>
             )}
           </ul>
