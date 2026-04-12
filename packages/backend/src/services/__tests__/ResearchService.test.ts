@@ -2,7 +2,6 @@ import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import Database from 'better-sqlite3';
 import { ResearchService } from '../ResearchService';
 import type { ResearchResult } from '../ResearchSquad';
-import { ResearchSquad } from '../ResearchSquad';
 
 const mockResearchResult: ResearchResult = {
   competitors: [{ username: 'competitor1', top_posts: [] }],
