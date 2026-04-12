@@ -530,7 +530,7 @@ interface MockOptionsPartial {
   hasObjectives?: boolean;
   competitorEngagements?: number[];
   trendMomentums?: number[];
-  objectives?: Array<{ goal: string; priority: string }>;
+  objectives?: Array<{ goal: string; priority: 'HIGH' | 'MEDIUM' | 'LOW' }>;
   ownContentTypes?: string[];
   competitorContentTypes?: Array<{ type: string; engagement: number }>;
   postingPatternGap?: boolean;

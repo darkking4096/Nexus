@@ -71,11 +71,9 @@ export interface AnalyticsInput {
  * and recommends content types based on historical data, competitor analysis, and trends
  */
 export class AnalyticsModule {
-  private db: Database.Database;
   private profileModel: Profile;
 
   constructor(db: Database.Database) {
-    this.db = db;
     this.profileModel = new Profile(db);
   }
 
@@ -376,7 +374,7 @@ export class AnalyticsModule {
         type,
         virality_score: Math.round(scores.virality),
         alignment_score: Math.round(scores.alignment),
-        rationale: this.generateContentTypeRationale(type, scores, own_history),
+        rationale: this.generateContentTypeRationale(type, scores),
         confidence: scores.confidence,
       });
     }
