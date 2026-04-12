@@ -7,6 +7,7 @@ import { Profile } from '../../models/Profile.js';
 
 describe('HistoryAnalysis', () => {
   let db: Database.Database;
+  let dbPath: string;
   let analysis: HistoryAnalysis;
   let profile: Profile;
   let testUserId: string;
@@ -19,8 +20,9 @@ describe('HistoryAnalysis', () => {
       fs.mkdirSync(tempDir, { recursive: true });
     }
 
-    // Use absolute path to avoid issues with relative paths
-    const dbPath = path.resolve(path.join(tempDir, `test-history-${Date.now()}.db`));
+    // Use unique identifier (timestamp + random) to avoid file conflicts
+    const uniqueId = `${Date.now()}-${Math.random().toString(36).substring(7)}`;
+    dbPath = path.resolve(path.join(tempDir, `test-history-${uniqueId}.db`));
     db = new Database(dbPath);
 
     // Initialize schema
@@ -42,11 +44,43 @@ describe('HistoryAnalysis', () => {
   });
 
   afterEach(() => {
-    db.close();
-    // Clean up test db file
-    const tempDir = path.join(process.cwd(), '.test-db');
-    if (fs.existsSync(tempDir)) {
-      fs.rmSync(tempDir, { recursive: true, force: true });
+    // Close database connection
+    if (db) {
+      try {
+        db.close();
+      } catch (error) {
+        // Database already closed or error closing
+      }
+    }
+
+    // Clean up specific test db file with retries
+    if (dbPath && fs.existsSync(dbPath)) {
+      let retries = 3;
+      while (retries > 0) {
+        try {
+          fs.unlinkSync(dbPath);
+          break;
+        } catch (error) {
+          retries--;
+          if (retries === 0) {
+            // Silently ignore cleanup errors - file will be cleaned up eventually
+            return;
+          }
+          // Brief delay before retry
+          setTimeout(() => {}, 50);
+        }
+      }
+    }
+
+    // Clean up empty .test-db directory if it exists
+    try {
+      const tempDir = path.join(process.cwd(), '.test-db');
+      const files = fs.readdirSync(tempDir);
+      if (files.length === 0) {
+        fs.rmdirSync(tempDir);
+      }
+    } catch {
+      // Directory not empty or doesn't exist - that's fine
     }
   });
 
