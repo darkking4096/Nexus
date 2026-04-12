@@ -1,8 +1,8 @@
 # NEXUS Stories Manifest
 
-**Data**: 2026-04-07  
+**Data**: 2026-04-12  
 **Total**: 43 stories em 7 épicos  
-**Status**: ✅ Draft completo
+**Status**: ✅ Epics 1 & 2 COMPLETOS (12/12 stories Done) | Epic 3-7: Draft pronto para desenvolvimento
 
 ---
 
@@ -70,20 +70,21 @@ docs/stories/
 
 ## 🎯 Stories por Epic
 
-### Epic 1: Foundation & Setup (6 stories)
-- **1.1** Project Foundation & Local Auth
-- **1.2** Instagrapi Integration & Profile Connection
-- **1.3** Playwright MCP & Publishing Test
-- **1.4** Marketing Instagram Squad Integration (Research)
-- **1.5** EXA Web Search Integration
-- **1.6** Analytics Base (Instagrapi metrics)
+### Epic 1: Foundation & Setup ✅ (7 stories)
+- **1.1** Project Foundation & Local Auth ✅
+- **1.2** Instagrapi Integration & Profile Connection ✅
+- **1.3** Playwright MCP & Publishing Test ✅
+- **1.4** Marketing Instagram Squad Integration (Research) ✅
+- **1.5** EXA Web Search Integration ✅
+- **1.6** Analytics Base (Instagrapi metrics) ✅
+- **1.7** Analytics Benchmark vs. Competitors ✅
 
-### Epic 2: Profile Management (5 stories)
-- **2.1** Profile Setup Wizard
-- **2.2** Context Configuration (voice, tone, audience, goals)
-- **2.3** Competitor Management
-- **2.4** Profile Editing & Deletion
-- **2.5** Profile Assets Upload (media, context)
+### Epic 2: Profile Management ✅ (5 stories)
+- **2.1** Profile Setup Wizard ✅
+- **2.2** Context Configuration (voice, tone, audience, goals) ✅
+- **2.3** Competitor Management ✅
+- **2.4** Profile Editing & Deletion ✅
+- **2.5** Profile Assets Upload (media, context) ✅
 
 ### Epic 3: Intelligence Pipeline (10 stories)
 - **3.1** Research Module Base
@@ -256,4 +257,5 @@ Ao completar todas as stories, você terá aprendido:
 
 **Criado por**: @sm (River)  
 **Formato**: AIOX Story Format  
-**Próxima atualização**: Após validação com @po
+**Última atualização**: 2026-04-12 by Quinn (@qa) — Status sync após completion de Epics 1 & 2  
+**Próxima atualização**: Durante Epic 3 development

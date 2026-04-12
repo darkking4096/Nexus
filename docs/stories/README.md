@@ -1,6 +1,6 @@
 # NEXUS Stories — Development Roadmap
 
-✅ **3 stories de Foundation criadas e prontas para validação**
+✅ **Epics 1 & 2 COMPLETOS (12/12 stories DONE)** | Epic 3-7 pronto para dev
 
 ---
 
@@ -12,46 +12,41 @@ Baseado no **PRD-NEXUS.md**, criei a estrutura de **7 épicos com 43 stories** p
 
 ### Stories por Epic
 
-| Epic | Stories | Foco |
-|------|---------|------|
-| **1** | 1.1-1.6 (6) | Foundation, auth, Instagrapi, Playwright, research, analytics |
-| **2** | 2.1-2.5 (5) | Profile management, setup wizard, assets, competitors |
-| **3** | 3.1-3.10 (10) | Intelligence pipeline (research→analysis→generation), visuals |
-| **4** | 4.1-4.6 (6) | Manual vs Autopilot modes, approval workflow, scheduling |
-| **5** | 5.1-5.5 (5) | Publishing feed/carousel/stories, scheduling, optimization |
-| **6** | 6.1-6.6 (6) | Dashboard, metrics, analytics, recommendations |
-| **7** | 7.1-7.6 (6) | E2E testing, security, performance, docs, launch |
-| **TOTAL** | **43 stories** | 8-9 semanas MVP |
+| Epic | Stories | Foco | Status |
+|------|---------|------|--------|
+| **1** | 1.1-1.7 (7) | Foundation, auth, Instagrapi, Playwright, research, analytics, benchmark | ✅ DONE |
+| **2** | 2.1-2.5 (5) | Profile management, setup wizard, assets, competitors | ✅ DONE |
+| **3** | 3.1-3.10 (10) | Intelligence pipeline (research→analysis→generation), visuals | 📝 Ready |
+| **4** | 4.1-4.6 (6) | Manual vs Autopilot modes, approval workflow, scheduling | 📝 Ready |
+| **5** | 5.1-5.5 (5) | Publishing feed/carousel/stories, scheduling, optimization | 📝 Ready |
+| **6** | 6.1-6.6 (6) | Dashboard, metrics, analytics, recommendations | 📝 Ready |
+| **7** | 7.1-7.6 (6) | E2E testing, security, performance, docs, launch | 📝 Ready |
+| **TOTAL** | **43 stories** | 8-9 semanas MVP | **12/12 DONE, 31 Ready** |
 
 ---
 
-## 📋 Próximas Etapas
+## 📋 Status Atual & Próximas Etapas
 
-### Opção A: Validar Stories com @po ✅
-Se você quer que as stories sejam revisadas pela Product Owner (Pax):
+### ✅ Completado: Epics 1 & 2 (12/12 stories DONE)
 
-```bash
-@po *validate-story-draft
-# Ela executará validação 10-point checklist em cada story
-```
+- **1.1-1.7** Foundation & Analytics — Arquitetura base, Search, Benchmark
+- **2.1-2.5** Profile Management — Wizard, Context, Assets, Competitors
 
-### Opção B: Continuar Criando Stories 📝
-Se você quer que eu continue criando stories para Epic 1 ou outros épicos:
-
-- **1.4** — Marketing Instagram Squad Integration (Research Module)
-- **1.5** — EXA Web Search Integration
-- **1.6** — Analytics Base (Instagrapi metrics)
-- **2.x** — Epic 2: Profile Management (5 stories)
-- **3.x** — Epic 3: Intelligence Pipeline (10 stories)
-- ... e assim por diante
-
-### Opção C: Começar Implementação com @dev 🚀
-Se você quer que a implementação comece agora:
+### 🚀 Próximo: Epic 3 (10 stories prontas)
 
 ```bash
-@dev *develop-story 1.1
-# Dex começará a implementar o projeto
+@dev *develop-story 3.1
+# Dex começa com Research Module Base
+# Todas as dependências estão resolvidas (1.4 ✅, 1.5 ✅, 2.3 ✅, 1.6 ✅)
 ```
+
+### 📝 Epics 3-7 (31 stories prontas para dev)
+
+- **3.x** Intelligence pipeline — Pesquisa, análise, geração de conteúdo
+- **4.x** Dual mode — Manual + Autopilot workflow
+- **5.x** Publishing — Feed, Carousel, Stories + scheduling
+- **6.x** Analytics Dashboard — Métricas e recommendations
+- **7.x** QA & Polish — Testing, security, launch
 
 ---
 
@@ -114,8 +109,9 @@ Isso permite **aprender fazendo** (learning by doing) conforme você implementa.
 |---------|-------|
 | Épicos | 7 ✅ |
 | Stories | 43 ✅ |
-| Status | **Epic 1: 6/6 Done ✅** \| **Epic 2: 5/5 Done ✅** \| **Epic 3-7: 32 em Draft** |
-| Tempo estimado (MVP) | 8-9 semanas |
+| **Status** | **Epic 1: 7/7 Done ✅** \| **Epic 2: 5/5 Done ✅** \| **Epic 3-7: 31 Ready** |
+| **Completado** | 12/43 stories (27.9%) |
+| **Tempo estimado (MVP)** | 8-9 semanas (desde Epic 3 começar) |
 | Dependências externas | 5+ (Instagram API, Playwright, Nando Banana, EXA, Claude) |
 | Linguagens | JavaScript/TypeScript (99%), Python (Instagrapi) |
 | Agents | @dev (32 stories), @qa (3), @pm (1), @ux-design-expert (5), @po (1) |
@@ -159,5 +155,6 @@ R: Use `INDEX.md` e atualize status conforme progride (Draft → In Progress →
 ---
 
 **Criado por**: @sm (River — Scrum Master)  
-**Data**: 2026-04-07  
-**Status**: ✅ Pronto para próxima fase
+**Criado**: 2026-04-07  
+**Última atualização**: 2026-04-12 by Quinn (QA)  
+**Status**: ✅ Epics 1 & 2 DONE | Epic 3 pronto para começar

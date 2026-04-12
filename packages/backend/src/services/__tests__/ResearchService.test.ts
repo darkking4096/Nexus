@@ -70,11 +70,19 @@ describe('ResearchService', () => {
       );
     `);
 
-    // Setup mock ResearchSquad
+    // Setup mock ResearchSquad with all required properties
     mockResearchSquad = {
       runResearch: vi.fn().mockResolvedValue(mockResearchResult),
-    };
-    vi.mocked(ResearchSquad).mockImplementation(() => mockResearchSquad);
+      client: {},
+      agentsDir: '/mock/agents',
+      model: 'claude-sonnet-4-5-20251001',
+      runProfileStrategist: vi.fn(),
+      runTrendAnalyzer: vi.fn(),
+      runContentAnalyst: vi.fn(),
+      runCompetitorAnalyzer: vi.fn(),
+      runInsightGenerator: vi.fn(),
+    } as any;
+    vi.mocked(ResearchSquad).mockImplementation(() => mockResearchSquad as unknown as ResearchSquad);
 
     service = new ResearchService(db);
   });

@@ -7,48 +7,51 @@
 
 ## 📊 Story Timeline
 
-### Epic 1: Foundation & Setup (Weeks 1-2)
+### Epic 1: Foundation & Setup ✅ (Weeks 1-2)
 🎯 **Objetivo**: Estrutura base + autenticação + integração com Instagram
 
 | ID | Título | Status | Owner | Depends On |
 |----|--------|--------|-------|-----------|
-| 1.1 | Project Foundation & Local Auth | Draft | @dev | — |
-| 1.2 | Instagrapi Integration & Profile Connection | Draft | @dev | 1.1 |
-| 1.3 | Playwright MCP & Publishing Test | Draft | @dev | 1.1, 1.2 |
-| 1.4 | Marketing Squad Integration (Research) | Draft | @dev | 1.1, 1.2 |
-| 1.5 | EXA Web Search Integration | Draft | @dev | 1.1 |
-| 1.6 | Analytics Base (Instagrapi metrics) | Draft | @dev | 1.2 |
+| 1.1 | Project Foundation & Local Auth | Done ✅ | @dev | — |
+| 1.2 | Instagrapi Integration & Profile Connection | Done ✅ | @dev | 1.1 |
+| 1.3 | Playwright MCP & Publishing Test | Done ✅ | @dev | 1.1, 1.2 |
+| 1.4 | Marketing Squad Integration (Research) | Done ✅ | @dev | 1.1, 1.2 |
+| 1.5 | EXA Web Search Integration | Done ✅ | @dev | 1.1 |
+| 1.6 | Analytics Base (Instagrapi metrics) | Done ✅ | @dev | 1.2 |
+| 1.7 | Analytics Benchmark vs. Competitors | Done ✅ | @dev | 1.5, 1.6 |
 
 ---
 
-### Epic 2: Profile Management (Weeks 2-3)
+### Epic 2: Profile Management ✅ (Weeks 2-3)
 🎯 **Objetivo**: Conectar, configurar e gerenciar perfis clientes
 
 | ID | Título | Status | Owner | Depends On |
 |----|--------|--------|-------|-----------|
-| 2.1 | Profile Setup Wizard | Draft | @dev | 1.1, 1.2 |
-| 2.2 | Context Configuration (voice, tone, audience) | Draft | @dev | 2.1 |
-| 2.3 | Competitor Management | Draft | @dev | 2.1 |
-| 2.4 | Profile Editing & Deletion | Draft | @dev | 2.1 |
-| 2.5 | Profile Assets Upload (media, context) | Draft | @dev | 2.1 |
+| 2.1 | Profile Setup Wizard | Done ✅ | @dev | 1.1, 1.2 |
+| 2.2 | Context Configuration (voice, tone, audience) | Done ✅ | @dev | 2.1 |
+| 2.3 | Competitor Management | Done ✅ | @dev | 2.1 |
+| 2.4 | Profile Editing & Deletion | Done ✅ | @dev | 2.1 |
+| 2.5 | Profile Assets Upload (media, context) | Done ✅ | @dev | 2.1 |
 
 ---
 
 ### Epic 3: Intelligence Pipeline (Weeks 3-5)
 🎯 **Objetivo**: Pesquisa → Análise → Geração de conteúdo
 
+**Dependencies Ready**: ✅ 1.4, 1.5, 2.3, 1.6 (todos Done)
+
 | ID | Título | Status | Owner | Depends On |
 |----|--------|--------|-------|-----------|
-| 3.1 | Research Module Base | Draft | @dev | 1.4, 1.5 |
-| 3.2 | Competitor Analysis | Draft | @dev | 3.1, 2.3 |
-| 3.3 | Profile History Analysis | Draft | @dev | 3.1, 1.6 |
-| 3.4 | Analytics Module (scoring) | Draft | @dev | 3.1, 3.2, 3.3 |
-| 3.5 | Content Generation Engine | Draft | @dev | 3.4 |
-| 3.6 | Visual Generation (Nando Banana) | Draft | @dev | 3.4 |
-| 3.7 | Carousel Generation (SVG overlay) | Draft | @dev | 3.6 |
-| 3.8 | Story Generation (branding) | Draft | @dev | 3.6 |
-| 3.9 | Caption & Hashtag Generation | Draft | @dev | 3.5 |
-| 3.10 | Multi-Format Output | Draft | @dev | 3.5, 3.6, 3.7, 3.8, 3.9 |
+| 3.1 | Research Module Base | Pending | @dev | 1.4 ✅, 1.5 ✅ |
+| 3.2 | Competitor Analysis | Pending | @dev | 3.1, 2.3 ✅ |
+| 3.3 | Profile History Analysis | Pending | @dev | 3.1, 1.6 ✅ |
+| 3.4 | Analytics Module (scoring) | Pending | @dev | 3.1, 3.2, 3.3 |
+| 3.5 | Content Generation Engine | Pending | @dev | 3.4 |
+| 3.6 | Visual Generation (Nando Banana) | Pending | @dev | 3.4 |
+| 3.7 | Carousel Generation (SVG overlay) | Pending | @dev | 3.6 |
+| 3.8 | Story Generation (branding) | Pending | @dev | 3.6 |
+| 3.9 | Caption & Hashtag Generation | Pending | @dev | 3.5 |
+| 3.10 | Multi-Format Output | Pending | @dev | 3.5, 3.6, 3.7, 3.8, 3.9 |
 
 ---
 
@@ -155,5 +158,6 @@ Qual é a próxima naturalmente
 
 ---
 
-**Last Updated**: 2026-04-07  
-**Created By**: @sm (River — Scrum Master)
+**Last Updated**: 2026-04-12  
+**Created By**: @sm (River — Scrum Master)  
+**Status Sync**: 2026-04-12 by Quinn (QA Review) — Epics 1 & 2 fully complete, all dependencies resolved for Epic 3
