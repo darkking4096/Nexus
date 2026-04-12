@@ -1,5 +1,6 @@
 import Database from 'better-sqlite3';
 import { logger } from '../utils/logger';
+import { CopywriterClient, CopywriterRequest } from './CopywriterClient';
 
 /**
  * Caption generation types and interfaces
@@ -75,6 +76,7 @@ export interface InstagramProfile {
  */
 export class CaptionGenerator {
   private db: Database.Database;
+  private copywriter: CopywriterClient;
   private confidenceThreshold: number = 50;
   private charLimits = {
     min: 50,
@@ -83,6 +85,7 @@ export class CaptionGenerator {
 
   constructor(db: Database.Database) {
     this.db = db;
+    this.copywriter = new CopywriterClient();
   }
 
   /**
@@ -174,15 +177,42 @@ export class CaptionGenerator {
       `[CaptionGenerator] Generating ${captionType} caption (tone: ${brandTone})`
     );
 
-    // Call copywriter squad (via Claude API integration)
-    // TODO(human): Implement copywriter squad integration
-    // For now, using template-based generation
-    const caption = await this.generateFromTemplate(
-      profile,
-      analysis,
-      captionType,
-      brandTone
-    );
+    // Call @copywriter squad via Claude API with retry logic
+    let caption: string | null = null;
+    let confidenceScore: number = 0;
+
+    try {
+      const copywriterRequest: CopywriterRequest = {
+        captionType,
+        brandVoice: profile.context?.voice || 'authentic, engaging',
+        brandTone,
+        targetAudience:
+          profile.context?.targetAudience?.interests?.join(', ') || 'general audience',
+        insights: analysis?.analysisData?.insights?.slice(0, 3),
+        framework: analysis?.analysisData?.recommendedFramework,
+      };
+
+      const response = await this.copywriter.generateCaption(copywriterRequest);
+      caption = response.caption;
+      confidenceScore = response.confidenceScore;
+
+      logger.info(
+        `[CaptionGenerator] @copywriter generated caption (confidence: ${confidenceScore})`
+      );
+    } catch (error) {
+      logger.warn(
+        `[CaptionGenerator] @copywriter failed, using fallback template: ${error instanceof Error ? error.message : String(error)}`
+      );
+
+      // Fallback to template-based generation if copywriter fails
+      caption = await this.generateFromTemplate(
+        profile,
+        analysis,
+        captionType,
+        brandTone
+      );
+      confidenceScore = 60; // Lower confidence for fallback
+    }
 
     if (!caption) {
       return null;
@@ -204,12 +234,14 @@ export class CaptionGenerator {
     // Extract hashtags
     const hashtags = this.extractHashtags(caption, 5);
 
-    // Calculate confidence score based on multiple factors
-    const confidenceScore = this.calculateConfidenceScore(
-      caption,
-      analysis,
-      brandTone
-    );
+    // Use copywriter's confidence if available, otherwise calculate
+    if (confidenceScore === 0) {
+      confidenceScore = this.calculateConfidenceScore(
+        caption,
+        analysis,
+        brandTone
+      );
+    }
 
     return {
       type: captionType,
@@ -221,8 +253,8 @@ export class CaptionGenerator {
   }
 
   /**
-   * Template-based caption generation (fallback until copywriter integration is complete)
-   * TODO(human): Replace with actual copywriter squad integration
+   * Template-based caption generation (fallback if @copywriter agent fails)
+   * Used as graceful degradation when copywriter squad is unavailable/timeout
    */
   private async generateFromTemplate(
     profile: InstagramProfile,
@@ -368,13 +400,21 @@ export class CaptionGenerator {
         FROM instagram_profiles
         WHERE id = ?
       `);
-      const profile = stmt.get(profileId) as Record<string, unknown> | undefined;
+      const row = stmt.get(profileId) as Record<string, unknown> | undefined;
 
-      if (profile && profile.context) {
-        profile.context = JSON.parse(profile.context);
+      if (!row) {
+        return null;
       }
 
-      return profile || null;
+      const context =
+        typeof row.context === 'string' ? JSON.parse(row.context) : row.context;
+
+      return {
+        id: String(row.id),
+        userId: String(row.userId),
+        username: String(row.username),
+        context: context as Record<string, unknown>,
+      };
     } catch (error) {
       logger.error(`[CaptionGenerator] Error fetching profile: ${error}`);
       return null;
@@ -395,13 +435,22 @@ export class CaptionGenerator {
         ORDER BY createdAt DESC
         LIMIT 1
       `);
-      const content = stmt.get(profileId) as Record<string, unknown> | undefined;
+      const row = stmt.get(profileId) as Record<string, unknown> | undefined;
 
-      if (content && content.analysisData) {
-        content.analysisData = JSON.parse(content.analysisData);
+      if (!row) {
+        return null;
       }
 
-      return content || null;
+      const analysisData =
+        typeof row.analysisData === 'string'
+          ? JSON.parse(row.analysisData)
+          : row.analysisData;
+
+      return {
+        id: String(row.id),
+        profileId: String(row.profileId),
+        analysisData: analysisData as Record<string, unknown>,
+      };
     } catch (error) {
       logger.error(`[CaptionGenerator] Error fetching analysis: ${error}`);
       return null;
