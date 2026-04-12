@@ -351,6 +351,75 @@ npm run trace -- workflow-name
 - Maintain context of the current story being worked on
 - Save important state before long-running operations
 
+### QA Gate Process (@qa)
+**CRITICAL: All QA gates MUST follow this documentation process:**
+
+1. **Execute Quality Checks** — Run all 7 quality checks per story-lifecycle.md
+   - Code review (patterns, readability, maintainability)
+   - Unit tests (coverage, all passing)
+   - Acceptance criteria (all met)
+   - No regressions (existing functionality preserved)
+   - Performance (acceptable limits)
+   - Security (OWASP basics verified)
+   - Documentation (updated if necessary)
+
+2. **Update Story File** — Append to "QA Results" section ONLY
+   ```markdown
+   ## QA Results
+   
+   **QA Gate Executed:** {date}
+   **Verdict:** PASS | CONCERNS | FAIL | WAIVED
+   
+   ### Quality Checks
+   - [x] Code Review: {status + brief notes}
+   - [x] Unit Tests: {status + count}
+   - [x] Acceptance Criteria: {status}
+   - [x] No Regressions: {status}
+   - [x] Performance: {status}
+   - [x] Security: {status}
+   - [x] Documentation: {status}
+   
+   ### Findings
+   {list issues by severity: CRITICAL, HIGH, MEDIUM, LOW}
+   
+   ### Recommendations
+   {actionable next steps}
+   ```
+
+3. **Create Gate File** — Save verdict document at `docs/qa/gates/{story-id}.gate.yaml`
+   ```yaml
+   storyId: "3.2"
+   verdict: FAIL
+   executedAt: "2026-04-12T10:30:00Z"
+   issues:
+     - severity: CRITICAL
+       category: tests
+       description: "23/23 tests failing with FOREIGN KEY constraint"
+       recommendation: "Create users before profiles in test setup"
+     - severity: HIGH
+       category: typescript
+       description: "3 TypeScript compilation errors"
+       recommendation: "Fix unused variables and type mismatches"
+   nextAction: "@dev fixes issues, submits new commit, @qa re-runs gate"
+   ```
+
+4. **Communicate Status** — Report verdict clearly
+   - PASS → Ready for @devops push
+   - CONCERNS → Approve with observations noted
+   - FAIL → Send to @dev with specific feedback
+   - WAIVED → Approve with waiver documented (rare)
+
+5. **Track in Change Log** — Append entry to story file Change Log
+   ```markdown
+   - [2026-04-12] QA Gate FAIL: FOREIGN KEY test failures + TypeScript errors. @dev required to fix.
+   ```
+
+**NEVER:**
+- Modify story sections outside "QA Results" (title, AC, scope, dev notes)
+- Skip creating gate file — other agents need verdict artifact
+- Leave story status unchanged — update status field when gate changes it
+- Forget Change Log entry — maintains audit trail for next agent
+
 ### Error Recovery
 - Always provide recovery suggestions for failures
 - Include error context in messages to user
