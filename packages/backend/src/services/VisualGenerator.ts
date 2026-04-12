@@ -1,4 +1,5 @@
 import Database from 'better-sqlite3';
+import sharp from 'sharp';
 import { logger } from '../utils/logger';
 import {
   NandoBananaClient,
@@ -162,21 +163,28 @@ export class VisualGenerator {
 
     const dimensions = this.formatDimensions[format];
 
-    // TODO(human): Implement Sharp resize
-    // sharp(imageBuffer)
-    //   .resize(dimensions.width, dimensions.height, {
-    //     fit: 'cover',
-    //     position: 'center',
-    //   })
-    //   .jpeg({ quality: 95 })
-    //   .toBuffer()
+    try {
+      const resized = await sharp(imageBuffer)
+        .resize(dimensions.width, dimensions.height, {
+          fit: 'cover',
+          position: 'center',
+        })
+        .jpeg({ quality: 95 })
+        .toBuffer();
 
-    logger.debug(
-      `[VisualGenerator] Resized to ${dimensions.width}×${dimensions.height}`
-    );
+      logger.debug(
+        `[VisualGenerator] Resized to ${dimensions.width}×${dimensions.height}`
+      );
 
-    // For now, return original buffer
-    return imageBuffer;
+      return resized;
+    } catch (error) {
+      logger.error(
+        `[VisualGenerator] Error resizing image: ${error instanceof Error ? error.message : String(error)}`
+      );
+      throw new Error(
+        `Failed to resize image: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
   }
 
   /**

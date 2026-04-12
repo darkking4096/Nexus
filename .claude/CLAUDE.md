@@ -351,6 +351,21 @@ npm run trace -- workflow-name
 - Maintain context of the current story being worked on
 - Save important state before long-running operations
 
+### Story Validation Process (@po)
+**MANDATORY: Every @po story validation MUST be documented immediately:**
+
+1. **After validating a story** — Update the story file with validation result BEFORE marking done
+2. **Document in story file** — Add "Status: ✅ Validated by @po" section with date and findings
+3. **Update MEMORY** — If validation reveals cross-agent dependencies or blockers, save to memory immediately
+4. **Never move to next story** without documenting the validation result — other agents depend on this audit trail
+
+**Example documentation in story file:**
+```markdown
+## Validation Status
+✅ **Validated by @po:** 2026-04-12  
+Acceptance criteria met. Ready for @dev → @qa workflow.
+```
+
 ### QA Gate Process (@qa)
 **CRITICAL: All QA gates MUST follow this documentation process:**
 
