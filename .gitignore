@@ -17,6 +17,11 @@ build/
 *.log
 logs/
 
+# TypeScript compiled output (generated files)
+packages/**/src/**/*.js
+packages/**/src/**/*.d.ts
+packages/**/src/**/*.js.map
+
 # IDE & OS (AIOX)
 .DS_Store
 Thumbs.db
