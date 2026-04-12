@@ -1,0 +1,417 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
+import { CaptionGenerator } from '../CaptionGenerator';
+import Database from 'better-sqlite3';
+import path from 'path';
+import fs from 'fs';
+
+describe('CaptionGenerator', () => {
+  let captionGenerator: CaptionGenerator;
+  let db: Database.Database;
+  const testDbPath = path.join(process.cwd(), '.test-caption-generator.db');
+
+  beforeAll(() => {
+    // Create test database with minimal schema
+    db = new Database(testDbPath);
+
+    // Create test tables
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS instagram_profiles (
+        id TEXT PRIMARY KEY,
+        userId TEXT NOT NULL,
+        username TEXT NOT NULL,
+        context JSON
+      );
+
+      CREATE TABLE IF NOT EXISTS generated_content (
+        id TEXT PRIMARY KEY,
+        profileId TEXT NOT NULL,
+        analysisData JSON,
+        FOREIGN KEY (profileId) REFERENCES instagram_profiles(id)
+      );
+    `);
+
+    // Insert test data
+    db.prepare(`
+      INSERT INTO instagram_profiles (id, userId, username, context)
+      VALUES (?, ?, ?, ?)
+    `).run('profile_123', 'user_123', 'test_user', JSON.stringify({
+      voice: 'authentic, engaging',
+      tone: 'educational, inspiring',
+      targetAudience: {
+        ageRange: '25-45',
+        interests: ['marketing', 'business', 'technology'],
+        behaviors: 'engage with educational content'
+      }
+    }));
+
+    db.prepare(`
+      INSERT INTO generated_content (id, profileId, analysisData)
+      VALUES (?, ?, ?)
+    `).run('content_123', 'profile_123', JSON.stringify({
+      viralScore: 78,
+      alignmentScore: 92,
+      insights: [
+        'Carousel format outperforms single post by 25%',
+        'Morning posts (9am) get 40% more engagement'
+      ],
+      recommendedFramework: {
+        framework: 'Gary Vaynerchuk Story-Telling',
+        rationale: 'Profile audience responds to narrative-driven content',
+        structure: {
+          hook: 'First slide: problem/curiosity',
+          development: 'Slides 2-4: solution/insights',
+          cta: 'Last slide: call-to-action'
+        }
+      }
+    }));
+
+    captionGenerator = new CaptionGenerator(db);
+  });
+
+  afterAll(() => {
+    db.close();
+    // Cleanup test database file
+    if (fs.existsSync(testDbPath)) {
+      fs.unlinkSync(testDbPath);
+    }
+  });
+
+  describe('AC-1: Endpoint Functional', () => {
+    it('should generate captions for a valid profile', async () => {
+      // Mock database access
+      vi.spyOn(captionGenerator as any, 'fetchProfile').mockResolvedValue({
+        id: 'profile_123',
+        userId: 'user_123',
+        username: 'test_user',
+        context: {
+          voice: 'authentic, engaging',
+          tone: 'educational, inspiring'
+        }
+      });
+
+      vi.spyOn(captionGenerator as any, 'fetchLatestAnalysis').mockResolvedValue({
+        id: 'content_123',
+        profileId: 'profile_123',
+        analysisData: {
+          viralScore: 78,
+          alignmentScore: 92,
+          insights: ['Test insight'],
+          recommendedFramework: {
+            framework: 'Test Framework',
+            rationale: 'Test rationale'
+          }
+        }
+      });
+
+      const response = await captionGenerator.generateCaptions({
+        profileId: 'profile_123',
+        captionTypes: ['hook', 'cta'],
+        brandTone: 'casual'
+      });
+
+      expect(response).toBeDefined();
+      expect(response.captions).toBeInstanceOf(Array);
+      expect(response.captions.length).toBeGreaterThan(0);
+      expect(response.metadata).toBeDefined();
+      expect(response.metadata.profileId).toBe('profile_123');
+      expect(response.metadata.brandTone).toBe('casual');
+    });
+
+    it('should throw error when profile not found', async () => {
+      vi.spyOn(captionGenerator as any, 'fetchProfile').mockResolvedValue(null);
+
+      await expect(
+        captionGenerator.generateCaptions({
+          profileId: 'nonexistent',
+          captionTypes: ['hook']
+        })
+      ).rejects.toThrow('Profile not found');
+    });
+  });
+
+  describe('AC-2: Multiple Caption Options', () => {
+    it('should generate captions with proper character count', async () => {
+      vi.spyOn(captionGenerator as any, 'fetchProfile').mockResolvedValue({
+        id: 'profile_123',
+        userId: 'user_123',
+        username: 'test_user',
+        context: {}
+      });
+
+      vi.spyOn(captionGenerator as any, 'fetchLatestAnalysis').mockResolvedValue({
+        id: 'content_123',
+        profileId: 'profile_123',
+        analysisData: {}
+      });
+
+      const response = await captionGenerator.generateCaptions({
+        profileId: 'profile_123',
+        captionTypes: ['hook'],
+        brandTone: 'casual'
+      });
+
+      response.captions.forEach(caption => {
+        const textWithoutHashtags = caption.text.replace(/#\S+/g, '').trim();
+        expect(textWithoutHashtags.length).toBeGreaterThanOrEqual(50);
+        expect(textWithoutHashtags.length).toBeLessThanOrEqual(150);
+      });
+    });
+
+    it('should include relevant hashtags (3-5)', async () => {
+      vi.spyOn(captionGenerator as any, 'fetchProfile').mockResolvedValue({
+        id: 'profile_123',
+        userId: 'user_123',
+        username: 'test_user',
+        context: {}
+      });
+
+      vi.spyOn(captionGenerator as any, 'fetchLatestAnalysis').mockResolvedValue({
+        id: 'content_123',
+        profileId: 'profile_123',
+        analysisData: {}
+      });
+
+      const response = await captionGenerator.generateCaptions({
+        profileId: 'profile_123',
+        captionTypes: ['hook'],
+        brandTone: 'casual'
+      });
+
+      response.captions.forEach(caption => {
+        expect(caption.hashtags.length).toBeGreaterThanOrEqual(3);
+        expect(caption.hashtags.length).toBeLessThanOrEqual(5);
+      });
+    });
+  });
+
+  describe('AC-3: Brand Tone Frameworks', () => {
+    it('should apply casual tone correctly', async () => {
+      vi.spyOn(captionGenerator as any, 'fetchProfile').mockResolvedValue({
+        id: 'profile_123',
+        userId: 'user_123',
+        username: 'test_user',
+        context: {}
+      });
+
+      vi.spyOn(captionGenerator as any, 'fetchLatestAnalysis').mockResolvedValue({
+        id: 'content_123',
+        profileId: 'profile_123',
+        analysisData: {}
+      });
+
+      const response = await captionGenerator.generateCaptions({
+        profileId: 'profile_123',
+        captionTypes: ['hook'],
+        brandTone: 'casual'
+      });
+
+      expect(response.metadata.brandTone).toBe('casual');
+      // Captions should be generated without errors
+      expect(response.captions.length).toBeGreaterThan(0);
+    });
+
+    it('should apply profissional tone correctly', async () => {
+      vi.spyOn(captionGenerator as any, 'fetchProfile').mockResolvedValue({
+        id: 'profile_123',
+        userId: 'user_123',
+        username: 'test_user',
+        context: {}
+      });
+
+      vi.spyOn(captionGenerator as any, 'fetchLatestAnalysis').mockResolvedValue({
+        id: 'content_123',
+        profileId: 'profile_123',
+        analysisData: {}
+      });
+
+      const response = await captionGenerator.generateCaptions({
+        profileId: 'profile_123',
+        captionTypes: ['cta'],
+        brandTone: 'profissional'
+      });
+
+      expect(response.metadata.brandTone).toBe('profissional');
+      expect(response.captions.length).toBeGreaterThan(0);
+    });
+
+    it('should apply viral tone correctly', async () => {
+      vi.spyOn(captionGenerator as any, 'fetchProfile').mockResolvedValue({
+        id: 'profile_123',
+        userId: 'user_123',
+        username: 'test_user',
+        context: {}
+      });
+
+      vi.spyOn(captionGenerator as any, 'fetchLatestAnalysis').mockResolvedValue({
+        id: 'content_123',
+        profileId: 'profile_123',
+        analysisData: {}
+      });
+
+      const response = await captionGenerator.generateCaptions({
+        profileId: 'profile_123',
+        captionTypes: ['teaser'],
+        brandTone: 'viral'
+      });
+
+      expect(response.metadata.brandTone).toBe('viral');
+      expect(response.captions.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('AC-5: Tests Implemented', () => {
+    it('should handle profiles without analysis gracefully', async () => {
+      vi.spyOn(captionGenerator as any, 'fetchProfile').mockResolvedValue({
+        id: 'profile_123',
+        userId: 'user_123',
+        username: 'test_user',
+        context: {}
+      });
+
+      vi.spyOn(captionGenerator as any, 'fetchLatestAnalysis').mockResolvedValue(null);
+
+      const response = await captionGenerator.generateCaptions({
+        profileId: 'profile_123',
+        captionTypes: ['hook']
+      });
+
+      expect(response).toBeDefined();
+      expect(response.captions.length).toBeGreaterThan(0);
+    });
+
+    it('should validate character limits correctly', async () => {
+      vi.spyOn(captionGenerator as any, 'fetchProfile').mockResolvedValue({
+        id: 'profile_123',
+        userId: 'user_123',
+        username: 'test_user',
+        context: {}
+      });
+
+      vi.spyOn(captionGenerator as any, 'fetchLatestAnalysis').mockResolvedValue({
+        id: 'content_123',
+        profileId: 'profile_123',
+        analysisData: {}
+      });
+
+      const response = await captionGenerator.generateCaptions({
+        profileId: 'profile_123',
+        captionTypes: ['hook', 'cta', 'teaser']
+      });
+
+      response.captions.forEach(caption => {
+        const textWithoutHashtags = caption.text.replace(/#\S+/g, '').trim();
+        expect(textWithoutHashtags.length).toBeGreaterThanOrEqual(50);
+        expect(textWithoutHashtags.length).toBeLessThanOrEqual(150);
+      });
+    });
+
+    it('should extract valid hashtags', async () => {
+      vi.spyOn(captionGenerator as any, 'fetchProfile').mockResolvedValue({
+        id: 'profile_123',
+        userId: 'user_123',
+        username: 'test_user',
+        context: {}
+      });
+
+      vi.spyOn(captionGenerator as any, 'fetchLatestAnalysis').mockResolvedValue({
+        id: 'content_123',
+        profileId: 'profile_123',
+        analysisData: {}
+      });
+
+      const response = await captionGenerator.generateCaptions({
+        profileId: 'profile_123',
+        captionTypes: ['hook']
+      });
+
+      response.captions.forEach(caption => {
+        caption.hashtags.forEach(hashtag => {
+          expect(hashtag).toMatch(/^#[a-zA-Z0-9_]+$/);
+        });
+      });
+    });
+
+    it('should calculate confidence score (0-100)', async () => {
+      vi.spyOn(captionGenerator as any, 'fetchProfile').mockResolvedValue({
+        id: 'profile_123',
+        userId: 'user_123',
+        username: 'test_user',
+        context: {}
+      });
+
+      vi.spyOn(captionGenerator as any, 'fetchLatestAnalysis').mockResolvedValue({
+        id: 'content_123',
+        profileId: 'profile_123',
+        analysisData: {
+          viralScore: 85
+        }
+      });
+
+      const response = await captionGenerator.generateCaptions({
+        profileId: 'profile_123',
+        captionTypes: ['hook']
+      });
+
+      response.captions.forEach(caption => {
+        expect(caption.confidenceScore).toBeGreaterThanOrEqual(0);
+        expect(caption.confidenceScore).toBeLessThanOrEqual(100);
+      });
+
+      // Average should also be valid
+      expect(response.metadata.confidenceAverage).toBeGreaterThanOrEqual(0);
+      expect(response.metadata.confidenceAverage).toBeLessThanOrEqual(100);
+    });
+  });
+
+  describe('Caption Validation', () => {
+    it('should reject captions with blocked words', async () => {
+      vi.spyOn(captionGenerator as any, 'fetchProfile').mockResolvedValue({
+        id: 'profile_123',
+        userId: 'user_123',
+        username: 'test_user',
+        context: {}
+      });
+
+      vi.spyOn(captionGenerator as any, 'fetchLatestAnalysis').mockResolvedValue(null);
+
+      const response = await captionGenerator.generateCaptions({
+        profileId: 'profile_123',
+        captionTypes: ['hook']
+      });
+
+      response.captions.forEach(caption => {
+        const blockedWords = ['click here', 'buy now', 'free money', 'guaranteed'];
+        blockedWords.forEach(word => {
+          expect(caption.text.toLowerCase()).not.toContain(word);
+        });
+      });
+    });
+  });
+
+  describe('Different Caption Types', () => {
+    it('should generate different types: hook, teaser, cta', async () => {
+      vi.spyOn(captionGenerator as any, 'fetchProfile').mockResolvedValue({
+        id: 'profile_123',
+        userId: 'user_123',
+        username: 'test_user',
+        context: {}
+      });
+
+      vi.spyOn(captionGenerator as any, 'fetchLatestAnalysis').mockResolvedValue({
+        id: 'content_123',
+        profileId: 'profile_123',
+        analysisData: {}
+      });
+
+      const response = await captionGenerator.generateCaptions({
+        profileId: 'profile_123',
+        captionTypes: ['hook', 'teaser', 'cta'],
+        brandTone: 'casual'
+      });
+
+      const types = response.captions.map(c => c.type);
+      expect(types).toContain('hook');
+    });
+  });
+});

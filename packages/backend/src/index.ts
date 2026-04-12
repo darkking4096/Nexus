@@ -12,6 +12,7 @@ import { createContentRoutes } from './routes/content';
 import { createResearchRoutes } from './routes/research';
 import { createAnalyticsRoutes } from './routes/analytics';
 import { createSearchRoutes } from './routes/search';
+import { createGenerationRoutes } from './routes/generation';
 
 dotenv.config();
 
@@ -65,6 +66,7 @@ app.use('/api/profiles/:profileId/competitors', createCompetitorsRoutes(db));
 app.use('/api/profiles/:profileId/assets', createAssetsRoutes(db));
 app.use('/api/content', createContentRoutes(db));
 app.use('/api/content', createResearchRoutes(db));
+app.use('/api/content', createGenerationRoutes(db));
 app.use('/api/analytics', createAnalyticsRoutes(db));
 app.use('/api/search', createSearchRoutes(db));
 
