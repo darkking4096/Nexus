@@ -1,35 +1,48 @@
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import Database from 'better-sqlite3';
 import { ResearchService } from '../ResearchService';
-import { ResearchSquad, ResearchResult } from '../ResearchSquad';
+import type { ResearchResult } from '../ResearchSquad';
+import { ResearchSquad } from '../ResearchSquad';
+
+const mockResearchResult: ResearchResult = {
+  competitors: [{ username: 'competitor1', top_posts: [] }],
+  trends: [{ trend: 'fitness', relevance_score: 9.5, description: 'Growing fitness niche' }],
+  history: {
+    total_posts: 10,
+    avg_engagement: 150,
+    top_posts: [{ caption: 'Sample post', engagement: 500 }],
+    patterns: ['morning posts work well'],
+  },
+  voice_analysis: {
+    tone: 'professional',
+    audience: 'fitness enthusiasts',
+    key_themes: ['health', 'wellness'],
+    language_style: 'educational',
+  },
+  insights: ['Create more educational content'],
+};
 
 // Mock ResearchSquad
 vi.mock('../ResearchSquad', () => ({
-  ResearchSquad: vi.fn(),
+  ResearchSquad: vi.fn(function () {
+    return {
+      runResearch: vi.fn().mockResolvedValue(mockResearchResult),
+      client: {},
+      agentsDir: '/mock/agents',
+      model: 'claude-sonnet-4-5-20251001',
+      runProfileStrategist: vi.fn(),
+      runTrendAnalyzer: vi.fn(),
+      runContentAnalyst: vi.fn(),
+      runCompetitorAnalyzer: vi.fn(),
+      runInsightGenerator: vi.fn(),
+    };
+  }),
 }));
 
 describe('ResearchService', () => {
   let db: Database.Database;
   let service: ResearchService;
-  let mockResearchSquad: { runResearch: ReturnType<typeof vi.fn> };
-
-  const mockResearchResult: ResearchResult = {
-    competitors: [{ username: 'competitor1', top_posts: [] }],
-    trends: [{ trend: 'fitness', relevance_score: 9.5, description: 'Growing fitness niche' }],
-    history: {
-      total_posts: 10,
-      avg_engagement: 150,
-      top_posts: [{ caption: 'Sample post', engagement: 500 }],
-      patterns: ['morning posts work well'],
-    },
-    voice_analysis: {
-      tone: 'professional',
-      audience: 'fitness enthusiasts',
-      key_themes: ['health', 'wellness'],
-      language_style: 'educational',
-    },
-    insights: ['Create more educational content'],
-  };
+  let mockSquadInstance: { runResearch: () => Promise<ResearchResult> };
 
   beforeAll(() => {
     // Create in-memory database for testing
@@ -70,19 +83,8 @@ describe('ResearchService', () => {
       );
     `);
 
-    // Setup mock ResearchSquad with all required properties
-    mockResearchSquad = {
-      runResearch: vi.fn().mockResolvedValue(mockResearchResult),
-      client: {},
-      agentsDir: '/mock/agents',
-      model: 'claude-sonnet-4-5-20251001',
-      runProfileStrategist: vi.fn(),
-      runTrendAnalyzer: vi.fn(),
-      runContentAnalyst: vi.fn(),
-      runCompetitorAnalyzer: vi.fn(),
-      runInsightGenerator: vi.fn(),
-    } as any;
-    vi.mocked(ResearchSquad).mockImplementation(() => mockResearchSquad as unknown as ResearchSquad);
+    // Capture mock instance
+    mockSquadInstance = vi.mocked(ResearchSquad).mock.results[0]?.value;
 
     service = new ResearchService(db);
   });
@@ -122,7 +124,7 @@ describe('ResearchService', () => {
 
       // Verify
       expect(result).toEqual(mockResearchResult);
-      expect(mockResearchSquad.runResearch).toHaveBeenCalled();
+      expect(mockSquadInstance.runResearch).toHaveBeenCalled();
     });
 
     it('should throw error for non-existent profile', async () => {
@@ -168,7 +170,7 @@ describe('ResearchService', () => {
 
       // Verify result (squad should still run with empty history)
       expect(result).toEqual(mockResearchResult);
-      expect(mockResearchSquad.runResearch).toHaveBeenCalledWith(
+      expect(mockSquadInstance.runResearch).toHaveBeenCalledWith(
         expect.objectContaining({ id: profileId }),
         expect.any(Array)
       );
