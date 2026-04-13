@@ -17,6 +17,7 @@ import { createVisualGenerationRoutes } from './routes/visual-generation';
 import { createCarouselRoutes } from './routes/carousel';
 import { createStoryRoutes } from './routes/story';
 import { createHashtagRoutes } from './routes/hashtags';
+import { createWorkflowRoutes } from './routes/workflow';
 
 dotenv.config();
 
@@ -71,6 +72,7 @@ app.use('/api/profiles/:profileId/assets', createAssetsRoutes(db));
 app.use('/api/content', createContentRoutes(db));
 app.use('/api/content', createResearchRoutes(db));
 app.use('/api/content', createGenerationRoutes(db));
+app.use('/api/content', createWorkflowRoutes(db));
 app.use('/api/visual', createVisualGenerationRoutes(db));
 app.use('/api/visual', createCarouselRoutes(db));
 app.use('/api/visual', createStoryRoutes(db));

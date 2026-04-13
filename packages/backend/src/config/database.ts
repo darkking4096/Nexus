@@ -148,6 +148,45 @@ function createSchema(db: Database.Database): void {
     );
   `);
 
+  // workflow_states table (Story 4.1: Manual Mode workflow tracking)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS workflow_states (
+      id TEXT PRIMARY KEY,
+      content_id TEXT NOT NULL UNIQUE REFERENCES content(id) ON DELETE CASCADE,
+      profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+      mode TEXT NOT NULL DEFAULT 'manual',
+      current_step TEXT NOT NULL,
+      schedule_data TEXT,
+      content_data TEXT,
+      publish_data TEXT,
+      user_edits TEXT,
+      auto_approve_enabled BOOLEAN DEFAULT 1,
+      auto_approve_timeout_hours INTEGER DEFAULT 24,
+      last_approval_at DATETIME,
+      approved_by TEXT,
+      rejected_at DATETIME,
+      rejection_reason TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  // workflow_history table (Story 4.1: Audit trail for approvals)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS workflow_history (
+      id TEXT PRIMARY KEY,
+      content_id TEXT NOT NULL REFERENCES content(id) ON DELETE CASCADE,
+      profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+      action TEXT NOT NULL,
+      from_step TEXT,
+      to_step TEXT,
+      decision TEXT NOT NULL,
+      user_id TEXT,
+      reason TEXT,
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
   // Create indexes for common queries
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_profiles_user_id ON profiles(user_id);
@@ -162,6 +201,11 @@ function createSchema(db: Database.Database): void {
     CREATE INDEX IF NOT EXISTS idx_metrics_collected_at ON metrics(collected_at);
     CREATE INDEX IF NOT EXISTS idx_post_metrics_content_id ON post_metrics(content_id);
     CREATE INDEX IF NOT EXISTS idx_post_metrics_profile_id ON post_metrics(profile_id);
+    CREATE INDEX IF NOT EXISTS idx_workflow_states_content_id ON workflow_states(content_id);
+    CREATE INDEX IF NOT EXISTS idx_workflow_states_profile_id ON workflow_states(profile_id);
+    CREATE INDEX IF NOT EXISTS idx_workflow_states_current_step ON workflow_states(current_step);
+    CREATE INDEX IF NOT EXISTS idx_workflow_history_content_id ON workflow_history(content_id);
+    CREATE INDEX IF NOT EXISTS idx_workflow_history_profile_id ON workflow_history(profile_id);
   `);
 }
 
