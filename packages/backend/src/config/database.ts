@@ -203,6 +203,36 @@ function createSchema(db: Database.Database): void {
     );
   `);
 
+  // scheduled_posts table (Story 4.4: Scheduling Engine)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS scheduled_posts (
+      id TEXT PRIMARY KEY,
+      content_id TEXT NOT NULL UNIQUE REFERENCES content(id) ON DELETE CASCADE,
+      profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+      scheduled_at DATETIME NOT NULL,
+      original_scheduled_at DATETIME,
+      status TEXT DEFAULT 'scheduled',
+      queue_position INTEGER,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  // schedule_audit table (Story 4.4: Audit trail for scheduling)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS schedule_audit (
+      id TEXT PRIMARY KEY,
+      scheduled_post_id TEXT NOT NULL REFERENCES scheduled_posts(id) ON DELETE CASCADE,
+      content_id TEXT NOT NULL REFERENCES content(id) ON DELETE CASCADE,
+      profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+      action TEXT NOT NULL,
+      old_value TEXT,
+      new_value TEXT,
+      changed_by TEXT,
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
   // Create indexes for common queries
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_profiles_user_id ON profiles(user_id);
@@ -224,6 +254,12 @@ function createSchema(db: Database.Database): void {
     CREATE INDEX IF NOT EXISTS idx_workflow_history_profile_id ON workflow_history(profile_id);
     CREATE INDEX IF NOT EXISTS idx_autopilot_config_profile_id ON autopilot_config(profile_id);
     CREATE INDEX IF NOT EXISTS idx_autopilot_config_enabled ON autopilot_config(enabled);
+    CREATE INDEX IF NOT EXISTS idx_scheduled_posts_profile_id ON scheduled_posts(profile_id);
+    CREATE INDEX IF NOT EXISTS idx_scheduled_posts_scheduled_at ON scheduled_posts(scheduled_at);
+    CREATE INDEX IF NOT EXISTS idx_scheduled_posts_status ON scheduled_posts(status);
+    CREATE INDEX IF NOT EXISTS idx_scheduled_posts_content_id ON scheduled_posts(content_id);
+    CREATE INDEX IF NOT EXISTS idx_schedule_audit_scheduled_post_id ON schedule_audit(scheduled_post_id);
+    CREATE INDEX IF NOT EXISTS idx_schedule_audit_profile_id ON schedule_audit(profile_id);
   `);
 }
 
