@@ -21,6 +21,11 @@ logs/
 packages/**/src/**/*.js
 packages/**/src/**/*.d.ts
 packages/**/src/**/*.js.map
+packages/**/src/**/*.d.ts.map
+packages/**/vitest.setup.js
+packages/**/vitest.setup.d.ts
+packages/**/vitest.setup.d.ts.map
+packages/**/vitest.setup.js.map
 
 # IDE & OS (AIOX)
 .DS_Store
@@ -37,3 +42,4 @@ Thumbs.db
 **/__tests__/*.db
 **/__tests__/test-*.db
 *.db.lock
+**/test-results.json
