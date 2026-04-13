@@ -6,6 +6,10 @@ import { initializeDatabase } from '../../config/database.js';
 import { QueueService } from '../QueueService.js';
 import { randomUUID } from 'crypto';
 
+interface ContentStatusRow {
+  status: string;
+}
+
 describe('QueueService', () => {
   let db: Database.Database;
   let service: QueueService;
@@ -173,8 +177,8 @@ describe('QueueService', () => {
 
       // Verify content is back to draft
       const checkContent = db.prepare('SELECT status FROM content WHERE id = ?');
-      const content = checkContent.get(contentId) as any;
-      expect(content.status).toBe('draft');
+      const content = checkContent.get(contentId) as ContentStatusRow | undefined;
+      expect(content?.status).toBe('draft');
     });
 
     it('should throw error for non-existent content', () => {

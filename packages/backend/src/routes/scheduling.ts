@@ -4,6 +4,10 @@ import { SchedulingService } from '../services/SchedulingService.js';
 import { BestTimesCalculator } from '../services/BestTimesCalculator.js';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
 
+interface ContentRow {
+  profile_id: string;
+}
+
 /**
  * Content scheduling routes
  * AC 1-6: Schedule creation, validation, best times, retrieval, update, cancel
@@ -39,7 +43,7 @@ export function createSchedulingRoutes(db: Database.Database): Router {
       const contentStmt = db.prepare(`
         SELECT profile_id FROM content WHERE id = ?
       `);
-      const content = contentStmt.get(contentId) as any;
+      const content = contentStmt.get(contentId) as ContentRow | undefined;
       if (!content) {
         res.status(404).json({ error: 'Content not found' });
         return;
@@ -184,7 +188,7 @@ export function createSchedulingRoutes(db: Database.Database): Router {
       const contentStmt = db.prepare(`
         SELECT profile_id FROM content WHERE id = ?
       `);
-      const content = contentStmt.get(contentId) as any;
+      const content = contentStmt.get(contentId) as ContentRow | undefined;
       if (!content) {
         res.status(404).json({ error: 'Content not found' });
         return;
@@ -241,7 +245,7 @@ export function createSchedulingRoutes(db: Database.Database): Router {
       const contentStmt = db.prepare(`
         SELECT profile_id FROM content WHERE id = ?
       `);
-      const content = contentStmt.get(contentId) as any;
+      const content = contentStmt.get(contentId) as ContentRow | undefined;
       if (!content) {
         res.status(404).json({ error: 'Content not found' });
         return;

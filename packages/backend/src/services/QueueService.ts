@@ -19,6 +19,14 @@ export interface QueueResponse {
   current_page: number;
 }
 
+interface CountResult {
+  total: number;
+}
+
+interface ScheduledPostItem {
+  id: string;
+}
+
 /**
  * QueueService
  * Manages content queue: read, reorder, delete operations
@@ -48,7 +56,7 @@ export class QueueService {
     const statusFilter = filters?.status;
 
     let dataQuery = '';
-    const params: any[] = [];
+    const params: (string | number)[] = [];
 
     // Apply status filter
     if (statusFilter === 'pending') {
@@ -122,7 +130,7 @@ export class QueueService {
 
     // Count total
     let countQuery = '';
-    const countParams: any[] = [];
+    const countParams: (string | number)[] = [];
 
     if (statusFilter === 'pending') {
       countQuery = 'SELECT COUNT(*) as total FROM content WHERE profile_id = ? AND status = ?';
@@ -142,7 +150,7 @@ export class QueueService {
     }
 
     const countStmt = this.db.prepare(countQuery);
-    const countResult = countStmt.get(...countParams) as any;
+    const countResult = countStmt.get(...countParams) as CountResult | undefined;
     const total = countResult?.total || 0;
 
     return {
@@ -167,7 +175,7 @@ export class QueueService {
         const getStmt = this.db.prepare(`
           SELECT id FROM scheduled_posts WHERE content_id = ? AND profile_id = ?
         `);
-        const scheduled = getStmt.get(content_id, profileId) as any;
+        const scheduled = getStmt.get(content_id, profileId) as ScheduledPostItem | undefined;
 
         if (scheduled) {
           const now = new Date().toISOString();
@@ -215,7 +223,7 @@ export class QueueService {
     const scheduledStmt = this.db.prepare(`
       SELECT id FROM scheduled_posts WHERE content_id = ? AND profile_id = ?
     `);
-    const scheduled = scheduledStmt.get(contentId, profileId) as any;
+    const scheduled = scheduledStmt.get(contentId, profileId) as ScheduledPostItem | undefined;
 
     if (scheduled) {
       // Delete from scheduled_posts
@@ -251,7 +259,7 @@ export class QueueService {
       const countStmt = this.db.prepare(`
         SELECT COUNT(*) as cnt FROM scheduled_posts WHERE profile_id = ? AND status = 'scheduled'
       `);
-      const countResult = countStmt.get(profileId) as any;
+      const countResult = countStmt.get(profileId) as { cnt: number } | undefined;
 
       return {
         items,
@@ -279,7 +287,7 @@ export class QueueService {
       const countStmt = this.db.prepare(`
         SELECT COUNT(*) as cnt FROM content WHERE profile_id = ? AND status = 'draft'
       `);
-      const countResult = countStmt.get(profileId) as any;
+      const countResult = countStmt.get(profileId) as { cnt: number } | undefined;
 
       return {
         items,

@@ -33,6 +33,16 @@ interface ScheduledPostRow {
   updated_at: string;
 }
 
+interface ContentRow {
+  id: string;
+  profile_id: string;
+  status: string;
+}
+
+interface CountResult {
+  cnt: number;
+}
+
 /**
  * SchedulingService
  * Manages content scheduling: create, read, update, delete schedules
@@ -60,7 +70,7 @@ export class SchedulingService {
     const contentStmt = this.db.prepare(`
       SELECT id, profile_id, status FROM content WHERE id = ? AND profile_id = ?
     `);
-    const content = contentStmt.get(contentId, profileId) as any;
+    const content = contentStmt.get(contentId, profileId) as ContentRow | undefined;
     if (!content) {
       throw new Error('Content not found or access denied');
     }
@@ -112,7 +122,7 @@ export class SchedulingService {
     profileId: string,
     filters?: { status?: string; limit?: number; offset?: number }
   ): {
-    items: Array<ScheduledPost | any>;
+    items: ScheduledPost[];
     total: number;
     has_more: boolean;
   } {
@@ -151,7 +161,7 @@ export class SchedulingService {
     }
 
     const pendingStmt = this.db.prepare(pendingQuery);
-    const pending = pendingStmt.all(profileId) as any[];
+    const pending = pendingStmt.all(profileId) as ScheduledPostRow[];
 
     const items = [...scheduled, ...pending];
 
@@ -165,7 +175,7 @@ export class SchedulingService {
     `;
 
     const countStmt = this.db.prepare(countQuery);
-    const countResult = countStmt.get(profileId, profileId) as any;
+    const countResult = countStmt.get(profileId, profileId) as CountResult | undefined;
     const total = countResult?.cnt || 0;
 
     return {

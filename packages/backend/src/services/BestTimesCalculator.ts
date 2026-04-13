@@ -7,6 +7,10 @@ export interface BestTime {
   posts_analyzed: number;
 }
 
+interface PostCountResult {
+  cnt: number;
+}
+
 /**
  * BestTimesCalculator
  * Analyzes historical engagement data to suggest optimal posting times
@@ -28,7 +32,7 @@ export class BestTimesCalculator {
     const postCountStmt = this.db.prepare(`
       SELECT COUNT(*) as cnt FROM content WHERE profile_id = ? AND status IN ('published', 'scheduled')
     `);
-    const postCountResult = postCountStmt.get(profileId) as any;
+    const postCountResult = postCountStmt.get(profileId) as PostCountResult | undefined;
     const postCount = postCountResult?.cnt || 0;
 
     if (postCount < 5) {

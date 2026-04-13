@@ -6,6 +6,15 @@ import { initializeDatabase } from '../../config/database.js';
 import { SchedulingService } from '../SchedulingService.js';
 import { randomUUID } from 'crypto';
 
+interface ContentStatusRow {
+  status: string;
+}
+
+interface AuditRecord {
+  action: string;
+  content_id: string;
+}
+
 describe('SchedulingService', () => {
   let db: Database.Database;
   let service: SchedulingService;
@@ -92,9 +101,9 @@ describe('SchedulingService', () => {
       service.createSchedule(contentId, profileId, { scheduled_at: scheduledAt });
 
       const stmt = db.prepare('SELECT status FROM content WHERE id = ?');
-      const result = stmt.get(contentId) as any;
+      const result = stmt.get(contentId) as ContentStatusRow | undefined;
 
-      expect(result.status).toBe('scheduled');
+      expect(result?.status).toBe('scheduled');
     });
   });
 
@@ -206,9 +215,9 @@ describe('SchedulingService', () => {
       service.cancelSchedule(contentId, profileId);
 
       const stmt = db.prepare('SELECT status FROM content WHERE id = ?');
-      const result = stmt.get(contentId) as any;
+      const result = stmt.get(contentId) as ContentStatusRow | undefined;
 
-      expect(result.status).toBe('draft');
+      expect(result?.status).toBe('draft');
 
       // Verify schedule is deleted
       const scheduleStmt = db.prepare('SELECT id FROM scheduled_posts WHERE content_id = ?');
@@ -226,10 +235,10 @@ describe('SchedulingService', () => {
       service.createSchedule(contentId, profileId, { scheduled_at: futureDate.toISOString() });
 
       const stmt = db.prepare('SELECT * FROM schedule_audit WHERE action = ? AND content_id = ?');
-      const audit = stmt.get('create', contentId) as any;
+      const audit = stmt.get('create', contentId) as AuditRecord | undefined;
 
       expect(audit).toBeDefined();
-      expect(audit.action).toBe('create');
+      expect(audit?.action).toBe('create');
     });
 
     it('should log schedule update', () => {
@@ -243,7 +252,7 @@ describe('SchedulingService', () => {
       service.updateSchedule(contentId, profileId, { scheduled_at: date2.toISOString() });
 
       const stmt = db.prepare('SELECT * FROM schedule_audit WHERE action = ? AND content_id = ?');
-      const audit = stmt.all('update', contentId) as any[];
+      const audit = stmt.all('update', contentId) as AuditRecord[];
 
       expect(audit.length).toBeGreaterThan(0);
     });
