@@ -14,6 +14,9 @@ import { createAnalyticsRoutes } from './routes/analytics';
 import { createSearchRoutes } from './routes/search';
 import { createGenerationRoutes } from './routes/generation';
 import { createVisualGenerationRoutes } from './routes/visual-generation';
+import { createCarouselRoutes } from './routes/carousel';
+import { createStoryRoutes } from './routes/story';
+import { createHashtagRoutes } from './routes/hashtags';
 
 dotenv.config();
 
@@ -68,7 +71,10 @@ app.use('/api/profiles/:profileId/assets', createAssetsRoutes(db));
 app.use('/api/content', createContentRoutes(db));
 app.use('/api/content', createResearchRoutes(db));
 app.use('/api/content', createGenerationRoutes(db));
-app.use('/api/visuals', createVisualGenerationRoutes(db));
+app.use('/api/visual', createVisualGenerationRoutes(db));
+app.use('/api/visual', createCarouselRoutes(db));
+app.use('/api/visual', createStoryRoutes(db));
+app.use('/api/content', createHashtagRoutes(db));
 app.use('/api/analytics', createAnalyticsRoutes(db));
 app.use('/api/search', createSearchRoutes(db));
 
