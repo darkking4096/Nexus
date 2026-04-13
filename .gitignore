@@ -32,3 +32,8 @@ Thumbs.db
 .aiox-core/local/
 .claude/settings.local.json
 .aiox/install-log.txt
+
+# Test artifacts (AIOX)
+**/__tests__/*.db
+**/__tests__/test-*.db
+*.db.lock
