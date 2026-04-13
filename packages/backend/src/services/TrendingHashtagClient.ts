@@ -194,10 +194,13 @@ export class TrendingHashtagClient {
     }
 
     // Calculate recommendation score (0-1)
-    // Ideal: medium volume with low competition
-    let score = 0.5;
-    if (competition === 'medium') score += 0.3;
-    if (competition === 'low') score += 0.1;
+    // Trending hashtags (high volume) get bonus for relevance
+    // Niche hashtags (medium volume) are most balanced
+    // Long-tail (low volume) are specific but less visible
+    let score = 0.4;
+    if (competition === 'medium') score += 0.35; // Best: medium competition
+    if (competition === 'low') score += 0.25;   // Good: low competition
+    if (competition === 'high') score += 0.2;   // Okay: high but trending
     if (volume > 50000 && volume < 500000) score += 0.1;
 
     return {
