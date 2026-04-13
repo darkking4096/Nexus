@@ -18,6 +18,7 @@ import { createCarouselRoutes } from './routes/carousel';
 import { createStoryRoutes } from './routes/story';
 import { createHashtagRoutes } from './routes/hashtags';
 import { createWorkflowRoutes } from './routes/workflow';
+import { createAutopilotRoutes } from './routes/autopilot';
 
 dotenv.config();
 
@@ -69,6 +70,7 @@ app.use('/auth', createAuthRoutes(db, loginLimiter));
 app.use('/api/profiles', createProfilesRoutes(db));
 app.use('/api/profiles/:profileId/competitors', createCompetitorsRoutes(db));
 app.use('/api/profiles/:profileId/assets', createAssetsRoutes(db));
+app.use('/api/profiles/:profileId/autopilot', createAutopilotRoutes(db));
 app.use('/api/content', createContentRoutes(db));
 app.use('/api/content', createResearchRoutes(db));
 app.use('/api/content', createGenerationRoutes(db));

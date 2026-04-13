@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 
 /**
  * AutopilotService
@@ -29,6 +29,19 @@ export interface UpdateAutopilotPayload {
   enabled?: boolean;
   days?: string[];
   times?: string[];
+}
+
+interface AutopilotConfigRow {
+  id: string;
+  profile_id: string;
+  enabled: number;
+  days: string;
+  times: string;
+  frequency: string;
+  created_at: string;
+  updated_at: string;
+  last_updated_at: string;
+  next_publication_at: string | null;
 }
 
 const VALID_DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
@@ -137,7 +150,7 @@ export class AutopilotService {
       return { error: validation.error! };
     }
 
-    const configId = uuidv4();
+    const configId = randomUUID();
     const now = new Date().toISOString();
     const frequency = AutopilotService.calculateFrequency(payload.days, payload.times);
     const nextPublicationAt = this.calculateNextPublicationAt(payload.days, payload.times);
@@ -191,7 +204,7 @@ export class AutopilotService {
         SELECT * FROM autopilot_config WHERE profile_id = ? LIMIT 1
       `);
 
-      const row = stmt.get(profileId) as any;
+      const row = stmt.get(profileId) as AutopilotConfigRow | undefined;
 
       if (!row) {
         return null;

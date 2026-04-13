@@ -187,6 +187,22 @@ function createSchema(db: Database.Database): void {
     );
   `);
 
+  // autopilot_config table (Story 4.3: Autopilot configuration)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS autopilot_config (
+      id TEXT PRIMARY KEY,
+      profile_id TEXT NOT NULL UNIQUE REFERENCES profiles(id) ON DELETE CASCADE,
+      enabled BOOLEAN DEFAULT 0,
+      days TEXT NOT NULL,
+      times TEXT NOT NULL,
+      frequency TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      last_updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      next_publication_at DATETIME
+    );
+  `);
+
   // Create indexes for common queries
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_profiles_user_id ON profiles(user_id);
@@ -206,6 +222,8 @@ function createSchema(db: Database.Database): void {
     CREATE INDEX IF NOT EXISTS idx_workflow_states_current_step ON workflow_states(current_step);
     CREATE INDEX IF NOT EXISTS idx_workflow_history_content_id ON workflow_history(content_id);
     CREATE INDEX IF NOT EXISTS idx_workflow_history_profile_id ON workflow_history(profile_id);
+    CREATE INDEX IF NOT EXISTS idx_autopilot_config_profile_id ON autopilot_config(profile_id);
+    CREATE INDEX IF NOT EXISTS idx_autopilot_config_enabled ON autopilot_config(enabled);
   `);
 }
 
