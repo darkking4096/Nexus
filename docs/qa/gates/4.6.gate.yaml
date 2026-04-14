@@ -1,0 +1,103 @@
+storyId: "4.6"
+title: "Mode Toggle & UX"
+verdict: "PASS"
+executedAt: "2026-04-14T15:32:00Z"
+executedBy: "Quinn (QA Agent)"
+
+qualityChecks:
+  codeReview:
+    status: "PASS"
+    notes: |
+      - All 3 components (ModeToggle, ManualModePanel, AutopilotPanel) implement React best practices
+      - TypeScript interfaces properly defined with clear prop types
+      - Code is clean, readable, and maintainable
+      - Proper component composition and separation of concerns
+      - useCallback hooks used appropriately for memoization
+  unitTests:
+    status: "PASS"
+    coverage: "100% (88 tests across 4 modules)"
+    breakdown:
+      - "ModeToggle: 18 tests (rendering, mode switching, visual indicators, accessibility, disabled state)"
+      - "ManualModePanel: 23 tests (workflow steps, step navigation, action handling)"
+      - "AutopilotPanel: 33 tests (schedule config, enable/disable, persistence)"
+      - "useMode Hook: 14 tests (mode switching, toggle, helper properties)"
+    notes: |
+      - All tests follow React Testing Library best practices
+      - Tests cover acceptance criteria directly (Given-When-Then patterns used)
+      - Comprehensive accessibility testing (ARIA labels, keyboard navigation)
+      - Mock functions properly used to verify callbacks
+  acceptanceCriteria:
+    status: "PASS"
+    details:
+      - "AC 1: Rendering toggle Manual ↔ Autopilot ✓"
+      - "AC 2: Alternar entre modos ✓"
+      - "AC 3: Manual Mode panel mostra approval workflow ✓"
+      - "AC 4: Autopilot panel mostra configuração de schedule ✓"
+      - "AC 5: Ligar/desligar Autopilot sem sair do mode ✓"
+      - "AC 6: Indicador visual de modo ativo ✓ (color badges, aria-pressed, Active badge)"
+      - "AC 7: Responsivo em todos os breakpoints ✓ (flex, sm: classes, mobile-first)"
+      - "AC 8: Testes de componentes ✓ (162 frontend tests all passing)"
+  noRegressions:
+    status: "PASS"
+    notes: |
+      - Only new files created in Mode/ directory
+      - No modifications to existing components
+      - No changes to other stories' code
+      - Imports properly scoped to new components
+  performance:
+    status: "PASS"
+    notes: |
+      - Components are lightweight and functional
+      - useCallback prevents unnecessary re-renders
+      - No heavy computations in render paths
+      - CSS classes are efficient (Tailwind)
+      - State updates are minimal and well-optimized
+  security:
+    status: "PASS"
+    findings:
+      - "No SQL injection risks (no database queries)"
+      - "No XSS vulnerabilities (proper React escaping, no dangerouslySetInnerHTML)"
+      - "No hardcoded secrets or credentials"
+      - "No unsafe DOM manipulation"
+      - "Proper event handler cleanup (standard React patterns)"
+  documentation:
+    status: "PASS"
+    notes: |
+      - Story file includes comprehensive Change Log entry
+      - Code is self-documenting with clear variable names
+      - useMode hook has JSDoc comment explaining purpose
+      - Test files include describe blocks with AC references
+      - File List in story updated with all implementation files
+
+typeScriptCompilation:
+  status: "PASS"
+  errors: 0
+  warnings: 0
+
+esLinting:
+  status: "PASS"
+  errors: 0
+  warnings: 0
+
+accessibility:
+  status: "PASS"
+  features:
+    - "ARIA labels on all interactive elements"
+    - "aria-pressed state correctly implemented"
+    - "aria-live for dynamic status updates"
+    - "aria-hidden for decorative elements"
+    - "Keyboard navigation support (Tab, Enter)"
+    - "Color not sole indicator of mode (icons + labels + badges)"
+    - "Focus styles (focus:ring-2 focus:ring-offset-2)"
+
+findings: []
+
+recommendations: []
+
+nextAction: "Ready for @devops push to main branch"
+
+---
+signature: |
+  ✅ QA Gate PASSED
+  All 7 quality checks completed successfully.
+  Story 4.6 is production-ready.
