@@ -21,6 +21,7 @@ import { createWorkflowRoutes } from './routes/workflow';
 import { createAutopilotRoutes } from './routes/autopilot';
 import { createSchedulingRoutes } from './routes/scheduling';
 import { createQueueRoutes } from './routes/queue';
+import { createOptimizationRoutes } from './routes/optimization';
 
 dotenv.config();
 
@@ -85,6 +86,7 @@ app.use('/api/visual', createStoryRoutes(db));
 app.use('/api/content', createHashtagRoutes(db));
 app.use('/api/analytics', createAnalyticsRoutes(db));
 app.use('/api/search', createSearchRoutes(db));
+app.use('/api', createOptimizationRoutes(db));
 
 // 404 handler
 app.use((_req, res) => {
