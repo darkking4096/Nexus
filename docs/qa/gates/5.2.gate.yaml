@@ -1,0 +1,177 @@
+storyId: "5.2"
+storyTitle: "Carousel Publishing (10+ Image Support)"
+verdict: FAIL
+executedAt: "2026-04-14T11:03:48Z"
+executedBy: "Quinn (@qa)"
+
+summary: |
+  **BLOCKING ISSUES FOUND:**
+
+  1. **TEST INFRASTRUCTURE BROKEN** - Unit tests fail to run due to mock initialization error
+     ("Cannot access 'mockPlaywrightInstance' before initialization"). This is a vitest
+     temporal dead zone issue in test setup.
+
+  2. **ACCEPTANCE CRITERIA INCOMPLETE** - Image dimension validation (AC-4) is not
+     implemented. Carousel validation only checks file existence, not aspect ratio
+     (1.91:1 ± 5% or 4:5 ± 5%).
+
+  Story cannot proceed to merge until both issues resolved.
+
+issues:
+  - severity: CRITICAL
+    category: Test Infrastructure
+    description: |
+      PublishService.test.ts fails at suite load time with:
+      "ReferenceError: Cannot access 'mockPlaywrightInstance' before initialization"
+
+      Root cause: Mock variable `mockPlaywrightInstance` declared at module scope,
+      then used in vi.mock() factory function. Vitest hoists vi.mock() calls, causing
+      temporal dead zone violation.
+
+      Result: 0 tests collected. Test suite never runs.
+    recommendation: |
+      Fix mock initialization order. Options:
+      1. Use vi.hoisted(() => { ... }) wrapper around mock declarations
+      2. Move mockPlaywrightInstance declaration inside vi.mock() factory
+      3. Use beforeAll() hook to set up mocks instead of module scope
+
+      Reference: vitest docs on vi.mock() hoisting behavior
+    file: "packages/backend/src/services/__tests__/PublishService.test.ts"
+    lines: "9-25"
+
+  - severity: CRITICAL
+    category: Acceptance Criteria
+    description: |
+      AC-4: "Validate image dimensions: all slides same aspect ratio (1.91:1 ± 5%
+      tolerance or 4:5 ± 5%)" - NOT IMPLEMENTED
+
+      Current code validateImageDimensions(imagePath):
+      - Only checks fs.statSync(imagePath).isFile()
+      - Does NOT validate aspect ratio
+      - Does NOT validate dimensions against 1.91:1 or 4:5 spec
+      - References undefined getImageDimensions() function in comments
+
+      Result: Any carousel with wrong aspect ratio passes validation and proceeds
+      to Playwright publish attempt (will fail there with poor UX).
+    recommendation: |
+      1. Implement getImageDimensions(imagePath) utility
+         - Use Sharp library to read actual image dimensions
+         - Return {width, height}
+         - Handle errors gracefully
+
+      2. Update validateImageDimensions(imagePath) to:
+         - Call getImageDimensions()
+         - Check aspect ratio: Math.abs(width/height - 1.91) < 0.095 OR
+                                Math.abs(width/height - 0.8) < 0.04
+         - Throw error with specific message if invalid
+
+      3. Add test cases with real image dimensions:
+         - Valid: width/height = 1.91 (landscape carousel)
+         - Valid: width/height = 0.8 (portrait carousel)
+         - Invalid: 2.0:1 (too wide)
+         - Invalid: 1.5:1 (out of tolerance)
+    file: "packages/backend/src/services/PublishService.ts"
+    lines: "295-305"
+
+quality_checks:
+  - check: Code Review
+    status: FAIL
+    notes: "Cannot review code patterns when tests don't run. Mock setup blocks validation."
+
+  - check: Unit Tests
+    status: FAIL
+    notes: "0 tests collected. Test file fails to load due to vitest mock initialization error."
+
+  - check: Acceptance Criteria
+    status: FAIL
+    notes: |
+      AC-1 (detect carousel type): PASS - routing logic correct
+      AC-2 (validate min/max slides): PASS - checks 2-10 range
+      AC-3 (validate format/size): PASS - checks JPEG/PNG, <8MB
+      AC-4 (validate aspect ratio): FAIL - dimension validation stub only, not implemented
+      AC-5 (testing): FAIL - tests don't run due to mock error
+
+  - check: No Regressions
+    status: UNKNOWN
+    notes: "Cannot verify due to broken test suite. Story 5.1 likely OK but cross-story impact untestable."
+
+  - check: Performance
+    status: PASS
+    notes: "Code structure supports fast-fail (validation before Playwright). Delays reasonable if validation fixed."
+
+  - check: Security
+    status: PASS
+    notes: "No obvious security issues in code structure. File path handling follows safe patterns."
+
+  - check: Documentation
+    status: PARTIAL
+    notes: "JSDoc present but references undefined getImageDimensions() function."
+
+findings:
+  - priority: CRITICAL
+    category: Test Failure
+    description: |
+      Test infrastructure broken. Vitest mock initialization error prevents any testing.
+      This is first thing to fix before dimension validation can be tested.
+
+  - priority: CRITICAL
+    category: Missing Feature
+    description: |
+      Aspect ratio validation completely missing. Carousel images can have any dimensions
+      and will pass validation, causing failures downstream in Playwright.
+
+  - priority: MEDIUM
+    category: Code Clarity
+    description: |
+      Comments reference getImageDimensions() utility that doesn't exist. Creates
+      confusion about what's implemented vs pending.
+
+recommendations: |
+  **REQUIRED BEFORE MERGE:**
+
+  1. **FIX TEST SUITE** (Priority 1: blocks everything)
+     - Fix vitest mock initialization order
+     - Ensure PublishService.test.ts loads without errors
+     - Confirm all 8+ tests run and pass
+
+  2. **IMPLEMENT DIMENSION VALIDATION** (Priority 2: AC compliance)
+     - Create getImageDimensions() helper using Sharp
+     - Update validateImageDimensions() with real aspect ratio checks
+     - Test with multiple image dimensions
+
+  3. **ADD TESTS** (Priority 3: coverage)
+     - Create image test fixtures or use Sharp to generate test images
+     - Add tests for valid/invalid aspect ratios
+     - Confirm dimension validation blocks bad carousels
+
+nextAction: |
+  **RETURN TO @DEV**
+
+  This story cannot proceed to @devops without:
+  1. Fixing test suite (vitest mock initialization)
+  2. Implementing getImageDimensions() + dimension validation
+  3. Verifying all tests pass
+
+  Suggested fix order:
+  A. Fix mock setup in test file (30 min)
+  B. Run tests to see them pass with current code (5 min)
+  C. Implement getImageDimensions() (1-2 hours)
+  D. Add dimension tests (1-2 hours)
+  E. Final test run (5 min)
+
+  Estimated total: 2.5-3.5 hours
+
+estimated_effort: |
+  - Test fix: 30 minutes
+  - getImageDimensions() implementation: 1-2 hours
+  - Test cases: 1-2 hours
+  - Verification: 30 minutes
+  Total: 3-4.5 hours
+
+blocked_by: []
+blocks: []
+
+changeLog:
+  - date: "2026-04-14"
+    action: "FAIL verdict"
+    reason: "Test infrastructure broken (vitest mock error). AC-4 dimension validation not implemented. Requires @dev fixes."
