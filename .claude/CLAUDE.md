@@ -435,6 +435,12 @@ Acceptance criteria met. Ready for @dev → @qa workflow.
 - Leave story status unchanged — update status field when gate changes it
 - Forget Change Log entry — maintains audit trail for next agent
 
+**Status Transitions by QA Gate:**
+- **PASS** → Update story status field from `InReview` to `Done` (ready for @devops push)
+- **CONCERNS** → Keep status as `InReview` (approved with observations)
+- **FAIL** → Update story status field back to `InProgress` (return to @dev for fixes)
+- **WAIVED** → Update story status field to `Done` (approved with waiver documented)
+
 ### Error Recovery
 - Always provide recovery suggestions for failures
 - Include error context in messages to user
