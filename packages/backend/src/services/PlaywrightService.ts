@@ -217,6 +217,58 @@ export class PlaywrightService {
   }
 
   /**
+   * Publish an Instagram Story (vertical image 1080x1920)
+   *
+   * @param imagePath Local file path to story image
+   * @returns Story ID and Instagram URL
+   */
+  async publishStory(imagePath: string): Promise<PublishResult> {
+    if (!this.page) {
+      throw new Error('Browser not initialized');
+    }
+
+    try {
+      // Navigate to profile
+      await this.navigateToHome();
+      await humanDelay(1000, 2000);
+
+      // Click "Your Story" or "+" button for stories
+      // Instagram Stories button is usually near user profile picture (top left area)
+      const storyButtonSelector = '[aria-label="Your Story"]';
+      await this.clickWithDelay(storyButtonSelector);
+
+      // Upload story image
+      const fileInput = await this.page.$('input[type="file"]');
+      if (!fileInput) {
+        throw new Error('File input not found - Instagram UI may have changed');
+      }
+      await fileInput.setInputFiles(imagePath);
+      await humanDelay(2000, 4000);
+
+      // Wait for image to process
+      await this.page.waitForTimeout(3000);
+
+      // Click "Share to Story" button (no caption needed for stories)
+      await this.clickWithDelay('button:has-text("Share to Story")');
+
+      // Wait for story to be published
+      await this.page.waitForNavigation({ waitUntil: 'networkidle' });
+      await humanDelay(2000, 5000);
+
+      // Extract story ID from timestamp
+      const storyId = `story-${Date.now()}`;
+
+      return {
+        postId: storyId,
+        url: `https://www.instagram.com/stories/${storyId}`,
+        timestamp: new Date().toISOString(),
+      };
+    } catch (error) {
+      throw new Error(`Failed to publish story: ${String(error)}`);
+    }
+  }
+
+  /**
    * Navigate to Instagram home/feed
    */
   async navigateToHome(): Promise<void> {
