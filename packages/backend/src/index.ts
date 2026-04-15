@@ -4,6 +4,9 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import path from 'path';
 import initializeDatabase from './config/database';
+import { createCompressionMiddleware, createCompressionMetricsMiddleware } from './middleware/compression.middleware';
+import { initializeCache } from './services/cache.service';
+import { appContext } from './context';
 import { createAuthRoutes } from './routes/auth';
 import { createProfilesRoutes } from './routes/profiles';
 import { createCompetitorsRoutes } from './routes/competitors';
@@ -41,6 +44,21 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
+// Initialize cache service
+const cache = initializeCache({
+  host: process.env.REDIS_HOST || 'localhost',
+  port: parseInt(process.env.REDIS_PORT || '6379'),
+  ttlSeconds: {
+    profiles: 5 * 60, // 5 minutes
+    content: 60 * 60, // 1 hour
+    default: 10 * 60, // 10 minutes
+  },
+});
+
+// Compression middleware (gzip all responses > 1KB)
+app.use(createCompressionMiddleware());
+app.use(createCompressionMetricsMiddleware());
+
 // General rate limiter: 100 requests per 15 minutes per IP
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -65,6 +83,10 @@ app.use(generalLimiter);
 
 // Initialize database
 const db = initializeDatabase(DB_PATH);
+
+// Register database and cache in app context
+appContext.setDatabase(db);
+appContext.setCache(cache);
 
 // Routes
 app.get('/health', (_req, res) => {

@@ -3,6 +3,8 @@ import Database from 'better-sqlite3';
 import { DashboardService } from '../services/DashboardService.js';
 import { AnalyticsService } from '../services/AnalyticsService.js';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
+import { getCache } from '../services/cache.service.js';
+import { logger } from '../utils/logger.js';
 
 export function createDashboardRoutes(db: Database.Database): Router {
   const router = Router();
@@ -27,7 +29,20 @@ export function createDashboardRoutes(db: Database.Database): Router {
         });
       }
 
+      // Try to get from cache first (5min TTL for dashboard)
+      const cache = getCache();
+      const cacheKey = `dashboard:${userId}:${sortBy}`;
+      const cached = await cache.get(cacheKey);
+
+      if (cached) {
+        logger.debug(`[Dashboard] Cache HIT for ${cacheKey}`);
+        return res.json(cached);
+      }
+
       const overview = await dashboardService.getDashboardOverview(userId, sortBy);
+
+      // Cache the result
+      await cache.set(cacheKey, overview, 5 * 60); // 5 minute TTL
 
       res.json(overview);
     } catch (error) {
