@@ -1,0 +1,30 @@
+storyId: "6.4"
+verdict: CONCERNS
+executedAt: "2026-04-15T14:40:00Z"
+issues:
+  - severity: HIGH
+    category: algorithm-complexity
+    description: "Trends calculation with confidence scoring is complex (13pts) — weighted average, sliding windows, momentum calculation not trivially implemented"
+    recommendation: "During design, explicitly detail trends algorithm, confidence scoring methodology, and test strategy for pattern detection"
+
+  - severity: MEDIUM
+    category: performance
+    description: "Caption insights marked as 'computationally expensive' — scope of optimization (sync vs background job) not defined"
+    recommendation: "Explicitly decide: will caption insights be sync (with SLA adjustment) or async background job? Define performance budget."
+
+  - severity: MEDIUM
+    category: data-quality
+    description: "Low sample size (<30 posts) risk documented but development strategy not explicit — could generate false patterns"
+    recommendation: "Implement guardrail: require minimum 30 posts before surfacing insights. UI should show confidence metric (e.g., 'based on 8 posts - low confidence')"
+
+nextAction: "1. @dev clarifies trends algorithm and caption insights performance approach; 2. @dev implements data quality guardrails; 3. Confirm Story 6.3 DONE before starting"
+qualityMetrics:
+  design_clarity: 7
+  ac_testability: 6
+  dependency_mapping: 9
+  documentation_completeness: 8
+riskRating: MEDIUM
+notes:
+  - "Correlation ≠ Causation risk properly documented, UI messaging handled"
+  - "Weighted average and arounding guidance in Dev Notes is helpful"
+  - "This is a high-complexity story — recommend close collaboration with @dev during implementation"
