@@ -21,7 +21,7 @@ export function createReportsRoutes(db: Database.Database): Router {
       const userId = req.userId!;
       const period = (req.query.period as string) || 'month';
       let startDate = (req.query.start_date as string) || null;
-      let endDate = (req.query.end_date as string) || new Date().toISOString().split('T')[0];
+      const endDate = (req.query.end_date as string) || new Date().toISOString().split('T')[0];
 
       // If dates not provided, calculate based on period
       if (!startDate) {
