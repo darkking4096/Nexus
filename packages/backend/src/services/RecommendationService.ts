@@ -91,7 +91,8 @@ export class RecommendationService {
     const recentPosts = this.getRecentPostsForContext(profileId, 30);
 
     // Generate recommendations from Claude with fallback retry
-    let recommendations = await this.generateWithClaude(profile, engagement, recentPosts, 0);
+    const profileContext = { handle: profile.instagram_username, username: profile.instagram_username };
+    let recommendations = await this.generateWithClaude(profileContext, engagement, recentPosts, 0);
 
     // Validate and deduplicate
     const validated = recommendations
@@ -103,7 +104,7 @@ export class RecommendationService {
     // If < 5 valid recs, retry once with explicit instruction
     if (deduped.length < 5) {
       console.log(`[RecommendationService] Only ${deduped.length}/5 valid recs. Retrying with MORE SPECIFIC instruction...`);
-      recommendations = await this.generateWithClaude(profile, engagement, recentPosts, 1);
+      recommendations = await this.generateWithClaude(profileContext, engagement, recentPosts, 1);
       const retried = recommendations
         .map(rec => this.validateRecommendation(rec))
         .filter(rec => rec !== null) as Recommendation[];
@@ -251,36 +252,44 @@ Return as JSON array only. No preamble. No explanation. JSON array of recommenda
    */
   private validateRecommendation(rec: unknown): Recommendation | null {
     try {
+      // Type guard: ensure rec is an object with properties
+      if (typeof rec !== 'object' || rec === null) {
+        console.warn(`[RecommendationService] Recommendation is not an object`);
+        return null;
+      }
+
+      const recObj = rec as Record<string, unknown>;
       const required = ['priority', 'category', 'action', 'reasoning', 'data_backing', 'estimated_impact'];
-      const missing = required.filter(field => !rec[field]);
+      const missing = required.filter(field => !recObj[field]);
 
       if (missing.length > 0) {
         console.warn(`[RecommendationService] Recommendation missing fields: ${missing.join(', ')}`);
         return null;
       }
 
-      if (!['high', 'medium', 'low'].includes(rec.priority)) {
-        console.warn(`[RecommendationService] Invalid priority: ${rec.priority}`);
+      if (!['high', 'medium', 'low'].includes(String(recObj.priority))) {
+        console.warn(`[RecommendationService] Invalid priority: ${recObj.priority}`);
         return null;
       }
 
-      if (typeof rec.action !== 'string' || rec.action.length < 20) {
-        console.warn(`[RecommendationService] Action too short: "${rec.action}"`);
+      if (typeof recObj.action !== 'string' || recObj.action.length < 20) {
+        console.warn(`[RecommendationService] Action too short: "${recObj.action}"`);
         return null;
       }
 
-      if (!rec.data_backing || Object.keys(rec.data_backing).length === 0) {
+      const dataBacking = recObj.data_backing as Record<string, unknown>;
+      if (!dataBacking || Object.keys(dataBacking).length === 0) {
         console.warn(`[RecommendationService] data_backing is empty`);
         return null;
       }
 
       // Generic-ness check
-      if (this.isGeneric(rec.action)) {
-        console.warn(`[RecommendationService] Recommendation is too generic: "${rec.action}"`);
+      if (this.isGeneric(recObj.action)) {
+        console.warn(`[RecommendationService] Recommendation is too generic: "${recObj.action}"`);
         return null;
       }
 
-      return rec as Recommendation;
+      return recObj as unknown as Recommendation;
     } catch (error) {
       console.error('[RecommendationService] Validation error:', error);
       return null;
