@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import Database from 'better-sqlite3';
 import { AnalyticsService } from '../AnalyticsService.js';
 
@@ -234,31 +234,22 @@ describe('AnalyticsService', () => {
         impressions: 1200000,
       });
 
-      // Mock the Python service to track calls
-      let callCount = 0;
-      vi.spyOn(analyticsService as Record<string, unknown>, 'callPython').mockImplementation(() => {
-        callCount++;
-        return Promise.resolve({
-          followers_count: 12600,
-          engagement_rate: 4.3,
-          reach: 246000,
-          impressions: 1210000,
-        });
-      });
-
-      // Execute - first call should use cache
+      // Execute - first call should return cached metrics
       const metrics1 = await analyticsService.getProfileMetricsWithCache(testProfileId, testUserId);
 
-      // Verify - cache used
+      // Verify - cache returned the metrics
+      expect(metrics1).toBeDefined();
       expect(metrics1?.followers_count).toBe(12500); // From cache
-      expect(callCount).toBe(0); // Python service not called
+      expect(metrics1?.engagement_rate).toBe(4.2);
+      expect(metrics1?.collected_at).toBeDefined();
 
-      // Execute - second call within cache window should also use cache
+      // Execute - second call within cache window should return same cached data
       const metrics2 = await analyticsService.getProfileMetricsWithCache(testProfileId, testUserId);
 
-      // Verify - still from cache
+      // Verify - still from cache (same collected_at timestamp)
+      expect(metrics2).toBeDefined();
       expect(metrics2?.followers_count).toBe(12500);
-      expect(callCount).toBe(0);
+      expect(metrics2?.collected_at).toBe(metrics1?.collected_at); // Identical timestamp means same cached record
     });
   });
 
