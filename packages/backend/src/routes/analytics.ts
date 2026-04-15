@@ -79,6 +79,41 @@ export function createAnalyticsRoutes(db: Database.Database): Router {
   });
 
   /**
+   * GET /api/analytics/:profileId/posts
+   * Get last 30 posts with engagement metrics
+   * Query params:
+   *   - limit: number of posts to return (default: 30, max: 100)
+   */
+  router.get('/:profileId/posts', verifyAccessToken, async (req: AuthRequest, res: Response) => {
+    try {
+      const { profileId } = req.params;
+      const userId = req.userId!;
+      const limit = Math.min(parseInt(req.query.limit as string) || 30, 100);
+
+      const posts = await analyticsService.getRecentPosts(profileId, userId, limit);
+
+      res.json({
+        posts,
+        count: posts.length,
+        lastUpdated: new Date().toISOString(),
+      });
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.error('[Analytics] Posts error:', msg);
+
+      if (msg.includes('Access denied')) {
+        return res.status(403).json({ error: msg });
+      }
+
+      if (msg.includes('not found')) {
+        return res.status(404).json({ error: 'Profile not found' });
+      }
+
+      res.status(500).json({ error: 'Failed to fetch posts' });
+    }
+  });
+
+  /**
    * GET /api/analytics/:profileId/benchmark
    * Get benchmark comparison vs competitors
    * Query params:

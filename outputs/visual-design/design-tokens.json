@@ -1,0 +1,343 @@
+{
+  "$schema": "https://tokens.studio/json-schema/draft-2023-11-01/schema.json",
+  "metadata": {
+    "name": "Story 6.1 Analytics Dashboard — Design Tokens",
+    "version": "1.0.0",
+    "description": "DTCG (Design Tokens Community Group) specification for NEXUS Analytics Module",
+    "createdAt": "2026-04-15",
+    "creator": "Stella (Visual Designer)"
+  },
+  "color": {
+    "primary": {
+      "value": "#FF1493",
+      "type": "color",
+      "description": "Instagram Pink — Primary CTAs, highlights, active states"
+    },
+    "primary-dark": {
+      "value": "#E60C8A",
+      "type": "color",
+      "description": "Darker shade of primary for hover/active states"
+    },
+    "primary-darker": {
+      "value": "#CC0066",
+      "type": "color",
+      "description": "Even darker primary for pressed states"
+    },
+    "secondary": {
+      "value": "#405DE6",
+      "type": "color",
+      "description": "Instagram Blue — Secondary CTAs, badges"
+    },
+    "accent": {
+      "value": "#5B51D8",
+      "type": "color",
+      "description": "Purple — Tertiary accents, highlights"
+    },
+    "success": {
+      "value": "#31A24C",
+      "type": "color",
+      "description": "Green — Up trends, positive indicators, success states"
+    },
+    "success-light": {
+      "value": "#4CAF50",
+      "type": "color",
+      "description": "Light green — Good performance badge"
+    },
+    "warning": {
+      "value": "#FFA500",
+      "type": "color",
+      "description": "Orange — Neutral/warning status"
+    },
+    "error": {
+      "value": "#CC0000",
+      "type": "color",
+      "description": "Red — Down trends, negative indicators, error states"
+    },
+    "error-light": {
+      "value": "#FF6B6B",
+      "type": "color",
+      "description": "Light red — Low performance badge"
+    },
+    "neutral": {
+      "50": {
+        "value": "#FAFAFA",
+        "type": "color",
+        "description": "Very light gray — Page backgrounds"
+      },
+      "100": {
+        "value": "#F5F5F5",
+        "type": "color",
+        "description": "Light gray — Secondary backgrounds"
+      },
+      "200": {
+        "value": "#F0F0F0",
+        "type": "color",
+        "description": "Light gray — Card backgrounds, disabled states"
+      },
+      "300": {
+        "value": "#E5E5E5",
+        "type": "color",
+        "description": "Medium gray — Borders, dividers"
+      },
+      "400": {
+        "value": "#D0D0D0",
+        "type": "color",
+        "description": "Medium gray — Secondary borders"
+      },
+      "500": {
+        "value": "#999999",
+        "type": "color",
+        "description": "Dark gray — Secondary text, hints"
+      },
+      "600": {
+        "value": "#666666",
+        "type": "color",
+        "description": "Dark gray — Secondary text, metadata"
+      },
+      "700": {
+        "value": "#333333",
+        "type": "color",
+        "description": "Very dark gray — Body text"
+      },
+      "900": {
+        "value": "#1A1A1A",
+        "type": "color",
+        "description": "Darkest — Headings, important text"
+      }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "base": {
+        "value": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "type": "fontFamily",
+        "description": "System font stack for body and UI"
+      },
+      "mono": {
+        "value": "'Monaco', 'Courier New', monospace",
+        "type": "fontFamily",
+        "description": "Monospace font for code, numbers"
+      }
+    },
+    "fontSize": {
+      "h1": {
+        "value": "32px",
+        "type": "dimension",
+        "description": "Page titles"
+      },
+      "h2": {
+        "value": "24px",
+        "type": "dimension",
+        "description": "Section titles"
+      },
+      "h3": {
+        "value": "18px",
+        "type": "dimension",
+        "description": "Subsection titles"
+      },
+      "body": {
+        "value": "14px",
+        "type": "dimension",
+        "description": "Regular body text"
+      },
+      "body-small": {
+        "value": "12px",
+        "type": "dimension",
+        "description": "Secondary text"
+      },
+      "caption": {
+        "value": "12px",
+        "type": "dimension",
+        "description": "Metadata, timestamps"
+      },
+      "monospace": {
+        "value": "12px",
+        "type": "dimension",
+        "description": "Code, monospace text"
+      }
+    },
+    "fontWeight": {
+      "regular": {
+        "value": 400,
+        "type": "fontWeight",
+        "description": "Regular weight (body, secondary)"
+      },
+      "bold": {
+        "value": 700,
+        "type": "fontWeight",
+        "description": "Bold weight (headings, emphasis)"
+      }
+    },
+    "lineHeight": {
+      "tight": {
+        "value": 1.2,
+        "type": "lineHeight",
+        "description": "Tight line-height for headings"
+      },
+      "normal": {
+        "value": 1.4,
+        "type": "lineHeight",
+        "description": "Normal line-height for captions"
+      },
+      "relaxed": {
+        "value": 1.5,
+        "type": "lineHeight",
+        "description": "Relaxed line-height for body text"
+      }
+    },
+    "letterSpacing": {
+      "tight": {
+        "value": "-0.5px",
+        "type": "dimension",
+        "description": "Tight letter-spacing for H1"
+      },
+      "normal": {
+        "value": "0px",
+        "type": "dimension",
+        "description": "Normal letter-spacing"
+      },
+      "relaxed": {
+        "value": "0.5px",
+        "type": "dimension",
+        "description": "Relaxed letter-spacing for captions"
+      }
+    }
+  },
+  "spacing": {
+    "unit": {
+      "value": "4px",
+      "type": "dimension",
+      "description": "Base spacing unit (4px grid)"
+    },
+    "xs": {
+      "value": "4px",
+      "type": "dimension",
+      "description": "Extra small spacing"
+    },
+    "sm": {
+      "value": "8px",
+      "type": "dimension",
+      "description": "Small spacing (1 unit)"
+    },
+    "md": {
+      "value": "16px",
+      "type": "dimension",
+      "description": "Medium spacing (2 units) — standard padding/margin"
+    },
+    "lg": {
+      "value": "24px",
+      "type": "dimension",
+      "description": "Large spacing (3 units) — section spacing"
+    },
+    "xl": {
+      "value": "32px",
+      "type": "dimension",
+      "description": "Extra large spacing (4 units)"
+    },
+    "2xl": {
+      "value": "48px",
+      "type": "dimension",
+      "description": "2x large spacing (6 units)"
+    },
+    "3xl": {
+      "value": "64px",
+      "type": "dimension",
+      "description": "3x large spacing (8 units)"
+    }
+  },
+  "borderRadius": {
+    "sm": {
+      "value": "4px",
+      "type": "dimension",
+      "description": "Small radius — buttons, inputs"
+    },
+    "md": {
+      "value": "6px",
+      "type": "dimension",
+      "description": "Medium radius — cards, containers"
+    },
+    "lg": {
+      "value": "8px",
+      "type": "dimension",
+      "description": "Large radius — large containers"
+    },
+    "full": {
+      "value": "50%",
+      "type": "dimension",
+      "description": "Full radius — circular (avatars)"
+    }
+  },
+  "shadow": {
+    "sm": {
+      "value": "0 1px 2px rgba(0, 0, 0, 0.05)",
+      "type": "shadow",
+      "description": "Light shadow — hover cards"
+    },
+    "md": {
+      "value": "0 4px 6px rgba(0, 0, 0, 0.07)",
+      "type": "shadow",
+      "description": "Medium shadow — dropdown menus"
+    },
+    "lg": {
+      "value": "0 10px 15px rgba(0, 0, 0, 0.1)",
+      "type": "shadow",
+      "description": "Large shadow — modals"
+    },
+    "xl": {
+      "value": "0 20px 25px rgba(0, 0, 0, 0.15)",
+      "type": "shadow",
+      "description": "Extra large shadow — floating elements"
+    }
+  },
+  "breakpoint": {
+    "mobile": {
+      "value": "0px",
+      "type": "dimension",
+      "description": "Mobile breakpoint: < 640px"
+    },
+    "tablet": {
+      "value": "640px",
+      "type": "dimension",
+      "description": "Tablet breakpoint: 640px - 1024px"
+    },
+    "desktop": {
+      "value": "1024px",
+      "type": "dimension",
+      "description": "Desktop breakpoint: > 1024px"
+    }
+  },
+  "transition": {
+    "fast": {
+      "value": "100ms",
+      "type": "duration",
+      "description": "Fast micro-interactions"
+    },
+    "normal": {
+      "value": "200ms",
+      "type": "duration",
+      "description": "Standard transitions"
+    },
+    "slow": {
+      "value": "300ms",
+      "type": "duration",
+      "description": "Page transitions, slower animations"
+    }
+  },
+  "easing": {
+    "ease-out": {
+      "value": "cubic-bezier(0.0, 0.0, 0.2, 1.0)",
+      "type": "easing",
+      "description": "Ease out — feedback (buttons, ripples)"
+    },
+    "ease-in-out": {
+      "value": "cubic-bezier(0.4, 0.0, 0.2, 1.0)",
+      "type": "easing",
+      "description": "Ease in-out — smooth transitions"
+    },
+    "ease-in": {
+      "value": "cubic-bezier(0.4, 0.0, 1.0, 1.0)",
+      "type": "easing",
+      "description": "Ease in — exit animations"
+    }
+  }
+}
