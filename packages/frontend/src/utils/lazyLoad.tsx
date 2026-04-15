@@ -1,4 +1,4 @@
-import React, { Suspense, ComponentType, lazy } from 'react';
+import React, { Suspense, lazy, ReactElement } from 'react';
 
 /**
  * LazyLoadWrapper: Dynamically load components only when needed
@@ -7,12 +7,12 @@ import React, { Suspense, ComponentType, lazy } from 'react';
  * Usage:
  * const DashboardPage = lazyLoad(() => import('../pages/DashboardPage'));
  */
-export function lazyLoad<P = {}>(
-  importStatement: () => Promise<{ default: ComponentType<P> }>
-): React.ComponentType<P> {
+export function lazyLoad(
+  importStatement: () => Promise<{ default: React.ComponentType<any> }>
+): React.ComponentType<any> {
   const Component = lazy(importStatement);
 
-  return (props: P) => (
+  return (props: any): ReactElement => (
     <Suspense fallback={<LazyLoadingFallback />}>
       <Component {...props} />
     </Suspense>
