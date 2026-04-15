@@ -3,6 +3,8 @@ import Database from 'better-sqlite3';
 import { AnalyticsService } from '../services/AnalyticsService.js';
 import { SearchService } from '../services/SearchService.js';
 import { BenchmarkService } from '../services/BenchmarkService.js';
+import { ContentMetricsService } from '../services/ContentMetricsService.js';
+import { EngagementAnalysisService } from '../services/EngagementAnalysisService.js';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
 
 export function createAnalyticsRoutes(db: Database.Database): Router {
@@ -10,6 +12,8 @@ export function createAnalyticsRoutes(db: Database.Database): Router {
   const analyticsService = new AnalyticsService(db);
   const searchService = new SearchService(db);
   const benchmarkService = new BenchmarkService(db, searchService, analyticsService);
+  const contentMetricsService = new ContentMetricsService(db, analyticsService);
+  const engagementAnalysisService = new EngagementAnalysisService(db);
 
   /**
    * GET /api/analytics/:profileId
@@ -142,6 +146,109 @@ export function createAnalyticsRoutes(db: Database.Database): Router {
       }
 
       res.status(500).json({ error: 'Failed to fetch benchmark' });
+    }
+  });
+
+  /**
+   * GET /api/analytics/content/:contentId/metrics
+   * Get detailed metrics for a specific post including historical data
+   * Query params:
+   *   - profileId: required, profile that owns this content
+   *   - days: number of days to return history (default: 7, max: 90)
+   */
+  router.get('/content/:contentId/metrics', verifyAccessToken, async (req: AuthRequest, res: Response) => {
+    try {
+      const { contentId } = req.params;
+      const userId = req.userId!;
+      const profileId = req.query.profileId as string | undefined;
+      const days = Math.min(parseInt(req.query.days as string) || 7, 90);
+
+      if (!profileId) {
+        return res.status(400).json({ error: 'profileId query parameter is required' });
+      }
+
+      const metrics = await contentMetricsService.getPostMetricsWithHistory(contentId, profileId, userId, days);
+
+      res.json(metrics);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.error('[Analytics] Content metrics error:', msg);
+
+      if (msg.includes('Access denied')) {
+        return res.status(403).json({ error: msg });
+      }
+
+      if (msg.includes('not found')) {
+        return res.status(404).json({ error: msg });
+      }
+
+      res.status(500).json({ error: 'Failed to fetch content metrics' });
+    }
+  });
+
+  /**
+   * GET /api/analytics/content/:contentId/growth
+   * Get growth metrics for a post (likes/hour, growth rate, etc.)
+   * Query params:
+   *   - profileId: required, profile that owns this content
+   */
+  router.get('/content/:contentId/growth', verifyAccessToken, async (req: AuthRequest, res: Response) => {
+    try {
+      const { contentId } = req.params;
+      const userId = req.userId!;
+      const profileId = req.query.profileId as string | undefined;
+
+      if (!profileId) {
+        return res.status(400).json({ error: 'profileId query parameter is required' });
+      }
+
+      const growth = await contentMetricsService.getPostGrowth(contentId, profileId, userId);
+
+      res.json(growth);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.error('[Analytics] Growth metrics error:', msg);
+
+      if (msg.includes('Access denied')) {
+        return res.status(403).json({ error: msg });
+      }
+
+      if (msg.includes('not found')) {
+        return res.status(404).json({ error: msg });
+      }
+
+      res.status(500).json({ error: 'Failed to fetch growth metrics' });
+    }
+  });
+
+  /**
+   * GET /api/analytics/:profileId/engagement
+   * Get engagement pattern analysis (top hours, content types, trends)
+   * Query params:
+   *   - days: number of days to analyze (default: 60, max: 180)
+   */
+  router.get('/:profileId/engagement', verifyAccessToken, async (req: AuthRequest, res: Response) => {
+    try {
+      const { profileId } = req.params;
+      const userId = req.userId!;
+      const days = Math.min(parseInt(req.query.days as string) || 60, 180);
+
+      const analysis = await engagementAnalysisService.getEngagementAnalysis(profileId, userId, days);
+
+      res.json(analysis);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.error('[Analytics] Engagement analysis error:', msg);
+
+      if (msg.includes('Access denied')) {
+        return res.status(403).json({ error: msg });
+      }
+
+      if (msg.includes('not found') || msg.includes('Not enough data')) {
+        return res.status(404).json({ error: msg });
+      }
+
+      res.status(500).json({ error: 'Failed to fetch engagement analysis' });
     }
   });
 
