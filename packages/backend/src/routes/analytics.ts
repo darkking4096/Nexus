@@ -5,6 +5,7 @@ import { SearchService } from '../services/SearchService.js';
 import { BenchmarkService } from '../services/BenchmarkService.js';
 import { ContentMetricsService } from '../services/ContentMetricsService.js';
 import { EngagementAnalysisService } from '../services/EngagementAnalysisService.js';
+import { RecommendationService } from '../services/RecommendationService.js';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
 
 export function createAnalyticsRoutes(db: Database.Database): Router {
@@ -14,6 +15,7 @@ export function createAnalyticsRoutes(db: Database.Database): Router {
   const benchmarkService = new BenchmarkService(db, searchService, analyticsService);
   const contentMetricsService = new ContentMetricsService(db, analyticsService);
   const engagementAnalysisService = new EngagementAnalysisService(db);
+  const recommendationService = new RecommendationService(db);
 
   /**
    * GET /api/analytics/:profileId
@@ -249,6 +251,34 @@ export function createAnalyticsRoutes(db: Database.Database): Router {
       }
 
       res.status(500).json({ error: 'Failed to fetch engagement analysis' });
+    }
+  });
+
+  /**
+   * GET /api/analytics/:profileId/recommendations
+   * Get AI-powered strategy recommendations based on engagement patterns
+   */
+  router.get('/:profileId/recommendations', verifyAccessToken, async (req: AuthRequest, res: Response) => {
+    try {
+      const { profileId } = req.params;
+      const userId = req.userId!;
+
+      const recommendations = await recommendationService.generateRecommendations(profileId, userId);
+
+      res.json(recommendations);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.error('[Analytics] Recommendations error:', msg);
+
+      if (msg.includes('Access denied')) {
+        return res.status(403).json({ error: msg });
+      }
+
+      if (msg.includes('not found') || msg.includes('Not enough data')) {
+        return res.status(404).json({ error: msg });
+      }
+
+      res.status(500).json({ error: 'Failed to generate recommendations' });
     }
   });
 
