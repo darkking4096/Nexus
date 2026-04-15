@@ -200,7 +200,7 @@ describe('retryWithBackoff', () => {
     it('should retry on transient errors', async () => {
       const fn = vi
         .fn()
-        .mockRejectedValueOnce(new Error('ETIMEDOUT'))
+        .mockRejectedValueOnce(new Error('timeout'))
         .mockResolvedValueOnce('success');
 
       const result = await retryWithBackoff(fn, {
