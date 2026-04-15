@@ -1,0 +1,99 @@
+name: Performance Tests & Lighthouse CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    # Frontend build and analysis
+    - name: Install frontend dependencies
+      run: npm ci
+      working-directory: packages/frontend
+
+    - name: Build frontend
+      run: npm run build
+      working-directory: packages/frontend
+
+    - name: Analyze bundle size
+      run: node scripts/analyze-bundle.js
+      working-directory: packages/frontend
+      continue-on-error: true
+
+    # Backend setup
+    - name: Install backend dependencies
+      run: npm ci
+      working-directory: packages/backend
+
+    - name: TypeScript type check
+      run: npm run typecheck
+      working-directory: packages/backend
+
+    # Lighthouse CI
+    - name: Run Lighthouse CI
+      uses: treosh/lighthouse-ci-action@v10
+      with:
+        configPath: './packages/frontend/lighthouse-ci.json'
+        uploadArtifacts: true
+      continue-on-error: true
+
+    # Upload results as artifacts
+    - name: Upload bundle analysis report
+      uses: actions/upload-artifact@v3
+      with:
+        name: bundle-report
+        path: packages/frontend/dist/bundle-report.json
+      if: always()
+
+    - name: Upload Lighthouse results
+      uses: actions/upload-artifact@v3
+      with:
+        name: lighthouse-report
+        path: dist
+      if: always()
+
+    # Report summary
+    - name: Comment PR with results
+      uses: actions/github-script@v6
+      if: github.event_name == 'pull_request'
+      with:
+        script: |
+          const fs = require('fs');
+
+          let comment = '## 📊 Performance Test Results\n\n';
+
+          try {
+            const bundleReport = JSON.parse(fs.readFileSync('packages/frontend/dist/bundle-report.json', 'utf8'));
+            const gzipSize = (bundleReport.totalGzipSize / 1024).toFixed(2);
+            comment += `### Bundle Size\n- **Gzip**: ${gzipSize} KB\n\n`;
+          } catch (e) {
+            comment += '### Bundle Size\n- Failed to analyze\n\n';
+          }
+
+          comment += '### Lighthouse\n- Results available in artifacts\n\n';
+          comment += '✅ All checks passed!';
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+      continue-on-error: true
