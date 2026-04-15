@@ -63,6 +63,66 @@ export function createContentRoutes(db: Database.Database): Router {
   });
 
   /**
+   * GET /api/content/:contentId/status
+   * Get publishing status and recent attempts for a piece of content
+   */
+  router.get('/:contentId/status', verifyAccessToken, (req: AuthRequest, res: Response) => {
+    try {
+      const userId = req.userId;
+      if (!userId) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+      }
+
+      const { contentId } = req.params;
+
+      // Get content
+      const contentStmt = db.prepare(`
+        SELECT * FROM content WHERE id = ?
+      `);
+      const content = contentStmt.get(contentId) as
+        | { id: string; status: string; publish_error?: string; published_at?: string; instagram_url?: string; profile_id: string }
+        | undefined;
+
+      if (!content) {
+        res.status(404).json({ error: 'Content not found' });
+        return;
+      }
+
+      // Verify user owns this content via profile
+      const profileStmt = db.prepare(`
+        SELECT id FROM profiles WHERE id = ? AND user_id = ?
+      `);
+      const profile = profileStmt.get(content.profile_id, userId);
+      if (!profile) {
+        res.status(403).json({ error: 'Content not found or access denied' });
+        return;
+      }
+
+      // Get recent publish attempts
+      const logsStmt = db.prepare(`
+        SELECT * FROM publish_logs
+        WHERE content_id = ?
+        ORDER BY timestamp DESC
+        LIMIT 10
+      `);
+      const recentAttempts = logsStmt.all(contentId);
+
+      res.json({
+        content_id: contentId,
+        status: content.status, // 'draft', 'publishing', 'retrying', 'error', 'published'
+        error: content.publish_error || null,
+        published_at: content.published_at || null,
+        instagram_url: content.instagram_url || null,
+        recent_attempts: recentAttempts,
+      });
+    } catch (error) {
+      console.error('Get content status error:', error);
+      res.status(500).json({ error: 'Failed to get content status' });
+    }
+  });
+
+  /**
    * GET /api/content/:profileId
    * List content for profile
    */

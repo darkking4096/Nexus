@@ -5,38 +5,99 @@ import { randomBytes } from 'crypto';
  */
 
 export interface RetryOptions {
-  maxAttempts: number;
-  baseDelayMs: number;
-  maxDelayMs: number;
+  maxAttempts?: number;
+  baseDelayMs?: number;
+  maxDelayMs?: number;
+  jitterPercent?: number;
+  isTransientError?: (err: unknown) => boolean;
+  onRetry?: (attempt: number, error: unknown) => void;
 }
 
 /**
  * Execute a function with exponential backoff retry logic
  * @param fn Async function to retry
- * @param options Retry configuration
+ * @param options Retry configuration (all optional, with sensible defaults)
  * @returns Result of successful fn execution
  */
 export async function retryWithBackoff<T>(
   fn: () => Promise<T>,
-  options: RetryOptions
+  options: RetryOptions = {}
 ): Promise<T> {
-  const { maxAttempts, baseDelayMs, maxDelayMs } = options;
+  const {
+    maxAttempts = parseInt(process.env.PUBLISH_RETRY_MAX_ATTEMPTS || '3', 10),
+    baseDelayMs = parseInt(process.env.PUBLISH_RETRY_BASE_DELAY_MS || '2000', 10),
+    maxDelayMs = parseInt(process.env.PUBLISH_RETRY_MAX_DELAY_MS || '120000', 10),
+    jitterPercent = parseInt(process.env.PUBLISH_RETRY_JITTER_PERCENT || '10', 10),
+    isTransientError = defaultIsTransientError,
+    onRetry = () => {},
+  } = options;
 
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       return await fn();
     } catch (error) {
-      if (attempt === maxAttempts - 1) {
+      lastError = error;
+
+      // Check if error is transient
+      if (!isTransientError(error)) {
+        // Permanent error - fail immediately
         throw error;
       }
 
-      // Exponential backoff: baseDelay * 2^attempt, capped at maxDelay
-      const delay = Math.min(baseDelayMs * Math.pow(2, attempt), maxDelayMs);
-      await new Promise((resolve) => setTimeout(resolve, delay));
+      // Don't retry on last attempt
+      if (attempt === maxAttempts) {
+        throw error;
+      }
+
+      // Calculate backoff with jitter
+      const baseDelay = Math.min(baseDelayMs * Math.pow(2, attempt - 1), maxDelayMs);
+      const jitterAmount = baseDelay * (jitterPercent / 100);
+      const jitter = (Math.random() - 0.5) * 2 * jitterAmount; // ±jitterPercent
+      const delayMs = Math.max(baseDelay + jitter, 0);
+
+      // Invoke callback for logging
+      onRetry(attempt, error);
+
+      // Wait before retry
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
   }
 
-  throw new Error('Max retries exceeded');
+  throw lastError || new Error('Max retries exceeded');
+}
+
+/**
+ * Default error classifier for transient vs permanent errors
+ * Can be overridden via options.isTransientError callback
+ */
+function defaultIsTransientError(error: unknown): boolean {
+  if (error instanceof Error) {
+    const msg = error.message.toLowerCase();
+
+    // Network errors (transient)
+    if (/econnrefused|etimedout|ehostunreach|enetunreach|network|timeout/.test(msg)) {
+      return true;
+    }
+
+    // HTTP rate limit (transient)
+    if (/429|rate.?limit|too.?many.?requests/.test(msg)) {
+      return true;
+    }
+
+    // HTTP server errors (transient)
+    if (/5\d\d|server.?error|temporarily.?unavailable/.test(msg)) {
+      return true;
+    }
+
+    // Browser crash/closed (transient)
+    if (/browser.?closed|page.?closed|crashed/.test(msg)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /**

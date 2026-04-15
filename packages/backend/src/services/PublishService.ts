@@ -6,6 +6,7 @@ import sharp from 'sharp';
 import { PlaywrightService, PublishResult } from './PlaywrightService.js';
 import { InstaService } from './InstaService.js';
 import { retryWithBackoff } from '../utils/retry.js';
+import { isTransientError } from '../utils/error-classifier.js';
 
 /**
  * Content data from database
@@ -93,6 +94,17 @@ export class PublishService {
             maxAttempts: 3,
             baseDelayMs: 30000,
             maxDelayMs: 120000,
+            jitterPercent: 10,
+            isTransientError,
+            onRetry: (attemptNum, error) => {
+              const errorMsg = error instanceof Error ? error.message : String(error);
+              this.logAttempt(
+                profileId,
+                contentId,
+                `RETRY-${attemptNum}`,
+                `Attempt ${attemptNum + 1}/3: ${errorMsg}`
+              );
+            },
           }
         );
       }
@@ -109,6 +121,17 @@ export class PublishService {
             maxAttempts: 3,
             baseDelayMs: 30000,
             maxDelayMs: 120000,
+            jitterPercent: 10,
+            isTransientError,
+            onRetry: (attemptNum, error) => {
+              const errorMsg = error instanceof Error ? error.message : String(error);
+              this.logAttempt(
+                profileId,
+                contentId,
+                `RETRY-${attemptNum}`,
+                `Attempt ${attemptNum + 1}/3: ${errorMsg}`
+              );
+            },
           }
         );
       }
@@ -125,6 +148,17 @@ export class PublishService {
             maxAttempts: 3,
             baseDelayMs: 30000,
             maxDelayMs: 120000,
+            jitterPercent: 10,
+            isTransientError,
+            onRetry: (attemptNum, error) => {
+              const errorMsg = error instanceof Error ? error.message : String(error);
+              this.logAttempt(
+                profileId,
+                contentId,
+                `RETRY-${attemptNum}`,
+                `Attempt ${attemptNum + 1}/3: ${errorMsg}`
+              );
+            },
           }
         );
       }
