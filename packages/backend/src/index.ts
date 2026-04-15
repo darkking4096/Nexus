@@ -23,6 +23,7 @@ import { createSchedulingRoutes } from './routes/scheduling';
 import { createQueueRoutes } from './routes/queue';
 import { createOptimizationRoutes } from './routes/optimization';
 import { createDashboardRoutes } from './routes/dashboard';
+import { createReportsRoutes } from './routes/reports';
 
 dotenv.config();
 
@@ -87,6 +88,7 @@ app.use('/api/visual', createStoryRoutes(db));
 app.use('/api/content', createHashtagRoutes(db));
 app.use('/api/analytics', createAnalyticsRoutes(db));
 app.use('/api/dashboard', createDashboardRoutes(db));
+app.use('/api/reports', createReportsRoutes(db));
 app.use('/api/search', createSearchRoutes(db));
 app.use('/api', createOptimizationRoutes(db));
 
