@@ -1,5 +1,5 @@
 import compression from 'compression';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { logger } from '../utils/logger';
 
 /**
@@ -55,7 +55,7 @@ export function createCompressionMiddleware() {
  * Track compression metrics for monitoring
  */
 export function createCompressionMetricsMiddleware() {
-  return (_req: Request, res: Response, next: Function) => {
+  return (_req: Request, res: Response, next: NextFunction) => {
     const originalSend = res.send;
 
     res.send = function (data: unknown) {

@@ -7,12 +7,12 @@ import React, { Suspense, lazy, ReactElement } from 'react';
  * Usage:
  * const DashboardPage = lazyLoad(() => import('../pages/DashboardPage'));
  */
-export function lazyLoad(
-  importStatement: () => Promise<{ default: React.ComponentType<any> }>
-): React.ComponentType<any> {
+export function lazyLoad<P extends Record<string, unknown> = Record<string, unknown>>(
+  importStatement: () => Promise<{ default: React.ComponentType<P> }>
+): React.ComponentType<P> {
   const Component = lazy(importStatement);
 
-  return (props: any): ReactElement => (
+  return (props: P): ReactElement => (
     <Suspense fallback={<LazyLoadingFallback />}>
       <Component {...props} />
     </Suspense>
