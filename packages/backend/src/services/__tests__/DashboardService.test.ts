@@ -306,7 +306,7 @@ function setupDatabase(db: Database.Database): void {
       created_at TEXT NOT NULL
     );
 
-    CREATE TABLE IF NOT EXISTS metrics (
+    CREATE TABLE IF NOT EXISTS profile_metrics (
       id TEXT PRIMARY KEY,
       profile_id TEXT NOT NULL,
       followers_count INTEGER NOT NULL,
@@ -371,7 +371,7 @@ function insertTestMetricsWithDate(
 ): void {
   const id = `metrics-${Date.now()}-${Math.random()}`;
   db.prepare(`
-    INSERT INTO metrics (id, profile_id, followers_count, engagement_rate, reach, impressions, collected_at, created_at)
+    INSERT INTO profile_metrics (id, profile_id, followers_count, engagement_rate, reach, impressions, collected_at, created_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `).run(id, profileId, data.followers_count, data.engagement_rate, data.reach, data.impressions, date, date);
 }

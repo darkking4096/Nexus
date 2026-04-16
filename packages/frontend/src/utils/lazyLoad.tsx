@@ -12,11 +12,14 @@ export function lazyLoad<P extends Record<string, unknown> = Record<string, unkn
 ): React.ComponentType<P> {
   const Component = lazy(importStatement);
 
-  return (props: P): ReactElement => (
+  const LazyComponent = (props: P): ReactElement => (
     <Suspense fallback={<LazyLoadingFallback />}>
-      <Component {...props} />
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+      <Component {...(props as any)} />
     </Suspense>
   );
+
+  return LazyComponent as React.ComponentType<P>;
 }
 
 /**
