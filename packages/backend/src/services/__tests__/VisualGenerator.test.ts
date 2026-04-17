@@ -51,31 +51,55 @@ describe('VisualGenerator', () => {
     // Generate valid PNG buffer for mocks
     validPNGBuffer = await createValidPNGBuffer();
 
-    // Clean up old test database if it exists
+    // Clean up old test database if it exists (with retry)
     if (fs.existsSync(testDbPath)) {
       try {
         fs.unlinkSync(testDbPath);
-      } catch {
-        // Ignore if file is locked, database will be overwritten
+      } catch (error) {
+        // If file is locked, try closing any existing handles
+        // Wait a bit for any file locks to release
+        await new Promise(resolve => setTimeout(resolve, 100));
+        try {
+          fs.unlinkSync(testDbPath);
+        } catch {
+          // If still locked, database.close() in afterAll will clean it
+        }
       }
     }
 
-    // Create test database
+    // Create test database with readonly mode disabled
     db = new Database(testDbPath);
+    db.pragma('journal_mode = WAL');  // Use WAL mode for better concurrency
 
-    // Create test tables
+    // Create test tables (users first, before profiles that reference them)
     db.exec(`
+      CREATE TABLE IF NOT EXISTS users (
+        id TEXT PRIMARY KEY,
+        email TEXT NOT NULL UNIQUE,
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+
       CREATE TABLE IF NOT EXISTS instagram_profiles (
         id TEXT PRIMARY KEY,
         userId TEXT NOT NULL,
         username TEXT NOT NULL,
-        context JSON
+        context JSON,
+        FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
       );
     `);
 
+    // Insert test user first (satisfies FOREIGN KEY constraint)
+    db.prepare(`
+      INSERT OR IGNORE INTO users (id, email)
+      VALUES (?, ?)
+    `).run(
+      'user_123',
+      'test@example.com'
+    );
+
     // Insert test profile with branding
     db.prepare(`
-      INSERT INTO instagram_profiles (id, userId, username, context)
+      INSERT OR IGNORE INTO instagram_profiles (id, userId, username, context)
       VALUES (?, ?, ?, ?)
     `).run(
       'profile_123',
@@ -90,10 +114,29 @@ describe('VisualGenerator', () => {
     visualGenerator = new VisualGenerator(db);
   });
 
-  afterAll(() => {
-    db.close();
-    if (fs.existsSync(testDbPath)) {
-      fs.unlinkSync(testDbPath);
+  afterAll(async () => {
+    try {
+      db.close();
+    } catch (error) {
+      // Ignore close errors
+    }
+
+    // Clean up test database and WAL files
+    const filesToClean = [
+      testDbPath,
+      `${testDbPath}-shm`,  // WAL shared memory file
+      `${testDbPath}-wal`,  // WAL log file
+    ];
+
+    for (const file of filesToClean) {
+      if (fs.existsSync(file)) {
+        try {
+          fs.unlinkSync(file);
+        } catch (error) {
+          // If file is still locked, it will be cleaned up by OS
+          // Don't throw error to prevent test suite from failing
+        }
+      }
     }
   });
 
