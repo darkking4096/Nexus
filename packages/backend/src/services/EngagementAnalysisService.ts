@@ -113,8 +113,8 @@ export class EngagementAnalysisService {
       reach: number;
     }>) || [];
 
-    if (posts.length === 0) {
-      throw new Error('Not enough data to analyze (minimum 5 posts required)');
+    if (posts.length < 5) {
+      throw new Error('Not enough data');
     }
 
     // Analyze engagement by hour

@@ -84,8 +84,8 @@ export class DashboardService {
         const metrics = metricsData[profile.id] || { engagement_rate: 0, followers_count: 0 };
         const postData = postsMetrics[profile.id] || { count_30d: 0, last_post_date: null };
 
-        // Calculate weekly growth (simplified for now)
-        const weeklyGrowth = 0; // TODO: Calculate from historical data if needed
+        // Calculate weekly growth from historical followers data
+        const weeklyGrowth = this.calculateWeeklyGrowth(profile.id);
 
         const engagementRate = metrics.engagement_rate || 0;
 
@@ -212,7 +212,7 @@ export class DashboardService {
     if (profileIds.length === 0) return result;
 
     // SQLite doesn't support DISTINCT ON, so we query by profile
-    // For each profile, get the latest metrics
+    // For each profile, get the latest metrics (by collected_at, then rowid)
     for (const profileId of profileIds) {
       const metric = this.db
         .prepare(
@@ -220,7 +220,7 @@ export class DashboardService {
         SELECT engagement_rate, followers_count
         FROM profile_metrics
         WHERE profile_id = ?
-        ORDER BY collected_at DESC
+        ORDER BY collected_at DESC, rowid DESC
         LIMIT 1
       `
         )
@@ -232,6 +232,33 @@ export class DashboardService {
     }
 
     return result;
+  }
+
+  /**
+   * Calculate weekly growth from historical followers data
+   */
+  private calculateWeeklyGrowth(profileId: string): number {
+    // Get latest 2 metrics
+    const stmt = this.db.prepare(`
+      SELECT followers_count
+      FROM profile_metrics
+      WHERE profile_id = ?
+      ORDER BY collected_at DESC
+      LIMIT 2
+    `);
+
+    const metrics = (stmt.all(profileId) as Array<{ followers_count: number }>) || [];
+
+    if (metrics.length < 2) {
+      // If less than 2 metrics, can't calculate growth
+      return 0;
+    }
+
+    // Latest is at index 0, previous is at index 1
+    const currentFollowers = metrics[0].followers_count;
+    const previousFollowers = metrics[1].followers_count;
+
+    return currentFollowers - previousFollowers;
   }
 
   /**
