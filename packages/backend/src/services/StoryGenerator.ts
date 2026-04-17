@@ -140,8 +140,8 @@ export class StoryGenerator {
         .toBuffer();
     }
 
-    // Validate contrast
-    const contrastResult = ContrastValidator.validateWCAG_AA(textColor, brandConfig.colors.primary);
+    // Validate contrast (text against background where text will be displayed)
+    const contrastResult = ContrastValidator.validateWCAG_AA(textColor, brandConfig.colors.background);
 
     return {
       imageBuffer: storyBuffer,

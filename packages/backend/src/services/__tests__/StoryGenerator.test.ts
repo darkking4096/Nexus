@@ -78,7 +78,7 @@ describe('StoryGenerator', () => {
 
       expect(result.dimensions.width).toBe(1080);
       expect(result.dimensions.height).toBe(1920);
-      expect(result.metadata.contentLength).toBe(14);
+      expect(result.metadata.contentLength).toBe(15); // "Just a headline" = 15 chars including spaces
     });
 
     it('should generate with full content (headline + body + cta)', async () => {
