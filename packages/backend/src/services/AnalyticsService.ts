@@ -69,7 +69,38 @@ export class AnalyticsService {
   }
 
   /**
-   * Get current profile metrics
+   * Get current profile metrics (latest snapshot)
+   *
+   * **What This Does:**
+   * Fetches the most recent metrics snapshot for a profile, including:
+   * - Follower count (cached from Instagram)
+   * - Engagement rate (average likes+comments+shares per post)
+   * - Reach (unique accounts who saw content)
+   * - Impressions (total times content was displayed)
+   *
+   * **Caching:**
+   * - Metrics cached in-memory for 1 hour
+   * - Refresh from Instagram API on demand
+   * - Timestamp shows when metrics were last collected
+   *
+   * **Important Notes:**
+   * - Returns latest available data, may be up to 2 hours old
+   * - Engagement rate calculated from last 7 days of posts
+   * - Ownership validated (returns null if user doesn't own profile)
+   *
+   * @param profileId Instagram profile ID
+   * @param userId User ID (for ownership verification)
+   * @returns Latest metrics snapshot or null if profile not found
+   *
+   * @example
+   * const metrics = await analytics.getProfileMetrics('profile-123', 'user-123');
+   * // Returns: {
+   * //   followers_count: 15000,
+   * //   engagement_rate: 4.5,
+   * //   reach: 45000,
+   * //   impressions: 125000,
+   * //   collected_at: '2026-04-17T10:00:00Z'
+   * // }
    */
   async getProfileMetrics(profileId: string, userId: string): Promise<Metrics | null> {
     // Ownership check
@@ -114,6 +145,36 @@ export class AnalyticsService {
 
   /**
    * Get engagement rate over a period (days)
+   *
+   * **Engagement Rate Formula:**
+   * ER = (Likes + Comments + Shares + Saves) / Reach * 100
+   *
+   * **What This Measures:**
+   * - How much your audience interacts with content
+   * - Higher ER = better content resonance
+   * - Industry average: 1-3% (varies by niche)
+   * - Benchmark your rate against competitors
+   *
+   * **Time Window:**
+   * - Default: 7 days (weekly trend)
+   * - Can specify 14, 30, 90 days
+   * - Calculates average across all posts in period
+   *
+   * **Decision:** Used to determine content performance trends
+   * and alert users when ER drops (potential content issue)
+   *
+   * @param profileId Instagram profile ID
+   * @param userId User ID (for ownership verification)
+   * @param days Number of days to analyze (default: 7)
+   * @returns Average engagement rate for the period
+   * @throws Error if profile not found
+   *
+   * @example
+   * const weeklyER = await analytics.getEngagementRate('profile-123', 'user-123', 7);
+   * // Returns: 4.5 (4.5% engagement rate)
+   *
+   * const monthlyER = await analytics.getEngagementRate('profile-123', 'user-123', 30);
+   * // Returns: 3.8 (3.8% engagement rate)
    */
   async getEngagementRate(profileId: string, userId: string, days: number = 7): Promise<number> {
     // Ownership check

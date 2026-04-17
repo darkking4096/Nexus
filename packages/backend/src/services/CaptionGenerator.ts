@@ -90,6 +90,31 @@ export class CaptionGenerator {
 
   /**
    * Main entry point: Generate captions for a profile based on analysis
+   *
+   * **Algorithm:**
+   * 1. Fetch profile context (voice, tone, audience)
+   * 2. Fetch latest content analysis (viral score, best performing styles)
+   * 3. For each caption type requested:
+   *    - Call @copywriter squad with brand tone framework
+   *    - Validate confidence score >= threshold (50%)
+   *    - Generate hashtags and hooks
+   * 4. Return all captions meeting quality threshold
+   *
+   * **Confidence Scoring:**
+   * - Hook quality: 0-100% based on engagement history
+   * - Tone alignment: Validated against profile voice
+   * - Hashtag relevance: Checked against trending/niche tags
+   *
+   * @param request Caption generation request with profile, types, and brand tone
+   * @returns Promise resolving to generated captions with metadata and confidence scores
+   * @throws Error if no captions meet quality threshold (50% confidence)
+   *
+   * @example
+   * const captions = await generator.generateCaptions({
+   *   profileId: 'profile-123',
+   *   captionTypes: ['hook', 'cta'],
+   *   brandTone: 'professional'
+   * });
    */
   async generateCaptions(
     request: CaptionRequest

@@ -84,10 +84,38 @@ export class CompetitorAnalysis {
   /**
    * Analyze competitors for a profile
    *
+   * **Algorithm:**
+   * 1. Validate user owns the profile (security check)
+   * 2. Fetch competitors tracked by user
+   * 3. For each competitor:
+   *    - Retrieve top posts (ordered by engagement)
+   *    - Calculate engagement rate: (likes + comments + shares) / followers
+   *    - Extract content patterns (hashtag frequency, content types, posting times)
+   *    - Detect trends (rising hashtags, engagement shifts)
+   * 4. Aggregate results with timestamp
+   *
+   * **Key Metrics:**
+   * - Engagement Rate: How much interaction post gets relative to followers
+   * - Content Patterns: Repeated elements in successful posts
+   * - Trends: New patterns emerging in competitor strategy
+   *
+   * **Performance:** Analyzes up to 100 recent posts per competitor
+   *
    * @param profileId Profile ID to analyze competitors for
-   * @param userId User ID (for ownership check)
-   * @returns Complete competitor analysis
-   * @throws Error if profile not found, access denied, or analysis fails
+   * @param userId User ID (for ownership verification)
+   * @returns Complete competitor analysis with patterns and trends
+   * @throws Error if profile not found or access denied
+   *
+   * @example
+   * const analysis = await competitorAnalysis.analyzeCompetitors('profile-123', 'user-123');
+   * // Returns: {
+   * //   competitors: [{
+   * //     handle: '@competitor1',
+   * //     avg_engagement: 4.5,
+   * //     content_patterns: [...]
+   * //   }],
+   * //   total_posts_analyzed: 250
+   * // }
    */
   async analyzeCompetitors(profileId: string, userId: string): Promise<CompetitorAnalysisResult> {
     // 1. Validate profile ownership

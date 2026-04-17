@@ -91,9 +91,23 @@ npm run build
 - **Phase 5: Testing** ⏳
 - **Phase 6: Validation** ⏳
 
-## Database Schema
+## 📚 Documentation
 
-See `docs/stories/1.1.story.md` for full schema definitions.
+Complete documentation available in `docs/`:
+
+### For Users
+- **[USER-GUIDE.md](./docs/USER-GUIDE.md)** — How to use NEXUS (getting started, profiles, content generation, publishing)
+- **[TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md)** — Common issues and solutions (5+ categories, 10+ common errors)
+
+### For Developers
+- **[DEV-GUIDE.md](./docs/DEV-GUIDE.md)** — Setup, architecture, API structure, testing, deployment
+- **[API.md](./docs/API.md)** — Complete API reference (all endpoints with examples in 3 languages)
+- **[SCHEMA.md](./docs/SCHEMA.md)** — Database schema, tables, relationships, indexes, migrations
+
+### Architecture
+- **[docs/architecture/ARCHITECTURE.md](./docs/architecture/ARCHITECTURE.md)** — System design and tech stack
+- **[docs/architecture/DATA-MODEL.md](./docs/architecture/DATA-MODEL.md)** — Detailed data model with ERD
+- **[docs/architecture/FULL-STACK-ARCHITECTURE.md](./docs/architecture/FULL-STACK-ARCHITECTURE.md)** — Complete full-stack specification
 
 ## Environment Variables
 

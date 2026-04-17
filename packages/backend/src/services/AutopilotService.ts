@@ -56,6 +56,25 @@ export class AutopilotService {
 
   /**
    * Validate schedule (days and times)
+   *
+   * **Validation Rules:**
+   * - Days must be valid ISO weekday codes: MON, TUE, WED, THU, FRI, SAT, SUN
+   * - Times must be in HH:MM format (24-hour)
+   * - Both days and times arrays must be non-empty
+   *
+   * **Decision:** Validates upfront to prevent invalid schedules in database
+   * and ensure publication queue operates correctly.
+   *
+   * @param days Array of day codes (e.g., ["MON", "WED", "FRI"])
+   * @param times Array of times in HH:MM format (e.g., ["09:00", "17:00"])
+   * @returns Validation result with error message if invalid
+   *
+   * @example
+   * const result = AutopilotService.validateSchedule(
+   *   ["MON", "WED", "FRI"],
+   *   ["09:00", "17:00"]
+   * );
+   * // Returns: { valid: true }
    */
   static validateSchedule(days: string[], times: string[]): { valid: boolean; error?: string } {
     // Validate days
