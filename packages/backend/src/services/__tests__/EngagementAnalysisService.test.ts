@@ -113,21 +113,21 @@ describe('EngagementAnalysisService', () => {
       // Setup - create two periods with different engagement
       const baseDate = new Date('2026-04-10T00:00:00Z');
 
-      // Current period (last 30 days) - higher engagement
+      // Current period (last 30 days) - higher engagement (12% rate)
       for (let i = 0; i < 10; i++) {
         const date = new Date(baseDate);
         date.setDate(date.getDate() - i);
         insertTestContent(db, `content-current-${i}`, testProfileId, 'carousel', date.toISOString());
         insertTestPostMetricsWithDate(db, testProfileId, `content-current-${i}`, {
-          likes: 300,
-          comments: 30,
-          shares: 15,
+          likes: 360,
+          comments: 36,
+          shares: 18,
           saves: 50,
-          reach: 3000,
+          reach: 3000, // (360+36+18)/3000 = 12%
         }, date.toISOString());
       }
 
-      // Previous period (30-60 days ago) - lower engagement
+      // Previous period (30-60 days ago) - lower engagement (10% rate)
       for (let i = 0; i < 10; i++) {
         const date = new Date(baseDate);
         date.setDate(date.getDate() - (30 + i));
@@ -137,7 +137,7 @@ describe('EngagementAnalysisService', () => {
           comments: 15,
           shares: 7,
           saves: 25,
-          reach: 1500,
+          reach: 1720, // (150+15+7)/1720 = 10%
         }, date.toISOString());
       }
 
