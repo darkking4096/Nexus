@@ -4,17 +4,38 @@ import { VisualGenerator } from '../VisualGenerator';
 import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
+import sharp from 'sharp';
+
+// Helper: Generate a valid PNG buffer for testing
+async function createValidPNGBuffer(width = 1080, height = 1350): Promise<Buffer> {
+  return sharp({
+    create: {
+      width,
+      height,
+      channels: 3,
+      background: { r: 200, g: 200, b: 200 },
+    },
+  })
+    .png()
+    .toBuffer();
+}
+
+// Store the valid PNG buffer
+let validPNGBuffer: Buffer;
 
 // Mock NandoBananaClient to avoid API key requirement
 vi.mock('../../integrations/NandoBananaClient', () => ({
   NandoBananaClient: vi.fn(function () {
     return {
-      generateImage: vi.fn().mockResolvedValue({
-        imageData: Buffer.from('mock-image-data'),
-        width: 2048,
-        height: 2048,
-        format: 'png',
-        generated_at: new Date().toISOString(),
+      generateImage: vi.fn().mockImplementation(async () => {
+        // Use the pre-generated valid PNG buffer
+        return {
+          imageData: validPNGBuffer,
+          width: 2048,
+          height: 2048,
+          format: 'png',
+          generated_at: new Date().toISOString(),
+        };
       }),
       healthCheck: vi.fn().mockResolvedValue(true),
     };
@@ -26,7 +47,19 @@ describe('VisualGenerator', () => {
   let db: Database.Database;
   const testDbPath = path.join(process.cwd(), '.test-visual-generator.db');
 
-  beforeAll(() => {
+  beforeAll(async () => {
+    // Generate valid PNG buffer for mocks
+    validPNGBuffer = await createValidPNGBuffer();
+
+    // Clean up old test database if it exists
+    if (fs.existsSync(testDbPath)) {
+      try {
+        fs.unlinkSync(testDbPath);
+      } catch {
+        // Ignore if file is locked, database will be overwritten
+      }
+    }
+
     // Create test database
     db = new Database(testDbPath);
 

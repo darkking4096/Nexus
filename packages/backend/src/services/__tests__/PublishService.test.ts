@@ -81,6 +81,14 @@ describe('PublishService', () => {
   const testDbPath = path.join(process.cwd(), '.test-publish-service.db');
   const testEncryptionKey = 'test-encryption-key-32chars!!!!!';
   beforeAll(() => {
+    // Clean up old test database if it exists
+    if (fs.existsSync(testDbPath)) {
+      try {
+        fs.unlinkSync(testDbPath);
+      } catch {
+        // Ignore if file is locked, database will be overwritten
+      }
+    }
 
     // Create test database
     db = new Database(testDbPath);

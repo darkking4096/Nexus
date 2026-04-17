@@ -163,7 +163,9 @@ describe('PublishService', () => {
       }),
       close: vi.fn(),
     };
-    PlaywrightMock.mockReturnValue(mockInstance as any);
+    PlaywrightMock.mockImplementation(function () {
+      return mockInstance as any;
+    });
 
     // Publish
     const result = await publishService.publish(contentId, profileId);
@@ -221,7 +223,9 @@ describe('PublishService', () => {
       }),
       close: vi.fn(),
     };
-    PlaywrightMock.mockReturnValue(mockInstance as any);
+    PlaywrightMock.mockImplementation(function () {
+      return mockInstance as any;
+    });
 
     await publishService.publish(contentId, profileId);
 

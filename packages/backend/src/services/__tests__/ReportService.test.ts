@@ -156,6 +156,17 @@ describe('ReportService', () => {
         impressions: 8000,
       }, '2026-02-01T00:00:00Z');
 
+      // Previous period: add content with engagement metrics (within previous period: Mar 2-31)
+      const prevDate = new Date(2026, 2, 15); // Mar 15 (within previous period)
+      insertTestContent(db, 'prev-post-1', testProfileId, 'carousel', prevDate.toISOString());
+      insertTestPostMetricsWithDate(db, testProfileId, 'prev-post-1', {
+        likes: 50,
+        comments: 5,
+        shares: 2,
+        saves: 10,
+        reach: 1000,
+      }, prevDate.toISOString());
+
       // Previous period end: 1100 followers at 2026-03-01
       insertTestMetricsWithDate(db, testProfileId, {
         followers_count: 1100,
@@ -163,6 +174,17 @@ describe('ReportService', () => {
         reach: 5500,
         impressions: 8800,
       }, '2026-03-01T23:59:59Z');
+
+      // Current period: add content with higher engagement
+      const currDate = new Date(2026, 3, 15); // Apr 15
+      insertTestContent(db, 'curr-post-1', testProfileId, 'carousel', currDate.toISOString());
+      insertTestPostMetricsWithDate(db, testProfileId, 'curr-post-1', {
+        likes: 100,
+        comments: 15,
+        shares: 5,
+        saves: 30,
+        reach: 2000,
+      }, currDate.toISOString());
 
       // Current period end: 1500 followers at 2026-04-01
       insertTestMetricsWithDate(db, testProfileId, {

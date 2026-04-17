@@ -337,31 +337,35 @@ export class ReportService {
   }
 
   /**
-   * Helper: get difference in days between two dates
+   * Helper: get difference in days between two dates (in UTC)
    */
   private getDateDifference(startDate: string, endDate: string): number {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+    // Normalize dates to UTC
+    const normalizedStart = startDate.includes('T') ? startDate : `${startDate}T00:00:00Z`;
+    const normalizedEnd = endDate.includes('T') ? endDate : `${endDate}T23:59:59Z`;
+
+    const start = new Date(normalizedStart);
+    const end = new Date(normalizedEnd);
     const diffTime = Math.abs(end.getTime() - start.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
   }
 
   /**
-   * Helper: add days to a date
-   * For negative days (past), returns end of day (23:59:59)
-   * For positive days (future), returns start of day (00:00:00)
+   * Helper: add days to a date (in UTC)
+   * For negative days (past), returns end of day (23:59:59Z)
+   * For positive days (future), returns start of day (00:00:00Z)
    */
   private addDays(dateStr: string, days: number): string {
     const date = new Date(dateStr);
-    date.setDate(date.getDate() + days);
+    date.setUTCDate(date.getUTCDate() + days);
 
     if (days < 0) {
-      // For past dates, return end of day
-      date.setHours(23, 59, 59, 999);
+      // For past dates, return end of day in UTC
+      date.setUTCHours(23, 59, 59, 999);
     } else {
-      // For future dates, return start of day
-      date.setHours(0, 0, 0, 0);
+      // For future dates, return start of day in UTC
+      date.setUTCHours(0, 0, 0, 0);
     }
 
     return date.toISOString();
