@@ -3,15 +3,19 @@ import Database from 'better-sqlite3';
 import { RecommendationService } from '../RecommendationService.js';
 
 // Mock Anthropic to prevent real API calls and force fallback recommendations
-vi.mock('@anthropic-ai/sdk', () => ({
-  Anthropic: vi.fn(() => ({
-    messages: {
-      create: vi.fn(() =>
-        Promise.reject(new Error('Anthropic API unavailable for testing'))
-      ),
-    },
-  })),
-}));
+vi.mock('@anthropic-ai/sdk', () => {
+  const mockCreate = vi.fn(() =>
+    Promise.reject(new Error('Anthropic API unavailable for testing'))
+  );
+
+  class MockAnthropic {
+    messages = { create: mockCreate };
+  }
+
+  return {
+    Anthropic: MockAnthropic,
+  };
+});
 
 describe('RecommendationService', () => {
   let db: Database.Database;

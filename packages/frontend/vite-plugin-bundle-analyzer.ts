@@ -1,7 +1,7 @@
 import { Plugin } from 'vite';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
-import gzip from 'gzip-size';
+import { gzipSize } from 'gzip-size';
 
 interface BundleAnalysisReport {
   totalSize: number;
@@ -40,7 +40,7 @@ export function bundleAnalyzerPlugin(): Plugin {
 
           // Only analyze JS/CSS files
           if (fileName.endsWith('.js') || fileName.endsWith('.css')) {
-            const gzipSize = await gzip.file(resolve(process.cwd(), 'dist', fileName)).catch(
+            const gzipSizeValue = await gzipSize(resolve(process.cwd(), 'dist', fileName)).catch(
               () => size
             );
 
@@ -49,7 +49,7 @@ export function bundleAnalyzerPlugin(): Plugin {
             files.push({
               name: fileName,
               size,
-              gzipSize,
+              gzipSize: gzipSizeValue,
               percentage: 0, // Will calculate after
             });
           }
