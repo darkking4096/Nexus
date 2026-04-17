@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { isTokenBlacklisted } from '../services/tokenBlacklist.service';
 
 export interface AuthRequest extends Request {
   userId?: string;
@@ -11,7 +12,7 @@ export interface AuthRequest extends Request {
  * Verify JWT access token in Authorization header
  * Expected format: Authorization: Bearer <token>
  */
-export function verifyAccessToken(req: AuthRequest, res: Response, next: NextFunction): void {
+export async function verifyAccessToken(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -29,6 +30,14 @@ export function verifyAccessToken(req: AuthRequest, res: Response, next: NextFun
 
   try {
     const decoded = jwt.verify(token, secret) as { userId: string; iat: number; exp: number };
+
+    // Check if token is blacklisted (logged out)
+    const isBlacklisted = await isTokenBlacklisted(token);
+    if (isBlacklisted) {
+      res.status(401).json({ error: 'Token has been revoked' });
+      return;
+    }
+
     req.userId = decoded.userId;
     req.token = token;
     next();

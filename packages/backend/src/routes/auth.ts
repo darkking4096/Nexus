@@ -1,5 +1,6 @@
 import { Router, Request, Response, RequestHandler } from 'express';
 import Database from 'better-sqlite3';
+import jwt from 'jsonwebtoken';
 import { User } from '../models/User';
 import {
   generateAccessToken,
@@ -8,6 +9,8 @@ import {
   verifyRefreshToken,
   AuthRequest,
 } from '../middleware/authMiddleware';
+import { blacklistToken } from '../services/tokenBlacklist.service';
+import { createSecurityLogger } from '../services/securityLogger.service';
 
 export function createAuthRoutes(db: Database.Database, loginLimiter?: RequestHandler): Router {
   const router = Router();
@@ -20,6 +23,7 @@ export function createAuthRoutes(db: Database.Database, loginLimiter?: RequestHa
   router.post('/signup', async (req: Request, res: Response) => {
     try {
       const { email, password, name } = req.body;
+      const logger = createSecurityLogger(req);
 
       // Validation
       if (!email || !password) {
@@ -34,6 +38,7 @@ export function createAuthRoutes(db: Database.Database, loginLimiter?: RequestHa
 
       // Check if email exists
       if (userModel.emailExists(email)) {
+        logger.logLoginFailure(email, 'email_already_registered');
         res.status(409).json({ error: 'Email already registered' });
         return;
       }
@@ -48,6 +53,9 @@ export function createAuthRoutes(db: Database.Database, loginLimiter?: RequestHa
       // Generate tokens
       const accessToken = generateAccessToken(user.id);
       const refreshToken = generateRefreshToken(user.id);
+
+      // Log successful signup
+      logger.logSignupSuccess(user.id, user.email);
 
       res.status(201).json({
         userId: user.id,
@@ -70,6 +78,7 @@ export function createAuthRoutes(db: Database.Database, loginLimiter?: RequestHa
   router.post('/login', loginLimiter || ((_req, _res, next) => next()), async (req: Request, res: Response) => {
     try {
       const { email, password } = req.body;
+      const logger = createSecurityLogger(req);
 
       // Validation
       if (!email || !password) {
@@ -80,6 +89,7 @@ export function createAuthRoutes(db: Database.Database, loginLimiter?: RequestHa
       // Get user by email
       const userWithHash = userModel.getByEmail(email);
       if (!userWithHash) {
+        logger.logLoginFailure(email, 'user_not_found');
         res.status(401).json({ error: 'Invalid email or password' });
         return;
       }
@@ -87,6 +97,7 @@ export function createAuthRoutes(db: Database.Database, loginLimiter?: RequestHa
       // Verify password
       const passwordValid = await User.verifyPassword(password, userWithHash.password_hash);
       if (!passwordValid) {
+        logger.logLoginFailure(email, 'invalid_password');
         res.status(401).json({ error: 'Invalid email or password' });
         return;
       }
@@ -94,6 +105,9 @@ export function createAuthRoutes(db: Database.Database, loginLimiter?: RequestHa
       // Generate tokens
       const accessToken = generateAccessToken(userWithHash.id);
       const refreshToken = generateRefreshToken(userWithHash.id);
+
+      // Log successful login
+      logger.logLoginSuccess(userWithHash.id, userWithHash.email);
 
       // Return user data (without password hash)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -112,13 +126,35 @@ export function createAuthRoutes(db: Database.Database, loginLimiter?: RequestHa
 
   /**
    * POST /auth/logout
-   * Logout user (clear refresh token on client)
+   * Logout user (revoke token via blacklist)
    */
-  router.post('/logout', (_req: Request, res: Response) => {
-    // In this simple implementation, logout is handled client-side
-    // by deleting tokens from localStorage
-    // In production, you might want to maintain a token blacklist
-    res.json({ message: 'Logout successful' });
+  router.post('/logout', verifyAccessToken, async (req: AuthRequest, res: Response) => {
+    try {
+      const token = req.token;
+      const logger = createSecurityLogger(req);
+
+      if (token) {
+        // Get token expiry from JWT claims
+        const decoded = jwt.decode(token) as { exp?: number } | null;
+        if (decoded && decoded.exp) {
+          const expiresIn = decoded.exp - Math.floor(Date.now() / 1000);
+
+          // Add to blacklist with TTL = time until natural expiry
+          if (expiresIn > 0) {
+            await blacklistToken(token, expiresIn);
+          }
+        }
+      }
+
+      if (req.userId) {
+        logger.logLogout(req.userId);
+      }
+
+      res.json({ message: 'Logout successful — token revoked' });
+    } catch (error) {
+      console.error('Logout error:', error);
+      res.status(500).json({ error: 'Logout failed' });
+    }
   });
 
   /**
@@ -128,6 +164,7 @@ export function createAuthRoutes(db: Database.Database, loginLimiter?: RequestHa
   router.post('/refresh', (req: Request, res: Response) => {
     try {
       const { refreshToken } = req.body;
+      const logger = createSecurityLogger(req);
 
       if (!refreshToken) {
         res.status(400).json({ error: 'Refresh token required' });
@@ -139,6 +176,9 @@ export function createAuthRoutes(db: Database.Database, loginLimiter?: RequestHa
 
       // Generate new access token
       const newAccessToken = generateAccessToken(userId);
+
+      // Log token refresh
+      logger.logTokenRefresh(userId);
 
       res.json({ accessToken: newAccessToken });
     } catch (error) {

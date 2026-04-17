@@ -6,6 +6,7 @@ import path from 'path';
 import initializeDatabase from './config/database';
 import { createCompressionMiddleware, createCompressionMetricsMiddleware } from './middleware/compression.middleware';
 import { initializeCache } from './services/cache.service';
+import { initializeTokenBlacklist } from './services/tokenBlacklist.service';
 import { appContext } from './context';
 import { createAuthRoutes } from './routes/auth';
 import { createProfilesRoutes } from './routes/profiles';
@@ -55,9 +56,47 @@ const cache = initializeCache({
   },
 });
 
+// Initialize token blacklist service (Redis with in-memory fallback)
+initializeTokenBlacklist(
+  process.env.REDIS_HOST || 'localhost',
+  parseInt(process.env.REDIS_PORT || '6379')
+);
+
 // Compression middleware (gzip all responses > 1KB)
 app.use(createCompressionMiddleware());
 app.use(createCompressionMetricsMiddleware());
+
+// Security Headers Middleware
+app.use((_req: express.Request, res: express.Response, next: express.NextFunction) => {
+  // Content Security Policy: Restrict script/style sources to self + necessary CDNs
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:"
+  );
+
+  // Prevent clickjacking attacks
+  res.setHeader('X-Frame-Options', 'DENY');
+
+  // Prevent MIME type sniffing
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+
+  // Force HTTPS (HSTS: 1 year including subdomains)
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+
+  // XSS protection (deprecated but good fallback for older browsers)
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+
+  // Control referrer behavior
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+
+  // Disable dangerous browser features
+  res.setHeader(
+    'Permissions-Policy',
+    'geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()'
+  );
+
+  next();
+});
 
 // General rate limiter: 100 requests per 15 minutes per IP
 const generalLimiter = rateLimit({
