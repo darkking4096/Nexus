@@ -148,28 +148,29 @@ describe('ReportService', () => {
       const currentStart = '2026-04-01';
       const currentEnd = '2026-04-30';
 
-      // Previous period: 1000 to 1100 followers (100 gained, 10%)
+      // Previous period baseline: 1000 followers at 2026-02-01
       insertTestMetricsWithDate(db, testProfileId, {
         followers_count: 1000,
         engagement_rate: 5.0,
         reach: 5000,
         impressions: 8000,
-      }, '2026-02-28T00:00:00Z');
+      }, '2026-02-01T00:00:00Z');
 
+      // Previous period end: 1100 followers at 2026-03-01
       insertTestMetricsWithDate(db, testProfileId, {
         followers_count: 1100,
-        engagement_rate: 5.0,
+        engagement_rate: 5.5,
         reach: 5500,
         impressions: 8800,
-      }, '2026-03-31T23:59:59Z');
+      }, '2026-03-01T23:59:59Z');
 
-      // Current period: 1100 to 1500 followers (400 gained, 36%)
+      // Current period end: 1500 followers at 2026-04-01
       insertTestMetricsWithDate(db, testProfileId, {
         followers_count: 1500,
         engagement_rate: 6.0,
         reach: 7000,
         impressions: 10000,
-      }, '2026-04-30T23:59:59Z');
+      }, '2026-04-01T00:00:00Z');
 
       // Execute
       const report = await reportService.generateReport(testProfileId, testUserId, currentStart, currentEnd);

@@ -119,20 +119,31 @@ export class ReportService {
     startDate: string,
     endDate: string
   ): Promise<PeriodSummary> {
-    // Get follower metrics
-    const followerStmt = this.db.prepare(`
-      SELECT
-        (SELECT followers_count FROM metrics WHERE profile_id = ? AND collected_at <= ? ORDER BY collected_at DESC LIMIT 1) as end_followers,
-        (SELECT followers_count FROM metrics WHERE profile_id = ? AND collected_at < ? ORDER BY collected_at DESC LIMIT 1) as start_followers
+    // Normalize dates: ensure they have proper time components for comparison
+    // startDate should be beginning of day, endDate should be end of day
+    const normalizedStart = startDate.includes('T') ? startDate : `${startDate}T00:00:00Z`;
+    const normalizedEnd = endDate.includes('T') ? endDate : `${endDate}T23:59:59Z`;
+
+    // Get follower metrics - find closest metrics before and within period
+    const endFollowersStmt = this.db.prepare(`
+      SELECT followers_count FROM metrics
+      WHERE profile_id = ? AND collected_at <= ?
+      ORDER BY collected_at DESC
+      LIMIT 1
     `);
 
-    const followerData = followerStmt.get(profileId, endDate, profileId, startDate) as {
-      end_followers: number | null;
-      start_followers: number | null;
-    };
+    const startFollowersStmt = this.db.prepare(`
+      SELECT followers_count FROM metrics
+      WHERE profile_id = ? AND collected_at < ?
+      ORDER BY collected_at DESC
+      LIMIT 1
+    `);
 
-    const startFollowers = followerData?.start_followers || 0;
-    const endFollowers = followerData?.end_followers || startFollowers;
+    const endResult = endFollowersStmt.get(profileId, normalizedEnd) as { followers_count: number } | undefined;
+    const startResult = startFollowersStmt.get(profileId, normalizedStart) as { followers_count: number } | undefined;
+
+    const startFollowers = startResult?.followers_count || 0;
+    const endFollowers = endResult?.followers_count || startFollowers;
     const followersGained = endFollowers - startFollowers;
     const followersGrowthPct = startFollowers > 0 ? (followersGained / startFollowers) * 100 : 0;
 
@@ -338,10 +349,21 @@ export class ReportService {
 
   /**
    * Helper: add days to a date
+   * For negative days (past), returns end of day (23:59:59)
+   * For positive days (future), returns start of day (00:00:00)
    */
   private addDays(dateStr: string, days: number): string {
     const date = new Date(dateStr);
     date.setDate(date.getDate() + days);
-    return date.toISOString().split('T')[0];
+
+    if (days < 0) {
+      // For past dates, return end of day
+      date.setHours(23, 59, 59, 999);
+    } else {
+      // For future dates, return start of day
+      date.setHours(0, 0, 0, 0);
+    }
+
+    return date.toISOString();
   }
 }

@@ -7,16 +7,18 @@ import fs from 'fs';
 
 // Mock NandoBananaClient to avoid API key requirement
 vi.mock('../../integrations/NandoBananaClient', () => ({
-  NandoBananaClient: vi.fn().mockImplementation(() => ({
-    generateImage: vi.fn().mockResolvedValue({
-      imageData: Buffer.from('mock-image-data'),
-      width: 2048,
-      height: 2048,
-      format: 'png',
-      generated_at: new Date().toISOString(),
-    }),
-    healthCheck: vi.fn().mockResolvedValue(true),
-  })),
+  NandoBananaClient: vi.fn(function () {
+    return {
+      generateImage: vi.fn().mockResolvedValue({
+        imageData: Buffer.from('mock-image-data'),
+        width: 2048,
+        height: 2048,
+        format: 'png',
+        generated_at: new Date().toISOString(),
+      }),
+      healthCheck: vi.fn().mockResolvedValue(true),
+    };
+  }),
 }));
 
 describe('VisualGenerator', () => {

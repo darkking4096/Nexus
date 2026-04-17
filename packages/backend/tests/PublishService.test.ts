@@ -7,13 +7,15 @@ import { encryptJSON } from '../src/utils/encryption';
 
 // Mock Playwright
 vi.mock('../src/services/PlaywrightService.ts', () => ({
-  PlaywrightService: vi.fn().mockImplementation(() => ({
-    initialize: vi.fn(),
-    loadSession: vi.fn(),
-    publishPhoto: vi.fn(),
-    publishCarousel: vi.fn(),
-    close: vi.fn(),
-  })),
+  PlaywrightService: vi.fn(function () {
+    return {
+      initialize: vi.fn(),
+      loadSession: vi.fn(),
+      publishPhoto: vi.fn(),
+      publishCarousel: vi.fn(),
+      close: vi.fn(),
+    };
+  }),
 }));
 
 // Mock humanDelay to not actually wait (for faster tests)

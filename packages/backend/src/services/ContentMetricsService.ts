@@ -11,7 +11,6 @@ export interface CurrentMetrics {
   shares: number;
   saves: number;
   reach: number;
-  impressions: number;
   engagement_rate: number;
 }
 
@@ -25,7 +24,6 @@ export interface MetricsSnapshot {
   shares: number;
   saves: number;
   reach: number;
-  impressions: number;
   engagement_rate: number;
 }
 
@@ -96,7 +94,6 @@ export class ContentMetricsService {
         shares,
         saves,
         reach,
-        impressions,
         CASE
           WHEN (likes + comments + shares) > 0
           THEN ROUND(((likes + comments + shares) * 100.0 / NULLIF(reach, 0)), 1)
@@ -128,7 +125,6 @@ export class ContentMetricsService {
         shares: currentMetrics.shares || 0,
         saves: currentMetrics.saves || 0,
         reach: currentMetrics.reach,
-        impressions: currentMetrics.reach, // Use reach as impressions for now
         engagement_rate: currentEngagementRate,
       },
       historical,

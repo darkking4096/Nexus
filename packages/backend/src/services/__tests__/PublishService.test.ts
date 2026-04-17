@@ -29,13 +29,17 @@ const { mockPlaywrightInstance, mockInstaInstance } = vi.hoisted(() => {
 
 vi.mock('../PlaywrightService', () => {
   return {
-    PlaywrightService: vi.fn(() => mockPlaywrightInstance),
+    PlaywrightService: vi.fn(function () {
+      return mockPlaywrightInstance;
+    }),
   };
 });
 
 vi.mock('../InstaService', () => {
   return {
-    InstaService: vi.fn(() => mockInstaInstance),
+    InstaService: vi.fn(function () {
+      return mockInstaInstance;
+    }),
   };
 });
 
