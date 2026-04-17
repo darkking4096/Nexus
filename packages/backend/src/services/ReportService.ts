@@ -123,7 +123,7 @@ export class ReportService {
     const followerStmt = this.db.prepare(`
       SELECT
         (SELECT followers_count FROM metrics WHERE profile_id = ? AND collected_at <= ? ORDER BY collected_at DESC LIMIT 1) as end_followers,
-        (SELECT followers_count FROM metrics WHERE profile_id = ? AND collected_at >= ? ORDER BY collected_at ASC LIMIT 1) as start_followers
+        (SELECT followers_count FROM metrics WHERE profile_id = ? AND collected_at < ? ORDER BY collected_at DESC LIMIT 1) as start_followers
     `);
 
     const followerData = followerStmt.get(profileId, endDate, profileId, startDate) as {
@@ -312,8 +312,8 @@ export class ReportService {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
-    const startMonth = start.toLocaleDateString('pt-BR', { month: 'long' });
-    const endMonth = end.toLocaleDateString('pt-BR', { month: 'long' });
+    const startMonth = start.toLocaleDateString('en-US', { month: 'long' });
+    const endMonth = end.toLocaleDateString('en-US', { month: 'long' });
     const year = start.getFullYear();
 
     if (startMonth === endMonth) {

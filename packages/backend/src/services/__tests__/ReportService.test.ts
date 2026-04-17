@@ -23,8 +23,8 @@ describe('ReportService', () => {
   describe('generateReport', () => {
     it('should generate report for a period', async () => {
       // Setup - insert metrics for a period
-      const startDate = '2026-04-01';
-      const endDate = '2026-04-30';
+      const startDate = '2026-04-01T00:00:00Z';
+      const endDate = '2026-04-30T23:59:59Z';
 
       // Insert follower metrics
       insertTestMetricsWithDate(db, testProfileId, {
@@ -69,8 +69,8 @@ describe('ReportService', () => {
 
     it('should calculate followers gained correctly', async () => {
       // Setup
-      const startDate = '2026-04-01';
-      const endDate = '2026-04-30';
+      const startDate = '2026-04-01T00:00:00Z';
+      const endDate = '2026-04-30T23:59:59Z';
 
       insertTestMetricsWithDate(db, testProfileId, {
         followers_count: 1000,
@@ -96,8 +96,8 @@ describe('ReportService', () => {
 
     it('should include top and bottom posts', async () => {
       // Setup
-      const startDate = '2026-04-01';
-      const endDate = '2026-04-30';
+      const startDate = '2026-04-01T00:00:00Z';
+      const endDate = '2026-04-30T23:59:59Z';
 
       const baseDate = new Date(2026, 3, 15); // April 15
 
@@ -189,8 +189,8 @@ describe('ReportService', () => {
 
     it('should generate insights from data', async () => {
       // Setup
-      const startDate = '2026-04-01';
-      const endDate = '2026-04-30';
+      const startDate = '2026-04-01T00:00:00Z';
+      const endDate = '2026-04-30T23:59:59Z';
 
       insertTestMetricsWithDate(db, testProfileId, {
         followers_count: 1000,
@@ -230,7 +230,7 @@ describe('ReportService', () => {
 
     it('should handle reports with no data', async () => {
       // Execute
-      const report = await reportService.generateReport(testProfileId, testUserId, '2026-04-01', '2026-04-30');
+      const report = await reportService.generateReport(testProfileId, testUserId, '2026-04-01T00:00:00Z', '2026-04-30T23:59:59Z');
 
       // Verify
       expect(report.summary.posts_published).toBe(0);
