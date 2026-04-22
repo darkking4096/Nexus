@@ -43,18 +43,26 @@ describe('ResearchService', () => {
     const userId1 = randomUUID();
     const userId2 = randomUUID();
     const profileId = randomUUID();
+    const now = new Date().toISOString();
 
     // Create users
-    db.exec(`
-      INSERT INTO users (id, email, password_hash, created_at, updated_at)
-      VALUES ('${userId1}', 'user1@example.com', 'hash', datetime('now'), datetime('now'));
+    await db.query(
+      `INSERT INTO users (id, email, password_hash, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [userId1, 'user1@example.com', 'hash', now, now]
+    );
 
-      INSERT INTO users (id, email, password_hash, created_at, updated_at)
-      VALUES ('${userId2}', 'user2@example.com', 'hash', datetime('now'), datetime('now'));
+    await db.query(
+      `INSERT INTO users (id, email, password_hash, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [userId2, 'user2@example.com', 'hash', now, now]
+    );
 
-      INSERT INTO profiles (id, user_id, instagram_username, access_token, created_at, updated_at)
-      VALUES ('${profileId}', '${userId1}', 'testuser', 'token', datetime('now'), datetime('now'));
-    `);
+    await db.query(
+      `INSERT INTO profiles (id, user_id, instagram_username, access_token, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6)`,
+      [profileId, userId1, 'testuser', 'token', now, now]
+    );
 
     // Try to access with different user
     await expect(researchService.runResearch(profileId, userId2)).rejects.toThrow(
@@ -74,45 +82,58 @@ describe('ResearchService', () => {
     const profileId = randomUUID();
     const contentId1 = randomUUID();
     const contentId2 = randomUUID();
+    const now = new Date().toISOString();
 
-    db.exec(`
-      INSERT INTO users (id, email, password_hash, created_at, updated_at)
-      VALUES ('${userId}', 'user3@example.com', 'hash', datetime('now'), datetime('now'));
+    await db.query(
+      `INSERT INTO users (id, email, password_hash, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [userId, 'user3@example.com', 'hash', now, now]
+    );
 
-      INSERT INTO profiles (id, user_id, instagram_username, access_token, created_at, updated_at)
-      VALUES ('${profileId}', '${userId}', 'testuser3', 'token', datetime('now'), datetime('now'));
+    await db.query(
+      `INSERT INTO profiles (id, user_id, instagram_username, access_token, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6)`,
+      [profileId, userId, 'testuser3', 'token', now, now]
+    );
 
-      INSERT INTO content (id, profile_id, type, caption, status, published_at, created_at, updated_at)
-      VALUES ('${contentId1}', '${profileId}', 'photo', 'Caption 1', 'published', datetime('now'), datetime('now'), datetime('now'));
+    await db.query(
+      `INSERT INTO content (id, profile_id, type, caption, status, published_at, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [contentId1, profileId, 'photo', 'Caption 1', 'published', now, now, now]
+    );
 
-      INSERT INTO content (id, profile_id, type, caption, status, published_at, created_at, updated_at)
-      VALUES ('${contentId2}', '${profileId}', 'photo', 'Caption 2', 'draft', null, datetime('now'), datetime('now'));
-    `);
+    await db.query(
+      `INSERT INTO content (id, profile_id, type, caption, status, published_at, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [contentId2, profileId, 'photo', 'Caption 2', 'draft', null, now, now]
+    );
 
     // Note: Can't easily test getContentHistory directly (it's private)
     // But we verify the structure exists by checking profile access works
-    expect(() => {
-      // This should not throw "not found" error
-      const stmt = db.prepare('SELECT id FROM profiles WHERE id = ? AND user_id = ?');
-      stmt.get(profileId, userId);
-    }).not.toThrow();
+    const result = await db.query('SELECT id FROM profiles WHERE id = $1 AND user_id = $2', [profileId, userId]);
+    expect(result.length).toBeGreaterThan(0);
   });
 
   it('should include profile with ownership verification', async () => {
     const userId = randomUUID();
     const profileId = randomUUID();
+    const now = new Date().toISOString();
 
-    db.exec(`
-      INSERT INTO users (id, email, password_hash, created_at, updated_at)
-      VALUES ('${userId}', 'user4@example.com', 'hash', datetime('now'), datetime('now'));
+    await db.query(
+      `INSERT INTO users (id, email, password_hash, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [userId, 'user4@example.com', 'hash', now, now]
+    );
 
-      INSERT INTO profiles (id, user_id, instagram_username, access_token, created_at, updated_at, bio, followers_count)
-      VALUES ('${profileId}', '${userId}', 'testuser4', 'token', datetime('now'), datetime('now'), 'My bio', 1000);
-    `);
+    await db.query(
+      `INSERT INTO profiles (id, user_id, instagram_username, access_token, created_at, updated_at, bio, followers_count)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [profileId, userId, 'testuser4', 'token', now, now, 'My bio', 1000]
+    );
 
     // Verify that accessing with correct user works (profile exists)
-    const stmt = db.prepare('SELECT * FROM profiles WHERE id = ? AND user_id = ?');
-    const profile = stmt.get(profileId, userId);
+    const results = await db.query('SELECT * FROM profiles WHERE id = $1 AND user_id = $2', [profileId, userId]);
+    const profile = results[0];
 
     expect(profile).toBeTruthy();
     expect((profile as any).instagram_username).toBe('testuser4');

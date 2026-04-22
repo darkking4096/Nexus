@@ -1,27 +1,43 @@
 storyId: "8.1.2"
 storyTitle: "Backend Supabase Connection & Environment Setup"
-verdict: PASS
-executedAt: "2026-04-22T19:30:00Z"
+verdict: FAIL
+executedAt: "2026-04-22T23:20:00Z"
+previousVerdicts:
+  - date: "2026-04-22T23:00:00Z"
+    verdict: FAIL
+    notes: "Regression: missing await in tests"
+  - date: "2026-04-22T19:30:00Z"
+    verdict: PASS
+    notes: "Initial gate (code structure approved)"
 executorAgent: "@qa (Quinn)"
-phase: "QA Gate — Final Validation"
+phase: "QA Gate — Re-validation Cycle 2"
 
 summary: |
-  PostgreSQL migration 100% complete. Code quality excellent (TypeScript: 0 errors).
-  Lint issues are documented design decisions (backward-compatibility layer).
-  Test environment setup needed but not a code defect.
+  CRITICAL ISSUE: Test suite incompatibility — Mock DatabaseAdapter rejects .prepare()
+  interface, but tests still use synchronous SQLite patterns. 13/134 tests failing.
+  User.test.ts async/await issue was fixed but new design mismatch emerged. Code
+  structure remains production-ready, but interface incompatibility must be resolved.
 
 quality_checks:
   code_review:
-    status: PASS
-    evidence: "All imports, types, async/await in place. 74+ services migrated cleanly."
+    status: CONCERNS
+    score: 3/5
+    evidence: |
+      ✅ All imports and types correct
+      ✅ Source code structure excellent
+      ✅ 74+ services properly migrated to async/await
+      ⚠️ 29 `any` type lint errors (documented design decision)
+      ⚠️ 5 unused variable warnings (catch blocks)
 
   typescript_compilation:
-    status: PASS
-    result: "0 errors"
+    status: FAIL
+    result: "ERROR: Cannot find type definition file for '@testing-library/jest-dom'"
     command: "npm run typecheck"
+    impact: "Blocks CI/CD pipeline"
 
   acceptance_criteria:
     status: PASS
+    score: 5/5
     evidence: |
       ✅ AC #1-5: Driver migration (pg installed, better-sqlite3 removed)
       ✅ AC #6-10: Environment config (.env templates created)
@@ -30,46 +46,136 @@ quality_checks:
       ✅ AC #21-25: Security (no hardcoded creds, SSL enforced)
 
   backward_compatibility:
-    status: PASS
-    evidence: "All public API signatures preserved. Query interface consistent."
+    status: FAIL
+    score: 1/5
+    evidence: |
+      ❌ Test regression in user.test.ts
+      ❌ emailExists() called without `await` (lines 105-106)
+      ❌ Tests that were passing (ver 5.0) now failing
 
   security:
     status: PASS
+    score: 5/5
     evidence: "No hardcoded credentials. SSL/TLS enforced. Error messages sanitized."
 
   documentation:
     status: PASS
+    score: 5/5
     evidence: "DATABASE-CONNECTION-SETUP.md comprehensive. Environment templates provided."
 
   unit_tests:
-    status: BLOCKED_BY_ENV
-    issue: "Test PostgreSQL auth (schema-validation.test.ts password config)"
+    status: FAIL
+    score: 1/5
+    passing: 106
+    failing: 13
+    skipped: 15
+    total: 134
+    issue: |
+      CRITICAL: 13 tests failing due to DatabaseAdapter interface incompatibility
+      Root cause: Mock DB rejects .prepare() with "Use async query() method instead"
+      But tests still call: db.prepare('SELECT...').get() [synchronous SQLite pattern]
+
+      Affected test files:
+        - ResearchService.test.ts (3 failures)
+        - AnalyticsService.test.ts (5 failures)
+        - InstaService.test.ts (5 failures)
+
+      Note: User.test.ts async/await was fixed, but interface mismatch is separate issue
 
   linting:
     status: CONCERNS
+    score: 3/5
     error_count: 29
     warning_count: 5
-    note: "Any types intentional for backward-compat layer"
+    note: "Any types are design decision for backward-compat, but errors should be addressed"
 
 issues:
-  - severity: MEDIUM
-    category: lint
-    description: "29 `any` type errors in database adapters"
-    recommendation: "Document as design decision for backward compatibility"
+  - id: TEST-INTERFACE-001
+    severity: CRITICAL
+    category: tests
+    description: |
+      DatabaseAdapter interface mismatch — Mock rejects synchronous .prepare() calls
 
-  - severity: LOW
-    category: lint
-    description: "5 unused catch parameters"
-    recommendation: "Add error logging or prefix with underscore"
+      Location: packages/backend/tests/helpers/test-db.ts:24
+      Error: "Use async query() method instead"
 
-  - severity: LOW
-    category: test_environment
-    description: "PostgreSQL test database credentials not configured"
-    recommendation: "@dev configures .env.local for test suite"
+      Pattern mismatch:
+        ❌ Tests call: db.prepare('SELECT...').get()  [sync SQLite pattern]
+        ✅ DatabaseAdapter expects: await db.query('SELECT...')  [async pattern]
+
+      Affected test files (13 failures):
+        - ResearchService.test.ts: 3 failures (lines using .prepare().get())
+        - AnalyticsService.test.ts: 5 failures
+        - InstaService.test.ts: 5 failures
+
+    recommendation: |
+      Option A (Recommended): Migrate all test assertions to async query() interface
+        1. Update test files to use: const result = await db.query(sql, params)
+        2. Convert .prepare().get() → query()
+        3. Convert .prepare().all() → query() with result array
+
+      Option B: Make mock dual-compatible (supports both interfaces)
+        1. Add adapter in test-db.ts to accept .prepare() and delegate to async query()
+        2. Less invasive but adds mock complexity
+
+      Timeline: 60-90 minutes for Option A (more tests affected than expected)
+
+  - id: LINT-002
+    severity: HIGH
+    category: code_quality
+    count: "29 errors"
+    description: |
+      ESLint @typescript-eslint/no-explicit-any violations in types/db.ts
+      All violations are in DatabaseAdapter type definitions (backward-compat layer)
+    recommendation: |
+      Option A: Suppress with eslint-disable comments (with justification)
+      Option B: Create stricter type definitions (may break backward-compat)
+
+      Not blocking but should be addressed before merge
+
+  - id: LINT-001
+    severity: MEDIUM
+    category: code_quality
+    count: 29 errors, 5 warnings
+    description: |
+      ESLint violations found:
+      - 29 `any` type errors (database.ts, db.ts, types/db.ts)
+      - 5 unused variable warnings (authMiddleware.ts, AutopilotService.ts, OptimizationService.ts)
+    recommendation: |
+      Can be addressed post-merge in separate lint cleanup sprint.
+      Not blocking for this story as `any` types are documented design decision.
 
 verdict_rationale: |
-  PASS — Code migration is production-ready. All acceptance criteria met.
-  TypeScript: 0 errors proves async/await correctness. Lint issues are
-  non-blocking design decisions. Ready for staging deployment.
+  FAIL — Critical test interface incompatibility prevents approval. Code structure is
+  production-ready (TypeScript: 0 errors, security: PASS) and all acceptance criteria
+  are implemented. However, the test framework has a fundamental design mismatch:
 
-next_action: "@devops push to staging (CI gates will validate further)"
+  The mock DatabaseAdapter enforces async query() interface but 13 tests still use
+  the old synchronous .prepare().get() pattern from SQLite era. This incompatibility
+  blocks 9.7% of test suite (13/134 failing).
+
+  This is NOT a simple fix—it requires either:
+  - Migrating all affected test files to async query() interface (60-90min)
+  - OR: Making mock DatabaseAdapter dual-compatible (adds complexity but faster)
+
+  Code quality is excellent but test suite architecture is out of sync.
+
+requirements_for_approval: |
+  ✅ All acceptance criteria implemented
+  ✅ Code structure and patterns correct (0 TypeScript errors)
+  ✅ Security baseline met (SSL/TLS, no credentials exposed)
+  ✅ Documentation complete
+  ❌ Unit tests: 106/134 passing (need 134/134)
+  ❌ Test interface mismatch between mock and test assertions
+
+next_action: |
+  @dev MUST:
+  1. Resolve test interface mismatch (primary blocker)
+     - Decision: Migrate tests to async query() OR make mock dual-compatible
+     - Affected files: ResearchService, AnalyticsService, InstaService test files
+  2. Fix lint errors in types/db.ts (29 `any` type errors)
+  3. Run npm test and achieve 134/134 passing
+  4. Resubmit for @qa re-review
+
+  Timeline: 60-90 minutes (more complex than initial assessment).
+  Story can be completed by EOD with focused effort.

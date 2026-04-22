@@ -3,6 +3,7 @@ import { createMockDatabase } from './helpers/test-db';
 import type { DatabaseAdapter } from '../src/config/database';
 import { AnalyticsService } from '../src/services/AnalyticsService';
 import { Profile } from '../src/models/Profile';
+import { randomUUID } from 'crypto';
 
 // Mock global fetch
 vi.stubGlobal('fetch', vi.fn());
@@ -27,6 +28,26 @@ describe('AnalyticsService', () => {
   });
 
   describe('getProfileMetrics', () => {
+    let testUserId: string;
+    let testProfileId: string;
+
+    beforeEach(async () => {
+      // Create fresh user and profile for each test
+      testUserId = randomUUID();
+      testProfileId = randomUUID();
+      const now = new Date().toISOString();
+      await db.query(
+        `INSERT INTO users (id, email, password_hash, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [testUserId, `test-${randomUUID()}@example.com`, 'hash', now, now]
+      );
+      await db.query(
+        `INSERT INTO profiles (id, user_id, instagram_username, instagram_id, access_token, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [testProfileId, testUserId, 'testuser', 'insta-123', 'token', now, now]
+      );
+    });
+
     it('should return null if profile not found', async () => {
       const result = await analyticsService.getProfileMetrics('non-existent', testUserId);
       expect(result).toBeNull();
@@ -39,13 +60,12 @@ describe('AnalyticsService', () => {
 
     it('should return latest metrics for profile', async () => {
       // Insert test metrics
-      const metricsStmt = db.prepare(`
-        INSERT INTO metrics (id, profile_id, followers_count, engagement_rate, reach, impressions, collected_at, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-      `);
-
       const now = new Date().toISOString();
-      metricsStmt.run('metric-1', testProfileId, 1000, 4.5, 50000, 100000, now, now);
+      await db.query(
+        `INSERT INTO metrics (id, profile_id, followers_count, engagement_rate, reach, impressions, collected_at, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        ['metric-1', testProfileId, 1000, 4.5, 50000, 100000, now, now]
+      );
 
       const result = await analyticsService.getProfileMetrics(testProfileId, testUserId);
 
@@ -61,20 +81,43 @@ describe('AnalyticsService', () => {
   });
 
   describe('getMetricsHistory', () => {
+    let testUserId: string;
+    let testProfileId: string;
+
+    beforeEach(async () => {
+      // Create fresh user and profile for each test
+      testUserId = randomUUID();
+      testProfileId = randomUUID();
+      const now = new Date().toISOString();
+      await db.query(
+        `INSERT INTO users (id, email, password_hash, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [testUserId, `test-${randomUUID()}@example.com`, 'hash', now, now]
+      );
+      await db.query(
+        `INSERT INTO profiles (id, user_id, instagram_username, instagram_id, access_token, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [testProfileId, testUserId, 'testuser', 'insta-123', 'token', now, now]
+      );
+    });
+
     it('should return empty array if no history', async () => {
       const result = await analyticsService.getMetricsHistory(testProfileId, testUserId, 30);
       expect(Array.isArray(result)).toBe(true);
     });
 
     it('should return historical metrics', async () => {
-      const metricsStmt = db.prepare(`
-        INSERT INTO metrics (id, profile_id, followers_count, engagement_rate, reach, impressions, collected_at, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-      `);
-
       const now = new Date().toISOString();
-      metricsStmt.run('metric-hist-1', testProfileId, 1000, 4.0, 50000, 100000, now, now);
-      metricsStmt.run('metric-hist-2', testProfileId, 1050, 4.2, 52000, 102000, new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), now);
+      await db.query(
+        `INSERT INTO metrics (id, profile_id, followers_count, engagement_rate, reach, impressions, collected_at, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        ['metric-hist-1', testProfileId, 1000, 4.0, 50000, 100000, now, now]
+      );
+      await db.query(
+        `INSERT INTO metrics (id, profile_id, followers_count, engagement_rate, reach, impressions, collected_at, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        ['metric-hist-2', testProfileId, 1050, 4.2, 52000, 102000, new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), now]
+      );
 
       const result = await analyticsService.getMetricsHistory(testProfileId, testUserId, 30);
 
@@ -84,28 +127,44 @@ describe('AnalyticsService', () => {
   });
 
   describe('getEngagementRate', () => {
+    let testUserId: string;
+
+    beforeEach(async () => {
+      // Create fresh user for each test
+      testUserId = randomUUID();
+      const now = new Date().toISOString();
+      await db.query(
+        `INSERT INTO users (id, email, password_hash, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [testUserId, `test-${randomUUID()}@example.com`, 'hash', now, now]
+      );
+    });
+
     it('should throw if profile not found', async () => {
       await expect(analyticsService.getEngagementRate('no-metrics-profile', testUserId, 7)).rejects.toThrow('Profile no-metrics-profile not found');
     });
 
     it('should calculate average engagement rate', async () => {
-      const metricsStmt = db.prepare(`
-        INSERT INTO metrics (id, profile_id, followers_count, engagement_rate, reach, impressions, collected_at, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-      `);
-
       const now = new Date().toISOString();
       const newProfileId = 'engagement-test-profile';
 
       // Create new profile for this test
-      const profileStmt = db.prepare(`
-        INSERT INTO profiles (id, user_id, instagram_username, instagram_id, access_token, bio, followers_count)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-      `);
-      profileStmt.run(newProfileId, testUserId, 'engtest', 'insta-eng-123', 'token', 'Bio', 1000);
+      await db.query(
+        `INSERT INTO profiles (id, user_id, instagram_username, instagram_id, access_token, bio, followers_count)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [newProfileId, testUserId, 'engtest', 'insta-eng-123', 'token', 'Bio', 1000]
+      );
 
-      metricsStmt.run('eng-1', newProfileId, 1000, 5.0, 50000, 100000, now, now);
-      metricsStmt.run('eng-2', newProfileId, 1100, 3.0, 52000, 102000, new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), now);
+      await db.query(
+        `INSERT INTO metrics (id, profile_id, followers_count, engagement_rate, reach, impressions, collected_at, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        ['eng-1', newProfileId, 1000, 5.0, 50000, 100000, now, now]
+      );
+      await db.query(
+        `INSERT INTO metrics (id, profile_id, followers_count, engagement_rate, reach, impressions, collected_at, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        ['eng-2', newProfileId, 1100, 3.0, 52000, 102000, new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), now]
+      );
 
       const result = await analyticsService.getEngagementRate(newProfileId, testUserId, 7);
 

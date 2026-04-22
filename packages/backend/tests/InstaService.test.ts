@@ -23,6 +23,14 @@ describe('InstaService', () => {
     instaService = new InstaService(db, 'http://localhost:5001', testEncryptionKey);
   });
 
+  beforeEach(async () => {
+    // Clear database between tests to prevent state leakage
+    await db.close();
+    db = createMockDatabase();
+    profileModel = new Profile(db);
+    instaService = new InstaService(db, 'http://localhost:5001', testEncryptionKey);
+  });
+
   it('should connect a business account successfully', async () => {
     const mockResponse = {
       account_info: {
@@ -56,11 +64,11 @@ describe('InstaService', () => {
     expect(profile.access_token).toBe(''); // Should be stripped from response
 
     // Verify session was stored
-    const sessionStmt = db.prepare(`
-      SELECT session_data FROM insta_sessions WHERE profile_id = ?
-    `);
-    const session = sessionStmt.get(profile.id);
-    expect(session).toBeTruthy();
+    const sessionResults = await db.query(
+      `SELECT session_data FROM insta_sessions WHERE profile_id = $1`,
+      [profile.id]
+    );
+    expect(sessionResults.length).toBeGreaterThan(0);
   });
 
   it('should reject personal accounts', async () => {
@@ -142,10 +150,12 @@ describe('InstaService', () => {
 
   it('should prevent duplicate accounts from different users', async () => {
     // Create a second user
-    db.exec(`
-      INSERT INTO users (id, email, password_hash, name, created_at, updated_at)
-      VALUES ('another-user', 'another@example.com', 'hash', 'Another User', datetime('now'), datetime('now'));
-    `);
+    const now = new Date().toISOString();
+    await db.query(
+      `INSERT INTO users (id, email, password_hash, name, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6)`,
+      ['another-user', 'another@example.com', 'hash', 'Another User', now, now]
+    );
 
     // First user connects account
     const mockResponse = {
@@ -220,8 +230,8 @@ describe('InstaService', () => {
     expect(session.user_agent).toBe('Instagram 1.0');
   });
 
-  it('should throw on missing session', () => {
-    expect(() => instaService.getDecryptedSession('nonexistent-profile')).toThrow(
+  it('should throw on missing session', async () => {
+    await expect(instaService.getDecryptedSession('nonexistent-profile')).rejects.toThrow(
       'No Instagram session found'
     );
   });
