@@ -1,5 +1,5 @@
-import Database from 'better-sqlite3';
 import { randomUUID } from 'crypto';
+import type { DatabaseAdapter } from '../config/database';
 
 export interface CompetitorData {
   id: string;
@@ -19,88 +19,87 @@ export interface CompetitorCreateInput {
 }
 
 export class Competitor {
-  constructor(private db: Database.Database) {}
+  constructor(private db: DatabaseAdapter) {}
 
   /**
    * Create new competitor
    */
-  create(input: CompetitorCreateInput): CompetitorData {
+  async create(input: CompetitorCreateInput): Promise<CompetitorData> {
     const id = randomUUID();
     const now = new Date().toISOString();
 
-    const stmt = this.db.prepare(`
-      INSERT INTO competitors (
+    await this.db.query(
+      `INSERT INTO competitors (
         id, profile_id, instagram_username, followers_count, top_posts_data, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?)
-    `);
-
-    stmt.run(
-      id,
-      input.profile_id,
-      input.instagram_username,
-      input.followers_count || null,
-      input.top_posts_data || null,
-      now
+      ) VALUES ($1, $2, $3, $4, $5, $6)`,
+      [
+        id,
+        input.profile_id,
+        input.instagram_username,
+        input.followers_count || null,
+        input.top_posts_data || null,
+        now
+      ]
     );
 
-    return this.getById(id)!;
+    const result = await this.getById(id);
+    if (!result) throw new Error('Failed to create competitor');
+    return result;
   }
 
   /**
    * Get competitor by ID
    */
-  getById(id: string): CompetitorData | null {
-    const stmt = this.db.prepare(`
-      SELECT * FROM competitors WHERE id = ?
-    `);
-
-    const row = stmt.get(id);
-    return this.formatRow(row);
+  async getById(id: string): Promise<CompetitorData | null> {
+    const rows = await this.db.query(
+      `SELECT * FROM competitors WHERE id = $1`,
+      [id]
+    );
+    return rows.length > 0 ? this.formatRow(rows[0]) : null;
   }
 
   /**
    * Get all competitors for a profile
    */
-  getByProfileId(profileId: string): CompetitorData[] {
-    const stmt = this.db.prepare(`
-      SELECT * FROM competitors WHERE profile_id = ? ORDER BY created_at DESC
-    `);
-
-    const rows = stmt.all(profileId);
+  async getByProfileId(profileId: string): Promise<CompetitorData[]> {
+    const rows = await this.db.query(
+      `SELECT * FROM competitors WHERE profile_id = $1 ORDER BY created_at DESC`,
+      [profileId]
+    );
     return rows.map((row) => this.formatRow(row)!);
   }
 
   /**
    * Check if competitor already exists for profile
    */
-  existsByUsername(profileId: string, username: string): boolean {
-    const stmt = this.db.prepare(`
-      SELECT COUNT(*) as count FROM competitors
-      WHERE profile_id = ? AND instagram_username = ?
-    `);
-
-    const result = stmt.get(profileId, username) as { count: number };
-    return result.count > 0;
+  async existsByUsername(profileId: string, username: string): Promise<boolean> {
+    const results = await this.db.query(
+      `SELECT COUNT(*) as count FROM competitors
+       WHERE profile_id = $1 AND instagram_username = $2`,
+      [profileId, username]
+    );
+    return results.length > 0 && (results[0].count as number) > 0;
   }
 
   /**
    * Update competitor
    */
-  update(id: string, updates: Partial<CompetitorCreateInput>): CompetitorData | null {
+  async update(id: string, updates: Partial<CompetitorCreateInput>): Promise<CompetitorData | null> {
     const now = new Date().toISOString();
     const fields: string[] = [];
     const values: unknown[] = [];
+    let paramIndex = 1;
 
     if (updates.instagram_username !== undefined) {
-      fields.push('instagram_username = ?');
+      fields.push(`instagram_username = $${paramIndex++}`);
       values.push(updates.instagram_username);
     }
     if (updates.followers_count !== undefined) {
-      fields.push('followers_count = ?');
+      fields.push(`followers_count = $${paramIndex++}`);
       values.push(updates.followers_count || null);
     }
     if (updates.top_posts_data !== undefined) {
-      fields.push('top_posts_data = ?');
+      fields.push(`top_posts_data = $${paramIndex++}`);
       values.push(updates.top_posts_data || null);
     }
 
@@ -108,13 +107,12 @@ export class Competitor {
       return this.getById(id);
     }
 
-    fields.push('last_updated = ?');
+    fields.push(`last_updated = $${paramIndex++}`);
     values.push(now);
     values.push(id);
 
-    const sql = `UPDATE competitors SET ${fields.join(', ')} WHERE id = ?`;
-    const stmt = this.db.prepare(sql);
-    stmt.run(...values);
+    const sql = `UPDATE competitors SET ${fields.join(', ')} WHERE id = $${paramIndex}`;
+    await this.db.query(sql, values);
 
     return this.getById(id);
   }
@@ -122,19 +120,23 @@ export class Competitor {
   /**
    * Delete competitor
    */
-  delete(id: string): boolean {
-    const stmt = this.db.prepare(`DELETE FROM competitors WHERE id = ?`);
-    const result = stmt.run(id);
-    return result.changes > 0;
+  async delete(id: string): Promise<boolean> {
+    const results = await this.db.query(
+      `DELETE FROM competitors WHERE id = $1 RETURNING id`,
+      [id]
+    );
+    return results.length > 0;
   }
 
   /**
    * Delete all competitors for a profile
    */
-  deleteByProfileId(profileId: string): number {
-    const stmt = this.db.prepare(`DELETE FROM competitors WHERE profile_id = ?`);
-    const result = stmt.run(profileId);
-    return result.changes;
+  async deleteByProfileId(profileId: string): Promise<number> {
+    const results = await this.db.query(
+      `DELETE FROM competitors WHERE profile_id = $1 RETURNING id`,
+      [profileId]
+    );
+    return results.length;
   }
 
   /**

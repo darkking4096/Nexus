@@ -1,5 +1,5 @@
-import Database from 'better-sqlite3';
 import { randomUUID } from 'crypto';
+import type { DatabaseAdapter } from '../config/database';
 
 export interface ProfileAssetData {
   id: string;
@@ -22,88 +22,90 @@ export interface ProfileAssetCreateInput {
 }
 
 export class ProfileAsset {
-  constructor(private db: Database.Database) {}
+  constructor(private db: DatabaseAdapter) {}
 
   /**
    * Create new asset
    */
-  create(input: ProfileAssetCreateInput): ProfileAssetData {
+  async create(input: ProfileAssetCreateInput): Promise<ProfileAssetData> {
     const id = randomUUID();
     const now = new Date().toISOString();
 
-    const stmt = this.db.prepare(`
-      INSERT INTO profile_assets (
+    await this.db.query(
+      `INSERT INTO profile_assets (
         id, profile_id, asset_type, file_path, file_name,
         file_size, mime_type, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
-    stmt.run(
-      id,
-      input.profile_id,
-      input.asset_type,
-      input.file_path,
-      input.file_name,
-      input.file_size,
-      input.mime_type,
-      now
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [
+        id,
+        input.profile_id,
+        input.asset_type,
+        input.file_path,
+        input.file_name,
+        input.file_size,
+        input.mime_type,
+        now
+      ]
     );
 
-    return this.getById(id)!;
+    const result = await this.getById(id);
+    if (!result) throw new Error('Failed to create profile asset');
+    return result;
   }
 
   /**
    * Get asset by ID
    */
-  getById(id: string): ProfileAssetData | null {
-    const stmt = this.db.prepare(`
-      SELECT * FROM profile_assets WHERE id = ?
-    `);
-
-    const row = stmt.get(id);
-    return this.formatRow(row);
+  async getById(id: string): Promise<ProfileAssetData | null> {
+    const rows = await this.db.query(
+      `SELECT * FROM profile_assets WHERE id = $1`,
+      [id]
+    );
+    return rows.length > 0 ? this.formatRow(rows[0]) : null;
   }
 
   /**
    * Get all assets for a profile
    */
-  getByProfileId(profileId: string): ProfileAssetData[] {
-    const stmt = this.db.prepare(`
-      SELECT * FROM profile_assets WHERE profile_id = ? ORDER BY created_at DESC
-    `);
-
-    const rows = stmt.all(profileId);
+  async getByProfileId(profileId: string): Promise<ProfileAssetData[]> {
+    const rows = await this.db.query(
+      `SELECT * FROM profile_assets WHERE profile_id = $1 ORDER BY created_at DESC`,
+      [profileId]
+    );
     return rows.map((row) => this.formatRow(row)!);
   }
 
   /**
    * Get assets by type
    */
-  getByProfileIdAndType(profileId: string, assetType: string): ProfileAssetData[] {
-    const stmt = this.db.prepare(`
-      SELECT * FROM profile_assets WHERE profile_id = ? AND asset_type = ? ORDER BY created_at DESC
-    `);
-
-    const rows = stmt.all(profileId, assetType);
+  async getByProfileIdAndType(profileId: string, assetType: string): Promise<ProfileAssetData[]> {
+    const rows = await this.db.query(
+      `SELECT * FROM profile_assets WHERE profile_id = $1 AND asset_type = $2 ORDER BY created_at DESC`,
+      [profileId, assetType]
+    );
     return rows.map((row) => this.formatRow(row)!);
   }
 
   /**
    * Delete asset
    */
-  delete(id: string): boolean {
-    const stmt = this.db.prepare(`DELETE FROM profile_assets WHERE id = ?`);
-    const result = stmt.run(id);
-    return result.changes > 0;
+  async delete(id: string): Promise<boolean> {
+    const results = await this.db.query(
+      `DELETE FROM profile_assets WHERE id = $1 RETURNING id`,
+      [id]
+    );
+    return results.length > 0;
   }
 
   /**
    * Delete all assets for a profile
    */
-  deleteByProfileId(profileId: string): number {
-    const stmt = this.db.prepare(`DELETE FROM profile_assets WHERE profile_id = ?`);
-    const result = stmt.run(profileId);
-    return result.changes;
+  async deleteByProfileId(profileId: string): Promise<number> {
+    const results = await this.db.query(
+      `DELETE FROM profile_assets WHERE profile_id = $1 RETURNING id`,
+      [profileId]
+    );
+    return results.length;
   }
 
   /**

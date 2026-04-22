@@ -1,0 +1,232 @@
+storyId: "8.1.2"
+verdict: FAIL
+executedAt: "2026-04-22T15:45:00Z"
+re_evaluated_at: "2026-04-24T09:15:00Z"
+qaDuration: "Initial 35min + Re-eval 45min"
+
+quality_checks:
+  code_review: PARTIAL (infrastructure solid, migration incomplete)
+  unit_tests: BLOCKED (TypeScript errors prevent execution)
+  acceptance_criteria: FAIL (migration 5% complete)
+  no_regressions: FAIL (routes still use old patterns, type conflicts)
+  performance: UNABLE_TO_VERIFY (blocked by compilation)
+  security: CONCERNS (pg module not properly validated in all contexts)
+  documentation: PASS (comprehensive docs for new infrastructure)
+
+issues:
+  - severity: CRITICAL
+    category: acceptance_criteria
+    title: "Driver Migration INCOMPLETE — 160 TypeScript Errors, ~81 better-sqlite3 references remain"
+    description: |
+      Story AC requires: "All existing database queries remain functional" + "All acceptance criteria met"
+
+      **Current State (Re-evaluated 2026-04-24):**
+      ✅ PostgreSQL connection module CREATED + properly designed
+      ✅ pg library installed
+      ✅ better-sqlite3 removed from package.json
+      ❌ **160 TypeScript compilation errors** (increased from 50+)
+      ❌ **~81 better-sqlite3 references remain in 20+ files**
+      ❌ **5% migration completion** (5 of 100+ files migrated)
+
+      **Migration Progress:**
+      - [x] 4 models migrated: User, Profile, Competitor, ProfileAsset
+      - [x] 1 route migrated: auth.ts (pattern example)
+      - [ ] ~20 routes NOT migrated (profiles, assets, competitors, etc.)
+      - [ ] ~27 services NOT migrated
+      - [ ] Tests NOT migrated
+
+      **Error Breakdown (160 errors):**
+      - 20+ "Cannot find module 'better-sqlite3'" in routes, services, tests, jobs
+      - 40+ type mismatch errors (routes expect sync returns, models return Promises)
+      - 20+ unused variable warnings
+      - Generic type constraint violations in connection.ts
+      - Route handlers passing Promise<T> where T expected
+
+      **Critical Impact:**
+      - Backend does NOT compile
+      - Impossible to run tests
+      - Impossible to verify AC compliance
+      - Story blocks 8.1.3 and 8.1.4
+    recommendation: |
+      **BLOCKING ISSUE — Story cannot proceed to @devops without resolution.**
+
+      **Phase 1: Complete Driver Migration (~4-6 hours)**
+
+      1. **Routes Migration (Priority 1)** — 20 files
+         Pattern example: auth.ts
+         - Replace: `import Database from 'better-sqlite3'`
+         - Replace: function param `db: Database.Database`
+         - With: `import type { DatabaseAdapter } from '../config/database'`
+         - With: function param `db: DatabaseAdapter`
+         - Add `await` to all model method calls (e.g., `await profile.getById(id)`)
+         - Add `async` to route handlers that call async methods
+
+         Critical routes (test after migration):
+         - profiles.ts, assets.ts, competitors.ts, content.ts, autopilot.ts
+
+      2. **Services Migration (Priority 2)** — 27 files
+         Same pattern as routes
+         - Update imports and param types
+         - Add async/await to all db calls
+         - Test key services: InstaService, AnalyticsService
+
+      3. **Tests Migration (Priority 3)** — All test files
+         - Update test fixtures to import from new connection module
+         - Replace mock databases with test database adapter
+         - Verify test patterns work with async models
+
+      4. **Jobs & Orchestration (Priority 4)** — Remaining files
+         - collectMetrics.ts, ResearchOrchestrator.ts, etc.
+
+      **Phase 2: Verification (1-2 hours)**
+      - npm run typecheck → 0 errors
+      - npm test -- packages/backend/tests/db/connection.test.ts → all pass
+      - npm test (full suite) → all pass
+      - Manual endpoint testing (5-10 key routes)
+
+      **Recommended Timeline:**
+      - Routes: 2-3 hours (can batch 5 routes at a time)
+      - Services: 1-2 hours (similar pattern to routes)
+      - Tests: 1 hour
+      - Verification: 1-2 hours
+      - **Total: 5-8 hours (or 2-3 hours with aggressive batching)**
+
+  - severity: CRITICAL
+    category: code_compilation
+    title: "TypeScript Compilation Blocked — 160 Errors"
+    description: |
+      npm run typecheck fails with 160 errors across backend:
+
+      **Sample errors:**
+      - src/routes/profiles.ts(2): Cannot find module 'better-sqlite3'
+      - src/routes/profiles.ts(108): Property 'id' does not exist on Promise<ProfileData>
+      - src/routes/assets.ts(53): Property 'user_id' does not exist on Promise<ProfileData>
+      - src/db/connection.ts(140): Type 'T' does not satisfy constraint 'QueryResultRow'
+      - src/config/database.ts(38): 'sql' declared but never read
+      - src/services/InstaService.ts(1): Cannot find module 'better-sqlite3'
+
+      **Pattern Analysis:**
+      Routes/services still expect SYNCHRONOUS model returns:
+      ```typescript
+      const profile = profileModel.getById(id);  // But getById() now returns Promise
+      res.json(profile); // Error: accessing properties on Promise
+      ```
+
+      All untransformed files share this pattern — systematic, not random.
+
+    recommendation: |
+      1. Execute migration plan above (Phase 1 & 2)
+      2. Verify typecheck with: npm run typecheck --workspace=packages/backend
+      3. Address any remaining edge cases (generics, implicit any)
+
+  - severity: HIGH
+    category: testing
+    title: "Unit Tests Cannot Execute — Better-sqlite3 Imports + TypeScript Errors"
+    description: |
+      Tests cannot run because:
+      1. TypeScript compilation blocks test execution
+      2. Test fixtures still import better-sqlite3
+      3. Test mocks not updated for PostgreSQL adapter
+
+      Example failure:
+      - src/__tests__/AutopilotService.test.ts imports better-sqlite3
+      - src/services/__tests__/BestTimesCalculator.test.ts calls initializeDatabase (non-existent)
+      - Routes tests expect sync DB but models now async
+
+    recommendation: |
+      After driver migration complete:
+      1. Update all test fixtures to use new DatabaseAdapter
+      2. Replace mock Database instances with adapter mocks
+      3. Update test setup to handle async model methods
+      4. Run: npm test -- packages/backend/tests/
+      5. Target: All tests passing with >80% coverage for modified code
+
+  - severity: MEDIUM
+    category: code_quality
+    title: "Async/Await Pattern Inconsistency in Migrated Files"
+    description: |
+      5 files migrated (4 models + 1 route) but pattern shows inconsistencies:
+      - Some methods use `async`/`await` correctly
+      - database.ts has stub methods with unused parameters
+      - Type constraints in connection.ts need clarification
+
+      Example: src/config/database.ts
+      ```typescript
+      prepare(sql, self, params) { } // 3 unused params
+      get(params, fn) { } // 2 unused params
+      all(params, fn) { } // 2 unused params
+      ```
+
+      These look like backward-compatibility stubs but unclear intent.
+
+    recommendation: |
+      1. Clarify database.ts — is this a compatibility layer or obsolete?
+      2. If compatibility: document purpose in comments
+      3. If obsolete: remove unused methods/parameters
+      4. Verify migrated 5 files for pattern consistency
+      5. Add TypeScript strict mode where possible
+
+  - severity: MEDIUM
+    category: security
+    title: "Connection String Validation Not Verified in Routes"
+    description: |
+      New PostgreSQL infrastructure has good security patterns:
+      - Connection strings from environment only ✅
+      - SSL/TLS configured ✅
+      - Error handling prevents credential leaks ✅
+
+      BUT: Routes/services that use the connection haven't been re-validated
+      - Some error handling may still log sensitive data indirectly
+      - Credential extraction logic needs audit in context of routes
+      - Need to verify no hardcoded connection strings in migrated code
+
+    recommendation: |
+      1. Post-migration, run security scan: coderabbit --security
+      2. Audit error handlers in migrated routes for credential leaks
+      3. Verify connection pooling doesn't expose internals
+      4. Check context.ts and middleware for hardcoded configs
+
+status_after_gate: InProgress
+owner: "@dev"
+blocked_by: []
+blocks: ["8.1.3", "8.1.4"]
+
+summary: |
+  **Verdict: FAIL** — Story cannot proceed to production
+
+  **Root Cause:** Migration 5% complete, blocking compilation + testing
+
+  **What Works:**
+  - PostgreSQL infrastructure well-designed and functional
+  - Connection pooling, error handling, resilience patterns solid
+  - Documentation comprehensive
+  - 5 files migrated successfully (good pattern example)
+
+  **What's Broken:**
+  - 160 TypeScript compilation errors (up from 50+)
+  - 20+ routes still use old better-sqlite3 imports
+  - Type mismatches between Promise-returning models and sync-expecting routes
+  - Tests blocked by compilation failures
+  - No way to verify AC compliance
+
+  **Path to Success:**
+  Complete the migration using established pattern from auth.ts:
+  1. Update imports (better-sqlite3 → DatabaseAdapter)
+  2. Update param types (Database.Database → DatabaseAdapter)
+  3. Add async/await to route handlers
+  4. Fix 160 TypeScript errors
+  5. Run full test suite
+  6. Resubmit for @qa approval
+
+  **Estimated Effort:** 5-8 hours (2-3 hours with aggressive batching)
+  **Timeline:** Target completion within 24 hours for Story 8.1.3 unblock
+
+next_action: |
+  @dev must:
+  1. Complete driver migration using auth.ts pattern
+  2. Achieve npm run typecheck → 0 errors
+  3. Verify npm test passes
+  4. Resubmit story for @qa re-review
+
+  Story blocks Stories 8.1.3 (Frontend Supabase) and 8.1.4 (E2E Testing).
+  Urgent resolution needed to maintain sprint timeline.

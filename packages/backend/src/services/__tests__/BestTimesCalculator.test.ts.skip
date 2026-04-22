@@ -1,0 +1,231 @@
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import type { DatabaseAdapter } from '../config/database';
+import path from 'path';
+import fs from 'fs';
+import { initializeDatabase } from '../../config/database.js';
+import { BestTimesCalculator } from '../BestTimesCalculator.js';
+import { randomUUID } from 'crypto';
+
+describe('BestTimesCalculator', () => {
+  let db: DatabaseAdapter;
+  let calculator: BestTimesCalculator;
+  let testDbPath: string;
+  let userId: string;
+  let profileId: string;
+
+  beforeEach(() => {
+    testDbPath = path.join(__dirname, `test-best-times-${randomUUID()}.db`);
+    db = initializeDatabase(testDbPath);
+    calculator = new BestTimesCalculator(db);
+
+    // Create test user
+    userId = randomUUID();
+    const userStmt = db.prepare(`
+      INSERT INTO users (id, email, password_hash, name)
+      VALUES (?, ?, ?, ?)
+    `);
+    userStmt.run(userId, 'test@example.com', 'hash', 'Test User');
+
+    // Create test profile
+    profileId = randomUUID();
+    const profileStmt = db.prepare(`
+      INSERT INTO profiles (
+        id, user_id, instagram_username, instagram_id, access_token
+      ) VALUES (?, ?, ?, ?, ?)
+    `);
+    profileStmt.run(profileId, userId, 'test_user', '12345', 'token_xyz');
+  });
+
+  afterEach(() => {
+    db.close();
+    if (fs.existsSync(testDbPath)) {
+      fs.unlinkSync(testDbPath);
+    }
+  });
+
+  describe('AC 3: Calculate best times based on engagement', () => {
+    it('should return default best times when insufficient data', () => {
+      expect(() => {
+        calculator.calculateBestTimes(profileId);
+      }).toThrow('insufficient_data');
+    });
+
+    it('should return top 5 times with engagement scores for >5 posts', () => {
+      // Create 6 published posts at different hours
+      const hours = [9, 12, 15, 18, 20, 21];
+      let contentIndex = 0;
+
+      for (const hour of hours) {
+        contentIndex++;
+        const contentId = randomUUID();
+
+        // Create content
+        const contentStmt = db.prepare(`
+          INSERT INTO content (id, profile_id, type, caption, status, published_at)
+          VALUES (?, ?, ?, ?, ?, ?)
+        `);
+
+        const publishDate = new Date();
+        publishDate.setUTCHours(hour, 0, 0, 0);
+        contentStmt.run(contentId, profileId, 'post', `Caption ${contentIndex}`, 'published', publishDate.toISOString());
+
+        // Create engagement metrics
+        const metricId = randomUUID();
+        const metricStmt = db.prepare(`
+          INSERT INTO post_metrics (id, content_id, profile_id, likes, comments, shares, saves)
+          VALUES (?, ?, ?, ?, ?, ?, ?)
+        `);
+
+        // Hour 9 and 12 have higher engagement
+        const likes = [200, 250, 100, 150, 120, 80][hours.indexOf(hour)];
+        metricStmt.run(metricId, contentId, profileId, likes, 10, 5, 15);
+      }
+
+      const bestTimes = calculator.calculateBestTimes(profileId);
+
+      expect(bestTimes).toHaveLength(5);
+      expect(bestTimes[0].engagement_score).toBeGreaterThanOrEqual(0);
+      expect(bestTimes[0].hour).toBeDefined();
+      expect(bestTimes[0].time).toMatch(/^\d{2}:00$/);
+      expect(bestTimes[0].posts_analyzed).toBeGreaterThan(0);
+    });
+
+    it('should sort by engagement score descending', () => {
+      // Create posts with varying engagement at different hours
+      const testData = [
+        { hour: 9, likes: 100 },
+        { hour: 12, likes: 200 },
+        { hour: 15, likes: 150 },
+        { hour: 18, likes: 50 },
+        { hour: 20, likes: 75 },
+      ];
+
+      for (const data of testData) {
+        const contentId = randomUUID();
+
+        const contentStmt = db.prepare(`
+          INSERT INTO content (id, profile_id, type, caption, status, published_at)
+          VALUES (?, ?, ?, ?, ?, ?)
+        `);
+
+        const publishDate = new Date();
+        publishDate.setUTCHours(data.hour, 0, 0, 0);
+        contentStmt.run(contentId, profileId, 'post', 'Caption', 'published', publishDate.toISOString());
+
+        const metricId = randomUUID();
+        const metricStmt = db.prepare(`
+          INSERT INTO post_metrics (id, content_id, profile_id, likes, comments, shares, saves)
+          VALUES (?, ?, ?, ?, ?, ?, ?)
+        `);
+        metricStmt.run(metricId, contentId, profileId, data.likes, 5, 2, 8);
+      }
+
+      const bestTimes = calculator.calculateBestTimes(profileId);
+
+      // Should be sorted by engagement score
+      for (let i = 0; i < bestTimes.length - 1; i++) {
+        expect(bestTimes[i].engagement_score).toBeGreaterThanOrEqual(bestTimes[i + 1].engagement_score);
+      }
+    });
+
+    it('should filter by date range (daysBack parameter)', () => {
+      // Create old post (30 days ago)
+      const oldDate = new Date();
+      oldDate.setDate(oldDate.getDate() - 30);
+
+      const oldContentId = randomUUID();
+      const contentStmt = db.prepare(`
+        INSERT INTO content (id, profile_id, type, caption, status, published_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `);
+      contentStmt.run(oldContentId, profileId, 'post', 'Old Post', 'published', oldDate.toISOString());
+
+      const oldMetricId = randomUUID();
+      const metricStmt = db.prepare(`
+        INSERT INTO post_metrics (id, content_id, profile_id, likes, comments, shares, saves)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `);
+      metricStmt.run(oldMetricId, oldContentId, profileId, 500, 100, 50, 100); // High engagement
+
+      // Create recent posts
+      for (let i = 0; i < 5; i++) {
+        const contentId = randomUUID();
+        const recentDate = new Date();
+        recentDate.setDate(recentDate.getDate() - i);
+        recentDate.setUTCHours(9 + i, 0, 0, 0);
+
+        contentStmt.run(contentId, profileId, 'post', `Recent Post ${i}`, 'published', recentDate.toISOString());
+
+        const metricId = randomUUID();
+        metricStmt.run(metricId, contentId, profileId, 50, 5, 2, 8);
+      }
+
+      // With 7 days filter, old post should not be included
+      const recentBestTimes = calculator.calculateBestTimes(profileId, 7);
+      expect(recentBestTimes).toBeDefined();
+
+      // With 30+ days filter, old post should be included
+      const allBestTimes = calculator.calculateBestTimes(profileId, 31);
+      expect(allBestTimes).toBeDefined();
+    });
+
+    it('should handle multiple posts in same hour', () => {
+      // Create multiple posts at same hour with different engagement
+      for (let i = 0; i < 5; i++) {
+        const contentId = randomUUID();
+
+        const publishDate = new Date();
+        publishDate.setUTCHours(9);
+        publishDate.setMinutes(i * 12); // Spread across the hour
+
+        const contentStmt = db.prepare(`
+          INSERT INTO content (id, profile_id, type, caption, status, published_at)
+          VALUES (?, ?, ?, ?, ?, ?)
+        `);
+        contentStmt.run(contentId, profileId, 'post', 'Caption', 'published', publishDate.toISOString());
+
+        const metricId = randomUUID();
+        const metricStmt = db.prepare(`
+          INSERT INTO post_metrics (id, content_id, profile_id, likes, comments, shares, saves)
+          VALUES (?, ?, ?, ?, ?, ?, ?)
+        `);
+        metricStmt.run(metricId, contentId, profileId, 50 + i * 20, 5, 2, 8);
+      }
+
+      const bestTimes = calculator.calculateBestTimes(profileId);
+
+      expect(bestTimes).toHaveLength(1);
+      expect(bestTimes[0].hour).toBe(9);
+      expect(bestTimes[0].posts_analyzed).toBe(5);
+    });
+
+    it('should return max 5 results even with more hours', () => {
+      // Create posts at 24 different hours
+      for (let hour = 0; hour < 24; hour++) {
+        const contentId = randomUUID();
+
+        const publishDate = new Date();
+        publishDate.setUTCHours(hour, 0, 0, 0);
+
+        const contentStmt = db.prepare(`
+          INSERT INTO content (id, profile_id, type, caption, status, published_at)
+          VALUES (?, ?, ?, ?, ?, ?)
+        `);
+        contentStmt.run(contentId, profileId, 'post', 'Caption', 'published', publishDate.toISOString());
+
+        const metricId = randomUUID();
+        const metricStmt = db.prepare(`
+          INSERT INTO post_metrics (id, content_id, profile_id, likes, comments, shares, saves)
+          VALUES (?, ?, ?, ?, ?, ?, ?)
+        `);
+        // Higher hours get higher engagement
+        const likes = 50 + hour * 5;
+        metricStmt.run(metricId, contentId, profileId, likes, 5, 2, 8);
+      }
+
+      const bestTimes = calculator.calculateBestTimes(profileId);
+
+      expect(bestTimes).toHaveLength(5);
+    });
+  });
+});

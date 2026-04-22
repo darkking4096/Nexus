@@ -1,5 +1,5 @@
-import Database from 'better-sqlite3';
 import { randomUUID } from 'crypto';
+import type { DatabaseAdapter } from '../config/database';
 
 export interface ProfileData {
   id: string;
@@ -34,102 +34,100 @@ export interface ProfileCreateInput {
 }
 
 export class Profile {
-  constructor(private db: Database.Database) {}
+  constructor(private db: DatabaseAdapter) {}
 
   /**
    * Create new profile (Instagram account connection)
    */
-  create(input: ProfileCreateInput): ProfileData {
+  async create(input: ProfileCreateInput): Promise<ProfileData> {
     const id = randomUUID();
     const now = new Date().toISOString();
 
-    const stmt = this.db.prepare(`
-      INSERT INTO profiles (
+    await this.db.query(
+      `INSERT INTO profiles (
         id, user_id, instagram_username, instagram_id,
         access_token, refresh_token, bio, profile_picture_url,
         created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
-    stmt.run(
-      id,
-      input.user_id,
-      input.instagram_username,
-      input.instagram_id || null,
-      input.access_token,
-      input.refresh_token || null,
-      input.bio || null,
-      input.profile_picture_url || null,
-      now,
-      now
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+      [
+        id,
+        input.user_id,
+        input.instagram_username,
+        input.instagram_id || null,
+        input.access_token,
+        input.refresh_token || null,
+        input.bio || null,
+        input.profile_picture_url || null,
+        now,
+        now
+      ]
     );
 
-    return this.getById(id)!;
+    const result = await this.getById(id);
+    if (!result) throw new Error('Failed to create profile');
+    return result;
   }
 
   /**
    * Get profile by ID
    */
-  getById(id: string): ProfileData | null {
-    const stmt = this.db.prepare(`
-      SELECT * FROM profiles WHERE id = ?
-    `);
-
-    const row = stmt.get(id);
-    return this.formatRow(row);
+  async getById(id: string): Promise<ProfileData | null> {
+    const rows = await this.db.query(
+      `SELECT * FROM profiles WHERE id = $1`,
+      [id]
+    );
+    return rows.length > 0 ? this.formatRow(rows[0]) : null;
   }
 
   /**
    * Get all profiles for a user
    */
-  getByUserId(userId: string): ProfileData[] {
-    const stmt = this.db.prepare(`
-      SELECT * FROM profiles WHERE user_id = ? ORDER BY created_at DESC
-    `);
-
-    const rows = stmt.all(userId);
+  async getByUserId(userId: string): Promise<ProfileData[]> {
+    const rows = await this.db.query(
+      `SELECT * FROM profiles WHERE user_id = $1 ORDER BY created_at DESC`,
+      [userId]
+    );
     return rows.map((row) => this.formatRow(row)!);
   }
 
   /**
    * Get profile by Instagram username
    */
-  getByInstagramUsername(username: string): ProfileData | null {
-    const stmt = this.db.prepare(`
-      SELECT * FROM profiles WHERE instagram_username = ?
-    `);
-
-    const row = stmt.get(username);
-    return this.formatRow(row);
+  async getByInstagramUsername(username: string): Promise<ProfileData | null> {
+    const rows = await this.db.query(
+      `SELECT * FROM profiles WHERE instagram_username = $1`,
+      [username]
+    );
+    return rows.length > 0 ? this.formatRow(rows[0]) : null;
   }
 
   /**
    * Update profile
    */
-  update(id: string, updates: Partial<Omit<ProfileCreateInput, 'user_id'>>): ProfileData | null {
+  async update(id: string, updates: Partial<Omit<ProfileCreateInput, 'user_id'>>): Promise<ProfileData | null> {
     const now = new Date().toISOString();
-
     const fields: string[] = [];
     const values: unknown[] = [];
+    let paramIndex = 1;
 
     if (updates.instagram_username !== undefined) {
-      fields.push('instagram_username = ?');
+      fields.push(`instagram_username = $${paramIndex++}`);
       values.push(updates.instagram_username);
     }
     if (updates.access_token !== undefined) {
-      fields.push('access_token = ?');
+      fields.push(`access_token = $${paramIndex++}`);
       values.push(updates.access_token);
     }
     if (updates.refresh_token !== undefined) {
-      fields.push('refresh_token = ?');
+      fields.push(`refresh_token = $${paramIndex++}`);
       values.push(updates.refresh_token);
     }
     if (updates.bio !== undefined) {
-      fields.push('bio = ?');
+      fields.push(`bio = $${paramIndex++}`);
       values.push(updates.bio || null);
     }
     if (updates.profile_picture_url !== undefined) {
-      fields.push('profile_picture_url = ?');
+      fields.push(`profile_picture_url = $${paramIndex++}`);
       values.push(updates.profile_picture_url || null);
     }
 
@@ -137,13 +135,12 @@ export class Profile {
       return this.getById(id);
     }
 
-    fields.push('updated_at = ?');
+    fields.push(`updated_at = $${paramIndex++}`);
     values.push(now);
     values.push(id);
 
-    const sql = `UPDATE profiles SET ${fields.join(', ')} WHERE id = ?`;
-    const stmt = this.db.prepare(sql);
-    stmt.run(...values);
+    const sql = `UPDATE profiles SET ${fields.join(', ')} WHERE id = $${paramIndex}`;
+    await this.db.query(sql, values);
 
     return this.getById(id);
   }
@@ -151,7 +148,7 @@ export class Profile {
   /**
    * Update context (voice, tone, audience, goals)
    */
-  updateContext(
+  async updateContext(
     id: string,
     context: Partial<{
       voice: string | null;
@@ -159,25 +156,26 @@ export class Profile {
       audience: string | null;
       goals: string | null;
     }>
-  ): ProfileData | null {
+  ): Promise<ProfileData | null> {
     const now = new Date().toISOString();
     const fields: string[] = [];
     const values: unknown[] = [];
+    let paramIndex = 1;
 
     if (context.voice !== undefined) {
-      fields.push('context_voice = ?');
+      fields.push(`context_voice = $${paramIndex++}`);
       values.push(context.voice || null);
     }
     if (context.tone !== undefined) {
-      fields.push('context_tone = ?');
+      fields.push(`context_tone = $${paramIndex++}`);
       values.push(context.tone || null);
     }
     if (context.audience !== undefined) {
-      fields.push('context_audience = ?');
+      fields.push(`context_audience = $${paramIndex++}`);
       values.push(context.audience || null);
     }
     if (context.goals !== undefined) {
-      fields.push('context_goals = ?');
+      fields.push(`context_goals = $${paramIndex++}`);
       values.push(context.goals || null);
     }
 
@@ -185,13 +183,12 @@ export class Profile {
       return this.getById(id);
     }
 
-    fields.push('updated_at = ?');
+    fields.push(`updated_at = $${paramIndex++}`);
     values.push(now);
     values.push(id);
 
-    const sql = `UPDATE profiles SET ${fields.join(', ')} WHERE id = ?`;
-    const stmt = this.db.prepare(sql);
-    stmt.run(...values);
+    const sql = `UPDATE profiles SET ${fields.join(', ')} WHERE id = $${paramIndex}`;
+    await this.db.query(sql, values);
 
     return this.getById(id);
   }
@@ -199,20 +196,21 @@ export class Profile {
   /**
    * Update profile display_name and bio
    */
-  updateProfile(
+  async updateProfile(
     id: string,
     updates: Partial<{ display_name: string; bio: string }>
-  ): ProfileData | null {
+  ): Promise<ProfileData | null> {
     const now = new Date().toISOString();
     const fields: string[] = [];
     const values: unknown[] = [];
+    let paramIndex = 1;
 
     if (updates.display_name !== undefined) {
-      fields.push('display_name = ?');
+      fields.push(`display_name = $${paramIndex++}`);
       values.push(updates.display_name || null);
     }
     if (updates.bio !== undefined) {
-      fields.push('bio = ?');
+      fields.push(`bio = $${paramIndex++}`);
       values.push(updates.bio || null);
     }
 
@@ -220,13 +218,12 @@ export class Profile {
       return this.getById(id);
     }
 
-    fields.push('updated_at = ?');
+    fields.push(`updated_at = $${paramIndex++}`);
     values.push(now);
     values.push(id);
 
-    const sql = `UPDATE profiles SET ${fields.join(', ')} WHERE id = ?`;
-    const stmt = this.db.prepare(sql);
-    stmt.run(...values);
+    const sql = `UPDATE profiles SET ${fields.join(', ')} WHERE id = $${paramIndex}`;
+    await this.db.query(sql, values);
 
     return this.getById(id);
   }
@@ -234,10 +231,12 @@ export class Profile {
   /**
    * Delete profile
    */
-  deleteProfile(id: string): boolean {
-    const stmt = this.db.prepare(`DELETE FROM profiles WHERE id = ?`);
-    const result = stmt.run(id);
-    return result.changes > 0;
+  async deleteProfile(id: string): Promise<boolean> {
+    const results = await this.db.query(
+      `DELETE FROM profiles WHERE id = $1 RETURNING id`,
+      [id]
+    );
+    return results.length > 0;
   }
 
   /**

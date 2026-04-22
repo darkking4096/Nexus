@@ -1,4 +1,4 @@
-import { Database } from 'better-sqlite3';
+import type { DatabaseAdapter } from './config/database';
 import { CacheService } from './services/cache.service';
 
 /**
@@ -7,7 +7,7 @@ import { CacheService } from './services/cache.service';
  */
 export class AppContext {
   private static instance: AppContext;
-  private db: Database | null = null;
+  private db: DatabaseAdapter | null = null;
   private cache: CacheService | null = null;
 
   private constructor() {}
@@ -19,11 +19,11 @@ export class AppContext {
     return AppContext.instance;
   }
 
-  setDatabase(db: Database): void {
+  setDatabase(db: DatabaseAdapter): void {
     this.db = db;
   }
 
-  getDatabase(): Database | null {
+  getDatabase(): DatabaseAdapter | null {
     return this.db;
   }
 

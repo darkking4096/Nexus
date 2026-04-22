@@ -6,96 +6,114 @@ dotenv.config({ path: '.env.local' });
 /**
  * Database adapter for Synkra backend
  *
- * Provides compatibility layer between SQLite (legacy) and PostgreSQL (current)
- * All database interactions go through this module
+ * Provides compatibility layer for PostgreSQL operations
+ * Supports both legacy synchronous patterns and modern async/await
  */
 
-interface DatabaseAdapter {
-  prepare(sql: string): {
-    run(...params: any[]): any;
-    get(...params: any[]): any;
-    all(...params: any[]): any;
-  };
-  exec(sql: string): void;
-  transaction(fn: () => void): void;
-  close(): void;
-  query(sql: string, params?: any[]): Promise<any>;
+export interface DatabaseStatement {
+  run(...params: any[]): any;
+  get(...params: any[]): any;
+  all(...params: any[]): any;
+  async?: boolean; // Flag indicating async support
+}
+
+export interface DatabaseAdapter {
+  prepare(sql: string): DatabaseStatement;
+  exec(sql: string): Promise<void> | void;
+  transaction<T>(fn: (db: DatabaseAdapter) => T | Promise<T>): T | Promise<T>;
+  close(): Promise<void>;
+  query(sql: string, params?: any[]): Promise<any[]>;
+  // Internal method for raw queries
+  _query(sql: string, params?: any[]): Promise<any>;
 }
 
 class PostgreSQLAdapter implements DatabaseAdapter {
   private db = getDatabase();
 
   /**
-   * Prepare a statement - returns an object with synchronous methods
-   * This is for backward compatibility with SQLite API
+   * Prepare a statement - returns async-capable object
+   * WARNING: synchronous methods will NOT work with PostgreSQL
+   * Use query() method instead for async operations
    */
-  prepare(sql: string) {
-    const self = this;
-
+  prepare(_sql: string): DatabaseStatement {
+    // SQLite pattern compatibility stub
+    // In production, all code should migrate to async query() calls
     return {
-      run(...params: any[]) {
-        // Note: This will be async but we're wrapping it to match SQLite interface
-        // In production, migrate to async/await calls
-        console.warn(
-          '⚠️ Using synchronous prepare().run() pattern. ' +
-          'Consider migrating to async query() for better performance.'
+      async: true,
+      run(..._params: any[]) {
+        console.error(
+          '❌ FATAL: prepare().run() called but PostgreSQL requires async calls. ' +
+          'Use db.query(sql, params) instead.'
         );
-
-        // Return a placeholder - actual execution is async
-        return { changes: 0, lastInsertRowid: 0 };
+        throw new Error(
+          'Synchronous database operations are not supported with PostgreSQL. ' +
+          'Please use await db.query() instead.'
+        );
       },
 
-      get(...params: any[]) {
-        console.warn(
-          '⚠️ Using synchronous prepare().get() pattern. ' +
-          'Consider migrating to async query() for better performance.'
+      get(..._params: any[]) {
+        console.error(
+          '❌ FATAL: prepare().get() called but PostgreSQL requires async calls. ' +
+          'Use db.query(sql, params) instead.'
         );
-        return null;
+        throw new Error(
+          'Synchronous database operations are not supported with PostgreSQL. ' +
+          'Please use await db.query() instead.'
+        );
       },
 
-      all(...params: any[]) {
-        console.warn(
-          '⚠️ Using synchronous prepare().all() pattern. ' +
-          'Consider migrating to async query() for better performance.'
+      all(..._params: any[]) {
+        console.error(
+          '❌ FATAL: prepare().all() called but PostgreSQL requires async calls. ' +
+          'Use db.query(sql, params) instead.'
         );
-        return [];
+        throw new Error(
+          'Synchronous database operations are not supported with PostgreSQL. ' +
+          'Please use await db.query() instead.'
+        );
       },
     };
   }
 
   /**
-   * Execute raw SQL (for schema setup)
-   * This will be called during initialization with CREATE TABLE statements
+   * Execute raw SQL (schema setup) - may be async
+   * Schema is already set up in Supabase, so this is a no-op
    */
-  exec(sql: string): void {
-    // Schema is already set up in Supabase (from Story 8.1.1)
-    // Log but don't fail if schema already exists
-    console.log('📝 Schema initialization: Using existing Supabase schema');
+  async exec(_sql: string): Promise<void> {
+    // Supabase schema is pre-created (Story 8.1.1)
+    // Do not execute CREATE TABLE statements against existing schema
+    console.log('📝 Schema already initialized in Supabase');
   }
 
   /**
    * Execute a function within a database transaction
+   * Uses PostgreSQL native transactions
    */
-  transaction(fn: () => void): void {
-    console.warn(
-      '⚠️ Using synchronous transaction() pattern. ' +
-      'Consider migrating to async db.transaction(callback) for better reliability.'
-    );
-    // Placeholder for transaction support
-    // In production, migrate to async calls
+  async transaction<T>(fn: (db: DatabaseAdapter) => T | Promise<T>): Promise<T> {
+    return await this.db.transaction(async () => {
+      return await fn(this);
+    });
   }
 
   /**
-   * Modern async query interface
+   * Modern async query interface - PRIMARY METHOD
+   * Use this for all database operations
    */
-  async query(sql: string, params?: any[]): Promise<any> {
+  async query(sql: string, params?: any[]): Promise<any[]> {
     try {
       const result = await this.db.query(sql, params);
-      return result.rows;
+      return result.rows || [];
     } catch (error) {
       console.error('Database query error:', error);
       throw error;
     }
+  }
+
+  /**
+   * Internal raw query - for custom operations
+   */
+  async _query(sql: string, params?: any[]): Promise<any> {
+    return await this.db.query(sql, params);
   }
 
   /**
@@ -106,23 +124,45 @@ class PostgreSQLAdapter implements DatabaseAdapter {
   }
 }
 
-// Initialize and export the adapter
+// Singleton instance
+let adapterInstance: PostgreSQLAdapter | null = null;
+
+/**
+ * Initialize database (async)
+ * Must be called during app startup
+ */
 export async function initializePostgresDatabase(): Promise<DatabaseAdapter> {
   try {
     await initializeDatabase();
-    return new PostgreSQLAdapter();
+    if (!adapterInstance) {
+      adapterInstance = new PostgreSQLAdapter();
+    }
+    return adapterInstance;
   } catch (error) {
     console.error('Failed to initialize PostgreSQL database:', error);
     throw error;
   }
 }
 
-// Synchronous wrapper for backward compatibility
-export function initializeDatabaseSync(): DatabaseAdapter {
-  // This is called synchronously in index.ts
-  // We need to initialize async setup before this is called
-  return new PostgreSQLAdapter();
+/**
+ * Get the database adapter instance
+ * Only works after initializePostgresDatabase() is called
+ */
+export function getAdapter(): DatabaseAdapter {
+  if (!adapterInstance) {
+    adapterInstance = new PostgreSQLAdapter();
+  }
+  return adapterInstance;
 }
 
-// Default export for backward compatibility
+/**
+ * Synchronous wrapper for backward compatibility with index.ts
+ * WARNING: Does not actually initialize async connections
+ * Call initializePostgresDatabase() before using any queries
+ */
+export function initializeDatabaseSync(): DatabaseAdapter {
+  return getAdapter();
+}
+
+// Default export
 export default initializeDatabaseSync;

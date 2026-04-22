@@ -1,6 +1,6 @@
-import Database from 'better-sqlite3';
 import { randomUUID } from 'crypto';
 import bcryptjs from 'bcryptjs';
+import type { DatabaseAdapter } from '../config/database';
 
 export interface UserData {
   id: string;
@@ -17,7 +17,7 @@ export interface UserCreateInput {
 }
 
 export class User {
-  constructor(private db: Database.Database) {}
+  constructor(private db: DatabaseAdapter) {}
 
   /**
    * Hash password using bcryptjs (10 rounds)
@@ -41,44 +41,46 @@ export class User {
     const passwordHash = await User.hashPassword(input.password);
     const now = new Date().toISOString();
 
-    const stmt = this.db.prepare(`
-      INSERT INTO users (id, email, password_hash, name, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `);
-
     try {
-      stmt.run(id, input.email, passwordHash, input.name || null, now, now);
+      await this.db.query(
+        `INSERT INTO users (id, email, password_hash, name, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6)`,
+        [id, input.email, passwordHash, input.name || null, now, now]
+      );
     } catch (error) {
-      if (error instanceof Error && error.message.includes('UNIQUE constraint failed')) {
+      if (error instanceof Error && error.message.includes('duplicate key')) {
         throw new Error(`User with email ${input.email} already exists`);
       }
       throw error;
     }
 
-    return this.getById(id)!;
+    const result = await this.getById(id);
+    if (!result) throw new Error('Failed to create user');
+    return result;
   }
 
   /**
    * Get user by ID
    */
-  getById(id: string): UserData | null {
-    const stmt = this.db.prepare(`
-      SELECT id, email, name, created_at, updated_at FROM users WHERE id = ?
-    `);
+  async getById(id: string): Promise<UserData | null> {
+    const results = await this.db.query(
+      `SELECT id, email, name, created_at, updated_at FROM users WHERE id = $1`,
+      [id]
+    );
 
-    const result = stmt.get(id) as UserData | undefined;
-    return result || null;
+    return results.length > 0 ? (results[0] as UserData) : null;
   }
 
   /**
    * Get user by email
    */
-  getByEmail(email: string): (UserData & { password_hash: string }) | null {
-    const stmt = this.db.prepare(`
-      SELECT id, email, password_hash, name, created_at, updated_at FROM users WHERE email = ?
-    `);
+  async getByEmail(email: string): Promise<(UserData & { password_hash: string }) | null> {
+    const results = await this.db.query(
+      `SELECT id, email, password_hash, name, created_at, updated_at FROM users WHERE email = $1`,
+      [email]
+    );
 
-    return stmt.get(email) as (UserData & { password_hash: string }) | null;
+    return results.length > 0 ? (results[0] as UserData & { password_hash: string }) : null;
   }
 
   /**
@@ -87,11 +89,10 @@ export class User {
   async update(id: string, updates: Partial<{ name: string }>): Promise<UserData | null> {
     const now = new Date().toISOString();
 
-    const stmt = this.db.prepare(`
-      UPDATE users SET name = ?, updated_at = ? WHERE id = ?
-    `);
-
-    stmt.run(updates.name || null, now, id);
+    await this.db.query(
+      `UPDATE users SET name = $1, updated_at = $2 WHERE id = $3`,
+      [updates.name || null, now, id]
+    );
 
     return this.getById(id);
   }
@@ -99,17 +100,22 @@ export class User {
   /**
    * Delete user (cascades to related profiles, content, credentials)
    */
-  delete(id: string): boolean {
-    const stmt = this.db.prepare(`DELETE FROM users WHERE id = ?`);
-    const result = stmt.run(id);
-    return result.changes > 0;
+  async delete(id: string): Promise<boolean> {
+    const results = await this.db.query(
+      `DELETE FROM users WHERE id = $1 RETURNING id`,
+      [id]
+    );
+    return results.length > 0;
   }
 
   /**
    * Check if email exists
    */
-  emailExists(email: string): boolean {
-    const stmt = this.db.prepare(`SELECT 1 FROM users WHERE email = ?`);
-    return stmt.get(email) !== undefined;
+  async emailExists(email: string): Promise<boolean> {
+    const results = await this.db.query(
+      `SELECT 1 FROM users WHERE email = $1`,
+      [email]
+    );
+    return results.length > 0;
   }
 }

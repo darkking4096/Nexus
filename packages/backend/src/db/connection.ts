@@ -134,10 +134,10 @@ class DatabaseConnection {
   /**
    * Execute a query with retry logic and circuit breaker
    */
-  async query<T = any>(
+  async query(
     text: string,
     values?: any[]
-  ): Promise<QueryResult<T>> {
+  ): Promise<QueryResult<any>> {
     // Check circuit breaker status
     if (this.circuitBreaker.isOpen) {
       const timeSinceLastFailure = Date.now() - this.circuitBreaker.lastFailureTime;
@@ -156,7 +156,7 @@ class DatabaseConnection {
 
     for (let attempt = 1; attempt <= this.retryConfig.maxAttempts; attempt++) {
       try {
-        const result = await this.pool.query<T>(text, values);
+        const result = await this.pool.query(text, values);
         this.circuitBreaker.failureCount = 0;
         return result;
       } catch (error) {

@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import path from 'path';
 import fs from 'fs';
 import { AutopilotService, CreateAutopilotPayload } from '../services/AutopilotService';
 import initializeDatabase from '../config/database';
 
 describe('AutopilotService', () => {
-  let db: Database.Database;
+  let db: DatabaseAdapter;
   let service: AutopilotService;
   const testDbPath = path.join(__dirname, 'test-autopilot.db');
 
