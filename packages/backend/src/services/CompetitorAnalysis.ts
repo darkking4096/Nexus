@@ -119,13 +119,13 @@ export class CompetitorAnalysis {
    */
   async analyzeCompetitors(profileId: string, userId: string): Promise<CompetitorAnalysisResult> {
     // 1. Validate profile ownership
-    const profile = this.getProfileWithOwnershipCheck(profileId, userId);
+    const profile = await this.getProfileWithOwnershipCheck(profileId, userId);
     if (!profile) {
       throw new Error(`Profile ${profileId} not found`);
     }
 
     // 2. Get all competitors for this profile
-    const competitors = this.competitorModel.getByProfileId(profileId);
+    const competitors = await this.competitorModel.getByProfileId(profileId);
     if (competitors.length === 0) {
       return {
         competitors: [],
@@ -407,8 +407,8 @@ export class CompetitorAnalysis {
   /**
    * Get profile with ownership check
    */
-  private getProfileWithOwnershipCheck(profileId: string, userId: string): ProfileData | null {
-    const profile = this.profileModel.getById(profileId);
+  private async getProfileWithOwnershipCheck(profileId: string, userId: string): Promise<ProfileData | null> {
+    const profile = await this.profileModel.getById(profileId);
 
     if (!profile) {
       return null;

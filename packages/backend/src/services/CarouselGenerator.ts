@@ -1,4 +1,3 @@
-import type { DatabaseAdapter } from '../config/database';
 import sharp from 'sharp';
 import { logger } from '../utils/logger';
 import ContrastValidator from './ContrastValidator';
@@ -64,7 +63,7 @@ export class CarouselGenerator {
   private readonly STANDARD_HEIGHT = 1350;
   private readonly MAX_SLIDES = 10;
 
-  constructor(_db?: Database.Database) {
+  constructor() {
     // DB available for caching in future implementations
   }
 

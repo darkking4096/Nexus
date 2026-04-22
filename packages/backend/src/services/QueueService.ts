@@ -167,39 +167,37 @@ export class QueueService {
   reorderQueue(profileId: string, reorders: Array<{ content_id: string; new_position: number }>): QueueItem[] {
     const updated: QueueItem[] = [];
 
-    const transaction = this.db.transaction(() => {
-      for (const reorder of reorders) {
-        const { content_id, new_position } = reorder;
+    // NOTE: Transaction pattern deprecated for async PostgreSQL
+    // Reorders are applied directly without transaction wrapper
+    for (const reorder of reorders) {
+      const { content_id, new_position } = reorder;
 
-        // Get current scheduled post
-        const getStmt = this.db.prepare(`
-          SELECT id FROM scheduled_posts WHERE content_id = ? AND profile_id = ?
+      // Get current scheduled post
+      const getStmt = this.db.prepare(`
+        SELECT id FROM scheduled_posts WHERE content_id = ? AND profile_id = ?
+      `);
+      const scheduled = getStmt.get(content_id, profileId) as ScheduledPostItem | undefined;
+
+      if (scheduled) {
+        const now = new Date().toISOString();
+
+        // Update queue position
+        const updateStmt = this.db.prepare(`
+          UPDATE scheduled_posts SET queue_position = ?, updated_at = ? WHERE id = ?
         `);
-        const scheduled = getStmt.get(content_id, profileId) as ScheduledPostItem | undefined;
+        updateStmt.run(new_position, now, scheduled.id);
 
-        if (scheduled) {
-          const now = new Date().toISOString();
+        // Log audit
+        this.logReorderAudit(scheduled.id, content_id, profileId, new_position);
 
-          // Update queue position
-          const updateStmt = this.db.prepare(`
-            UPDATE scheduled_posts SET queue_position = ?, updated_at = ? WHERE id = ?
-          `);
-          updateStmt.run(new_position, now, scheduled.id);
-
-          // Log audit
-          this.logReorderAudit(scheduled.id, content_id, profileId, new_position);
-
-          // Fetch updated item
-          const updatedStmt = this.db.prepare(`
-            SELECT * FROM scheduled_posts WHERE id = ?
-          `);
-          const updatedRow = updatedStmt.get(scheduled.id) as QueueItem;
-          updated.push(updatedRow);
-        }
+        // Fetch updated item
+        const updatedStmt = this.db.prepare(`
+          SELECT * FROM scheduled_posts WHERE id = ?
+        `);
+        const updatedRow = updatedStmt.get(scheduled.id) as QueueItem;
+        updated.push(updatedRow);
       }
-    });
-
-    transaction();
+    }
 
     return updated;
   }

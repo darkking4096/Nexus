@@ -7,9 +7,9 @@ import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware';
 /**
  * Carousel generation routes: multi-slide Instagram carousel generation
  */
-export function createCarouselRoutes(db: DatabaseAdapter): Router {
+export function createCarouselRoutes(_db: DatabaseAdapter): Router {
   const router = Router();
-  const carouselGenerator = new CarouselGenerator(db);
+  const carouselGenerator = new CarouselGenerator();
 
   /**
    * POST /api/visual/generate-carousel

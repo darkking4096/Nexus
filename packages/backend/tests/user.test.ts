@@ -31,7 +31,7 @@ describe('User Model', () => {
       password: 'password123',
     });
 
-    const retrieved = userModel.getById(created.id);
+    const retrieved = await userModel.getById(created.id);
 
     expect(retrieved).toBeTruthy();
     expect(retrieved?.email).toBe('user2@example.com');
@@ -44,7 +44,7 @@ describe('User Model', () => {
       name: 'User Three',
     });
 
-    const retrieved = userModel.getByEmail('user3@example.com');
+    const retrieved = await userModel.getByEmail('user3@example.com');
 
     expect(retrieved).toBeTruthy();
     expect(retrieved?.id).toBe(created.id);
@@ -58,7 +58,7 @@ describe('User Model', () => {
       password,
     });
 
-    const userWithHash = userModel.getByEmail('user4@example.com');
+    const userWithHash = await userModel.getByEmail('user4@example.com');
     expect(userWithHash).toBeTruthy();
 
     const isValid = await User.verifyPassword(password, userWithHash!.password_hash);
@@ -72,7 +72,7 @@ describe('User Model', () => {
       password,
     });
 
-    const userWithHash = userModel.getByEmail('user5@example.com');
+    const userWithHash = await userModel.getByEmail('user5@example.com');
     expect(userWithHash).toBeTruthy();
 
     const isValid = await User.verifyPassword('wrongPassword', userWithHash!.password_hash);
@@ -124,10 +124,10 @@ describe('User Model', () => {
       password: 'password123',
     });
 
-    const deleted = userModel.delete(user.id);
+    const deleted = await userModel.delete(user.id);
     expect(deleted).toBe(true);
 
-    const retrieved = userModel.getById(user.id);
+    const retrieved = await userModel.getById(user.id);
     expect(retrieved).toBeNull();
   });
 });

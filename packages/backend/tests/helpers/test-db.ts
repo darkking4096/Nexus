@@ -8,10 +8,10 @@ import { vi } from 'vitest';
 
 /**
  * Create a mock DatabaseAdapter for testing
- * Provides basic in-memory storage for test scenarios
+ * Provides in-memory storage and basic SQL emulation
  */
 export function createMockDatabase(): DatabaseAdapter {
-  const mockData: Map<string, any[]> = new Map();
+  const tables: Map<string, Map<string, any>> = new Map();
 
   return {
     prepare(sql: string): DatabaseStatement {
@@ -38,22 +38,111 @@ export function createMockDatabase(): DatabaseAdapter {
     },
 
     async query(sql: string, params?: any[]): Promise<any[]> {
-      // Mock implementation for basic SELECT queries
-      if (sql.includes('SELECT')) {
+      // INSERT implementation
+      if (sql.includes('INSERT INTO')) {
+        const tableMatch = sql.match(/INSERT INTO (\w+)/i);
+        if (tableMatch) {
+          const tableName = tableMatch[1];
+          const columnMatch = sql.match(/\((.*?)\)/);
+          const columns = columnMatch ? columnMatch[1].split(',').map(c => c.trim()) : [];
+
+          if (!tables.has(tableName)) {
+            tables.set(tableName, new Map());
+          }
+
+          const tableData = tables.get(tableName)!;
+          const row: any = {};
+          columns.forEach((col, i) => {
+            row[col] = params?.[i];
+          });
+          const id = row.id || row.user_id || `id_${Date.now()}`;
+          tableData.set(String(id), row);
+        }
         return [];
       }
+
+      // UPDATE implementation
+      if (sql.includes('UPDATE')) {
+        const tableMatch = sql.match(/UPDATE (\w+)/i);
+        if (tableMatch) {
+          const tableName = tableMatch[1];
+          const tableData = tables.get(tableName);
+          if (tableData && sql.includes('WHERE id = $') && params?.length) {
+            const id = String(params[params.length - 1]);
+            const row = tableData.get(id);
+            if (row) {
+              // Parse SET clause
+              const setMatch = sql.match(/SET (.*?) WHERE/i);
+              if (setMatch) {
+                const setPairs = setMatch[1].split(',').map(p => p.trim());
+                setPairs.forEach((pair, i) => {
+                  const [col] = pair.split('=').map(s => s.trim());
+                  if (i < params.length - 1) {
+                    row[col] = params[i];
+                  }
+                });
+              }
+              tableData.set(id, row);
+            }
+          }
+        }
+        return [];
+      }
+
+      // DELETE implementation
+      if (sql.includes('DELETE FROM')) {
+        const tableMatch = sql.match(/DELETE FROM (\w+)/i);
+        if (tableMatch) {
+          const tableName = tableMatch[1];
+          const tableData = tables.get(tableName);
+          if (tableData && sql.includes('WHERE id = $1') && params?.[0]) {
+            const id = String(params[0]);
+            const row = tableData.get(id);
+            tableData.delete(id);
+
+            // If RETURNING is specified, return the deleted row
+            if (sql.includes('RETURNING')) {
+              return row ? [row] : [];
+            }
+          }
+        }
+        return [];
+      }
+
+      // SELECT implementation
+      if (sql.includes('SELECT')) {
+        const tableMatch = sql.match(/FROM (\w+)/i);
+        if (tableMatch) {
+          const tableName = tableMatch[1];
+          const tableData = tables.get(tableName);
+          if (!tableData) return [];
+
+          let rows = Array.from(tableData.values());
+
+          // Simple WHERE id = $1 parsing
+          if (sql.includes('WHERE id = $1') && params?.[0]) {
+            rows = rows.filter(r => r.id === params[0]);
+          }
+          // Simple WHERE email = $1 parsing
+          else if (sql.includes('WHERE email = $1') && params?.[0]) {
+            rows = rows.filter(r => r.email === params[0]);
+          }
+
+          return rows;
+        }
+        return [];
+      }
+
       return [];
     },
 
     async _query(sql: string, params?: any[]): Promise<any> {
-      if (sql.includes('SELECT')) {
-        return { rows: [] };
-      }
-      return { rows: [] };
+      const rows = await this.query(sql, params);
+      return { rows };
     },
 
     async close(): Promise<void> {
-      mockData.clear();
+      tables.clear();
     },
   };
 }

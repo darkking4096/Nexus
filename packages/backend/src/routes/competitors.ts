@@ -38,7 +38,7 @@ export function createCompetitorsRoutes(db: DatabaseAdapter): Router {
       }
 
       // Check profile ownership
-      const profile = profileModel.getById(profileId);
+      const profile = await profileModel.getById(profileId);
       if (!profile) {
         res.status(404).json({ error: 'Profile not found' });
         return;
@@ -50,7 +50,7 @@ export function createCompetitorsRoutes(db: DatabaseAdapter): Router {
       }
 
       // Check if competitor already exists
-      if (competitorModel.existsByUsername(profileId, instagram_username)) {
+      if (await competitorModel.existsByUsername(profileId, instagram_username)) {
         res.status(409).json({ error: 'Competitor already exists' });
         return;
       }
@@ -60,7 +60,7 @@ export function createCompetitorsRoutes(db: DatabaseAdapter): Router {
       const formatted = CompetitorService.formatCompetitorData(competitorData);
 
       // Create competitor
-      const competitor = competitorModel.create({
+      const competitor = await competitorModel.create({
         profile_id: profileId,
         instagram_username,
         followers_count: formatted.followers_count,
@@ -82,7 +82,7 @@ export function createCompetitorsRoutes(db: DatabaseAdapter): Router {
    * GET /api/profiles/:profileId/competitors
    * List all competitors for a profile
    */
-  router.get('/', verifyAccessToken, (req: AuthRequest, res: Response) => {
+  router.get('/', verifyAccessToken, async (req: AuthRequest, res: Response) => {
     try {
       const userId = req.userId;
       if (!userId) {
@@ -93,7 +93,7 @@ export function createCompetitorsRoutes(db: DatabaseAdapter): Router {
       const { profileId } = req.params;
 
       // Check profile ownership
-      const profile = profileModel.getById(profileId);
+      const profile = await profileModel.getById(profileId);
       if (!profile) {
         res.status(404).json({ error: 'Profile not found' });
         return;
@@ -105,7 +105,7 @@ export function createCompetitorsRoutes(db: DatabaseAdapter): Router {
       }
 
       // Get competitors
-      const competitors = competitorModel.getByProfileId(profileId);
+      const competitors = await competitorModel.getByProfileId(profileId);
 
       res.json({
         count: competitors.length,
@@ -121,7 +121,7 @@ export function createCompetitorsRoutes(db: DatabaseAdapter): Router {
    * DELETE /api/profiles/:profileId/competitors/:competitorId
    * Delete a competitor
    */
-  router.delete('/:competitorId', verifyAccessToken, (req: AuthRequest, res: Response) => {
+  router.delete('/:competitorId', verifyAccessToken, async (req: AuthRequest, res: Response) => {
     try {
       const userId = req.userId;
       if (!userId) {
@@ -132,7 +132,7 @@ export function createCompetitorsRoutes(db: DatabaseAdapter): Router {
       const { profileId, competitorId } = req.params;
 
       // Check profile ownership
-      const profile = profileModel.getById(profileId);
+      const profile = await profileModel.getById(profileId);
       if (!profile) {
         res.status(404).json({ error: 'Profile not found' });
         return;
@@ -144,14 +144,14 @@ export function createCompetitorsRoutes(db: DatabaseAdapter): Router {
       }
 
       // Check competitor exists and belongs to profile
-      const competitor = competitorModel.getById(competitorId);
+      const competitor = await competitorModel.getById(competitorId);
       if (!competitor || competitor.profile_id !== profileId) {
         res.status(404).json({ error: 'Competitor not found' });
         return;
       }
 
       // Delete competitor
-      const deleted = competitorModel.delete(competitorId);
+      const deleted = await competitorModel.delete(competitorId);
 
       if (!deleted) {
         res.status(500).json({ error: 'Failed to delete competitor' });

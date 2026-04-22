@@ -55,7 +55,7 @@ export class DashboardService {
     }
 
     // Get all profiles for user
-    const profiles = this.profileModel.getByUserId(userId);
+    const profiles = await this.profileModel.getByUserId(userId);
     if (!profiles.length) {
       return {
         profiles: [],

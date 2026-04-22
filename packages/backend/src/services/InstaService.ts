@@ -86,7 +86,7 @@ export class InstaService {
     }
 
     // 3. Check for existing profile with same username
-    const existingProfile = this.profileModel.getByInstagramUsername(username);
+    const existingProfile = await this.profileModel.getByInstagramUsername(username);
     if (existingProfile && existingProfile.user_id !== userId) {
       throw new Error(`Instagram account "${username}" is already connected to another user`);
     }
@@ -98,16 +98,19 @@ export class InstaService {
     let profileId: string;
     if (existingProfile) {
       // Update existing profile
-      const updated = this.profileModel.update(existingProfile.id, {
+      const updated = await this.profileModel.update(existingProfile.id, {
         access_token: encryptedSession, // Store encrypted session as token
         instagram_id: account_info.instagram_id,
         bio: account_info.bio,
         profile_picture_url: account_info.profile_picture_url,
-      })!;
+      });
+      if (!updated) {
+        throw new Error('Failed to update profile');
+      }
       profileId = updated.id;
     } else {
       // Create new profile
-      const created = this.profileModel.create({
+      const created = await this.profileModel.create({
         user_id: userId,
         instagram_username: account_info.instagram_username,
         instagram_id: account_info.instagram_id,
@@ -115,6 +118,9 @@ export class InstaService {
         bio: account_info.bio,
         profile_picture_url: account_info.profile_picture_url,
       });
+      if (!created) {
+        throw new Error('Failed to create profile');
+      }
       profileId = created.id;
     }
 
@@ -123,7 +129,10 @@ export class InstaService {
     updateStmt.run(account_info.followers_count, profileId);
 
     // Fetch updated profile
-    const profile = this.profileModel.getById(profileId)!
+    const profile = await this.profileModel.getById(profileId);
+    if (!profile) {
+      throw new Error('Failed to fetch updated profile');
+    }
 
     // 6. Store session in insta_sessions table
     this.storeSession(profile.id, encryptedSession);

@@ -79,7 +79,7 @@ export class RecommendationService {
     }
 
     // Verify profile ownership
-    const profile = this.profileModel.getById(profileId);
+    const profile = await this.profileModel.getById(profileId);
     if (!profile || profile.user_id !== userId) {
       throw new Error('Access denied: Profile not found or access denied');
     }

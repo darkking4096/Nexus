@@ -44,7 +44,7 @@ export function createAssetsRoutes(db: DatabaseAdapter): Router {
         }
 
         // Check profile ownership
-        const profile = profileModel.getById(profileId);
+        const profile = await profileModel.getById(profileId);
         if (!profile) {
           res.status(404).json({ error: 'Profile not found' });
           return;
@@ -71,7 +71,7 @@ export function createAssetsRoutes(db: DatabaseAdapter): Router {
         await AssetService.saveFile(filePath, file.buffer);
 
         // Create asset record
-        const asset = assetModel.create({
+        const asset = await assetModel.create({
           profile_id: profileId,
           asset_type: validation.assetType!,
           file_path: filePath,
@@ -99,7 +99,7 @@ export function createAssetsRoutes(db: DatabaseAdapter): Router {
    * GET /api/profiles/:profileId/assets
    * List all assets for a profile
    */
-  router.get('/', verifyAccessToken, (req: AuthRequest, res: Response) => {
+  router.get('/', verifyAccessToken, async (req: AuthRequest, res: Response) => {
     try {
       const userId = req.userId;
       if (!userId) {
@@ -111,7 +111,7 @@ export function createAssetsRoutes(db: DatabaseAdapter): Router {
       const { type } = req.query; // Optional filter by type
 
       // Check profile ownership
-      const profile = profileModel.getById(profileId);
+      const profile = await profileModel.getById(profileId);
       if (!profile) {
         res.status(404).json({ error: 'Profile not found' });
         return;
@@ -125,9 +125,9 @@ export function createAssetsRoutes(db: DatabaseAdapter): Router {
       // Get assets
       let assets;
       if (type && ['image', 'video', 'document'].includes(type as string)) {
-        assets = assetModel.getByProfileIdAndType(profileId, type as string);
+        assets = await assetModel.getByProfileIdAndType(profileId, type as string);
       } else {
-        assets = assetModel.getByProfileId(profileId);
+        assets = await assetModel.getByProfileId(profileId);
       }
 
       res.json({
@@ -158,7 +158,7 @@ export function createAssetsRoutes(db: DatabaseAdapter): Router {
       const { profileId, assetId } = req.params;
 
       // Check profile ownership
-      const profile = profileModel.getById(profileId);
+      const profile = await profileModel.getById(profileId);
       if (!profile) {
         res.status(404).json({ error: 'Profile not found' });
         return;
@@ -170,7 +170,7 @@ export function createAssetsRoutes(db: DatabaseAdapter): Router {
       }
 
       // Check asset exists and belongs to profile
-      const asset = assetModel.getById(assetId);
+      const asset = await assetModel.getById(assetId);
       if (!asset || asset.profile_id !== profileId) {
         res.status(404).json({ error: 'Asset not found' });
         return;
@@ -180,7 +180,7 @@ export function createAssetsRoutes(db: DatabaseAdapter): Router {
       await AssetService.deleteFile(asset.file_path);
 
       // Delete asset record
-      const deleted = assetModel.delete(assetId);
+      const deleted = await assetModel.delete(assetId);
 
       if (!deleted) {
         res.status(500).json({ error: 'Failed to delete asset' });

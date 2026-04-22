@@ -37,7 +37,7 @@ export function createAuthRoutes(db: DatabaseAdapter, loginLimiter?: RequestHand
       }
 
       // Check if email exists
-      if (userModel.emailExists(email)) {
+      if (await userModel.emailExists(email)) {
         logger.logLoginFailure(email, 'email_already_registered');
         res.status(409).json({ error: 'Email already registered' });
         return;
@@ -87,7 +87,7 @@ export function createAuthRoutes(db: DatabaseAdapter, loginLimiter?: RequestHand
       }
 
       // Get user by email
-      const userWithHash = userModel.getByEmail(email);
+      const userWithHash = await userModel.getByEmail(email);
       if (!userWithHash) {
         logger.logLoginFailure(email, 'user_not_found');
         res.status(401).json({ error: 'Invalid email or password' });
@@ -191,14 +191,14 @@ export function createAuthRoutes(db: DatabaseAdapter, loginLimiter?: RequestHand
    * GET /auth/me
    * Get current user info (protected route)
    */
-  router.get('/me', verifyAccessToken, (req: AuthRequest, res: Response) => {
+  router.get('/me', verifyAccessToken, async (req: AuthRequest, res: Response) => {
     try {
       if (!req.userId) {
         res.status(401).json({ error: 'Unauthorized' });
         return;
       }
 
-      const user = userModel.getById(req.userId);
+      const user = await userModel.getById(req.userId);
       if (!user) {
         res.status(404).json({ error: 'User not found' });
         return;

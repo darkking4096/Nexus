@@ -64,7 +64,7 @@ export class ContentMetricsService {
     days: number = 7
   ): Promise<PostMetricsResponse> {
     // Verify profile ownership
-    const profile = this.profileModel.getById(profileId);
+    const profile = await this.profileModel.getById(profileId);
     if (!profile || profile.user_id !== userId) {
       throw new Error('Access denied: Profile not found or access denied');
     }
@@ -144,7 +144,7 @@ export class ContentMetricsService {
     growth_rate: string; // percentage
   }> {
     // Verify profile ownership
-    const profile = this.profileModel.getById(profileId);
+    const profile = await this.profileModel.getById(profileId);
     if (!profile || profile.user_id !== userId) {
       throw new Error('Access denied: Profile not found or access denied');
     }

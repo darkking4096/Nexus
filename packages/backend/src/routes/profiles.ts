@@ -91,7 +91,7 @@ export function createProfilesRoutes(
       const profile = await instaService.connectAccount(userId, instagram_username, instagram_password);
 
       // Update profile with context
-      const updatedProfile = profileModel.updateContext(profile.id, {
+      const updatedProfile = await profileModel.updateContext(profile.id, {
         voice: voice_description,
         tone,
         audience: JSON.stringify(audience),
@@ -179,7 +179,7 @@ export function createProfilesRoutes(
    * GET /api/profiles
    * List all profiles for current user
    */
-  router.get('/', verifyAccessToken, (req: AuthRequest, res: Response) => {
+  router.get('/', verifyAccessToken, async (req: AuthRequest, res: Response) => {
     try {
       const userId = req.userId;
       if (!userId) {
@@ -187,7 +187,7 @@ export function createProfilesRoutes(
         return;
       }
 
-      const profiles = profileModel.getByUserId(userId);
+      const profiles = await profileModel.getByUserId(userId);
       const safeProfiles = profiles.map(stripSensitiveData);
 
       res.json({
@@ -204,7 +204,7 @@ export function createProfilesRoutes(
    * GET /api/profiles/:id
    * Get specific profile (with ownership check)
    */
-  router.get('/:id', verifyAccessToken, (req: AuthRequest, res: Response) => {
+  router.get('/:id', verifyAccessToken, async (req: AuthRequest, res: Response) => {
     try {
       const userId = req.userId;
       if (!userId) {
@@ -213,7 +213,7 @@ export function createProfilesRoutes(
       }
 
       const profileId = req.params.id;
-      const profile = profileModel.getById(profileId);
+      const profile = await profileModel.getById(profileId);
 
       if (!profile) {
         res.status(404).json({ error: 'Profile not found' });
@@ -237,7 +237,7 @@ export function createProfilesRoutes(
    * PATCH /api/profiles/:id/context
    * Update profile context (voice, tone, audience, goals)
    */
-  router.patch('/:id/context', verifyAccessToken, (req: AuthRequest, res: Response) => {
+  router.patch('/:id/context', verifyAccessToken, async (req: AuthRequest, res: Response) => {
     try {
       const userId = req.userId;
       if (!userId) {
@@ -249,7 +249,7 @@ export function createProfilesRoutes(
       const { voice, tone, audience, goals } = req.body;
 
       // Check ownership
-      const profile = profileModel.getById(profileId);
+      const profile = await profileModel.getById(profileId);
       if (!profile) {
         res.status(404).json({ error: 'Profile not found' });
         return;
@@ -282,7 +282,7 @@ export function createProfilesRoutes(
       }
 
       // Update context
-      const updatedProfile = profileModel.updateContext(profileId, {
+      const updatedProfile = await profileModel.updateContext(profileId, {
         voice: voice || profile.context_voice,
         tone: tone || profile.context_tone,
         audience: audience ? JSON.stringify(audience) : profile.context_audience,
@@ -308,7 +308,7 @@ export function createProfilesRoutes(
    * PATCH /api/profiles/:id
    * Update profile (display_name, bio)
    */
-  router.patch('/:id', verifyAccessToken, (req: AuthRequest, res: Response) => {
+  router.patch('/:id', verifyAccessToken, async (req: AuthRequest, res: Response) => {
     try {
       const userId = req.userId;
       if (!userId) {
@@ -320,7 +320,7 @@ export function createProfilesRoutes(
       const { display_name, bio } = req.body;
 
       // Check ownership
-      const profile = profileModel.getById(profileId);
+      const profile = await profileModel.getById(profileId);
       if (!profile) {
         res.status(404).json({ error: 'Profile not found' });
         return;
@@ -343,7 +343,7 @@ export function createProfilesRoutes(
       }
 
       // Update profile
-      const updatedProfile = profileModel.updateProfile(profileId, {
+      const updatedProfile = await profileModel.updateProfile(profileId, {
         display_name: display_name || profile.display_name,
         bio: bio || profile.bio,
       });
@@ -367,7 +367,7 @@ export function createProfilesRoutes(
    * DELETE /api/profiles/:id
    * Delete profile with cascade cleanup
    */
-  router.delete('/:id', verifyAccessToken, (req: AuthRequest, res: Response) => {
+  router.delete('/:id', verifyAccessToken, async (req: AuthRequest, res: Response) => {
     try {
       const userId = req.userId;
       if (!userId) {
@@ -378,7 +378,7 @@ export function createProfilesRoutes(
       const profileId = req.params.id;
 
       // Check ownership
-      const profile = profileModel.getById(profileId);
+      const profile = await profileModel.getById(profileId);
       if (!profile) {
         res.status(404).json({ error: 'Profile not found' });
         return;
@@ -390,7 +390,7 @@ export function createProfilesRoutes(
       }
 
       // Delete profile (cascade cleanup handled by database)
-      const deleted = profileModel.deleteProfile(profileId);
+      const deleted = await profileModel.deleteProfile(profileId);
 
       if (!deleted) {
         res.status(500).json({ error: 'Failed to delete profile' });

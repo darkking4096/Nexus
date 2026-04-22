@@ -104,7 +104,7 @@ export class AnalyticsService {
    */
   async getProfileMetrics(profileId: string, userId: string): Promise<Metrics | null> {
     // Ownership check
-    const profile = this.getProfileWithOwnershipCheck(profileId, userId);
+    const profile = await this.getProfileWithOwnershipCheck(profileId, userId);
     if (!profile) {
       return null;
     }
@@ -128,7 +128,7 @@ export class AnalyticsService {
     userId: string
   ): Promise<PostMetrics | null> {
     // Ownership check
-    const profile = this.getProfileWithOwnershipCheck(profileId, userId);
+    const profile = await this.getProfileWithOwnershipCheck(profileId, userId);
     if (!profile) {
       return null;
     }
@@ -178,7 +178,7 @@ export class AnalyticsService {
    */
   async getEngagementRate(profileId: string, userId: string, days: number = 7): Promise<number> {
     // Ownership check
-    const profile = this.getProfileWithOwnershipCheck(profileId, userId);
+    const profile = await this.getProfileWithOwnershipCheck(profileId, userId);
     if (!profile) {
       throw new Error(`Profile ${profileId} not found`);
     }
@@ -204,7 +204,7 @@ export class AnalyticsService {
     days: number = 30
   ): Promise<HistoricalMetrics[]> {
     // Ownership check
-    const profile = this.getProfileWithOwnershipCheck(profileId, userId);
+    const profile = await this.getProfileWithOwnershipCheck(profileId, userId);
     if (!profile) {
       throw new Error(`Profile ${profileId} not found`);
     }
@@ -246,7 +246,7 @@ export class AnalyticsService {
     engagement_rate: number;
   }>> {
     // Ownership check
-    const profile = this.getProfileWithOwnershipCheck(profileId, userId);
+    const profile = await this.getProfileWithOwnershipCheck(profileId, userId);
     if (!profile) {
       throw new Error(`Profile ${profileId} not found`);
     }
@@ -294,7 +294,7 @@ export class AnalyticsService {
    */
   async getProfileMetricsWithCache(profileId: string, userId: string): Promise<Metrics | null> {
     // Check ownership first
-    const profile = this.getProfileWithOwnershipCheck(profileId, userId);
+    const profile = await this.getProfileWithOwnershipCheck(profileId, userId);
     if (!profile) {
       return null;
     }
@@ -331,7 +331,7 @@ export class AnalyticsService {
    * Includes retry logic with exponential backoff for rate limiting
    */
   async collectMetricsForProfile(profileId: string): Promise<void> {
-    const profile = this.profileModel.getById(profileId);
+    const profile = await this.profileModel.getById(profileId);
     if (!profile) {
       throw new Error(`Profile ${profileId} not found`);
     }
@@ -439,8 +439,8 @@ export class AnalyticsService {
   /**
    * Verify profile ownership
    */
-  private getProfileWithOwnershipCheck(profileId: string, userId: string): ProfileData | null {
-    const profile = this.profileModel.getById(profileId);
+  private async getProfileWithOwnershipCheck(profileId: string, userId: string): Promise<ProfileData | null> {
+    const profile = await this.profileModel.getById(profileId);
 
     if (!profile) {
       return null;

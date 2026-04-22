@@ -75,7 +75,7 @@ export class HistoryAnalysis {
    */
   async analyzeHistory(profileId: string, userId: string): Promise<HistoryAnalysisResult> {
     // 1. Validate profile ownership
-    const profile = this.getProfileWithOwnershipCheck(profileId, userId);
+    const profile = await this.getProfileWithOwnershipCheck(profileId, userId);
     if (!profile) {
       throw new Error(`Profile ${profileId} not found`);
     }
@@ -281,8 +281,8 @@ export class HistoryAnalysis {
   /**
    * Get profile with ownership check
    */
-  private getProfileWithOwnershipCheck(profileId: string, userId: string): ProfileData | null {
-    const profile = this.profileModel.getById(profileId);
+  private async getProfileWithOwnershipCheck(profileId: string, userId: string): Promise<ProfileData | null> {
+    const profile = await this.profileModel.getById(profileId);
 
     if (!profile) {
       return null;

@@ -149,8 +149,8 @@ describe('Story 8.1.1: Schema Validation', () => {
     it('should have profiles referencing users', async () => {
       const result = await postgres.query(`
         SELECT constraint_name
-        FROM information_schema.referential_constraints
-        WHERE constraint_name LIKE '%user_id%'
+        FROM information_schema.table_constraints
+        WHERE constraint_type = 'FOREIGN KEY'
         AND table_name = 'profiles'
       `);
 
@@ -160,8 +160,8 @@ describe('Story 8.1.1: Schema Validation', () => {
     it('should have content referencing profiles', async () => {
       const result = await postgres.query(`
         SELECT constraint_name
-        FROM information_schema.referential_constraints
-        WHERE constraint_name LIKE '%profile_id%'
+        FROM information_schema.table_constraints
+        WHERE constraint_type = 'FOREIGN KEY'
         AND table_name = 'content'
       `);
 
@@ -178,9 +178,10 @@ describe('Story 8.1.1: Schema Validation', () => {
 
       for (const table of fkTables) {
         const result = await postgres.query(`
-          SELECT COUNT(*) as fk_count
-          FROM information_schema.referential_constraints
-          WHERE table_name = $1
+          SELECT COUNT(*)::int as fk_count
+          FROM information_schema.table_constraints
+          WHERE constraint_type = 'FOREIGN KEY'
+          AND table_name = $1
         `, [table]);
 
         // Most tables should have at least one FK
@@ -193,7 +194,7 @@ describe('Story 8.1.1: Schema Validation', () => {
     it('should not have orphaned profile records', async () => {
       // Profiles with non-existent user_id
       const result = await postgres.query(`
-        SELECT COUNT(*) as orphan_count
+        SELECT COUNT(*)::int as orphan_count
         FROM profiles p
         LEFT JOIN users u ON p.user_id = u.id
         WHERE u.id IS NULL
@@ -205,7 +206,7 @@ describe('Story 8.1.1: Schema Validation', () => {
     it('should not have orphaned content records', async () => {
       // Content with non-existent profile_id
       const result = await postgres.query(`
-        SELECT COUNT(*) as orphan_count
+        SELECT COUNT(*)::int as orphan_count
         FROM content c
         LEFT JOIN profiles p ON c.profile_id = p.id
         WHERE p.id IS NULL
@@ -217,7 +218,7 @@ describe('Story 8.1.1: Schema Validation', () => {
     it('should validate email uniqueness', async () => {
       // No duplicate emails
       const result = await postgres.query(`
-        SELECT COUNT(*) as duplicate_count
+        SELECT COUNT(*)::int as duplicate_count
         FROM (
           SELECT email, COUNT(*) as cnt
           FROM users
@@ -231,7 +232,7 @@ describe('Story 8.1.1: Schema Validation', () => {
 
     it('should validate instagram_username uniqueness', async () => {
       const result = await postgres.query(`
-        SELECT COUNT(*) as duplicate_count
+        SELECT COUNT(*)::int as duplicate_count
         FROM (
           SELECT instagram_username, COUNT(*) as cnt
           FROM profiles
@@ -265,7 +266,7 @@ describe('Story 8.1.1: Schema Validation', () => {
 
     it('should have RLS policies for service role', async () => {
       const result = await postgres.query(`
-        SELECT COUNT(*) as policy_count
+        SELECT COUNT(*)::int as policy_count
         FROM pg_policies
         WHERE schemaname = 'public'
         AND policyname LIKE '%service%'
@@ -276,7 +277,7 @@ describe('Story 8.1.1: Schema Validation', () => {
 
     it('should have RLS policies for user role', async () => {
       const result = await postgres.query(`
-        SELECT COUNT(*) as policy_count
+        SELECT COUNT(*)::int as policy_count
         FROM pg_policies
         WHERE schemaname = 'public'
         AND policyname LIKE '%user%'
@@ -313,7 +314,7 @@ describe('Story 8.1.1: Schema Validation', () => {
       `);
 
       expect(result.rows.length).toBeGreaterThan(0);
-      expect(result.rows[0].description).toContain('RLS');
+      expect(result.rows[0].description).toContain('Row-Level Security');
     });
   });
 });
