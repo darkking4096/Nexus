@@ -74,8 +74,16 @@ export function createMockDatabase(): DatabaseAdapter {
       const tableMatch = sql.match(/INSERT INTO (\w+)/i);
       if (tableMatch) {
         const tableName = tableMatch[1];
-        const columnMatch = sql.match(/\((.*?)\)/);
-        const columns = columnMatch ? columnMatch[1].split(',').map(c => c.trim()) : [];
+
+        // Extract columns from INSERT statement - handle multiline
+        // Match pattern: ( col1, col2, ... )
+        const columnMatch = sql.match(/\(\s*([\w\s,]+)\s*\)\s*VALUES/i);
+        const columns = columnMatch
+          ? columnMatch[1]
+              .split(',')
+              .map(c => c.trim())
+              .filter(c => c.length > 0)
+          : [];
 
         if (!tables.has(tableName)) {
           tables.set(tableName, new Map());
@@ -109,25 +117,55 @@ export function createMockDatabase(): DatabaseAdapter {
         const tableName = tableMatch[1];
         const tableData = tables.get(tableName);
         if (tableData) {
-          // Find WHERE clause parameter
-          let idParam = params?.[params.length - 1];
+          // Parse SET clause to extract columns and values (allow multiline with [\s\S])
+          const setMatch = sql.match(/SET\s+([\s\S]*?)\s+WHERE/i);
+          if (setMatch) {
+            const setPairs = setMatch[1].split(',').map(p => p.trim());
+            const updates: Array<{col: string; paramIndex: number | null; literal?: string}> = [];
+            let paramIndex = 0;
 
-          // For parameterized queries: WHERE id = $1 or WHERE id = $N
-          if ((sql.includes('WHERE id = $') || sql.includes('WHERE id = ?')) && idParam) {
-            const id = String(idParam);
-            const row = tableData.get(id);
-            if (row) {
-              const setMatch = sql.match(/SET (.*?) WHERE/i);
-              if (setMatch) {
-                const setPairs = setMatch[1].split(',').map(p => p.trim());
-                setPairs.forEach((pair, i) => {
-                  const [col] = pair.split('=').map(s => s.trim());
-                  if (i < params!.length - 1) {
-                    row[col] = params![i];
-                  }
-                });
+            // Parse each SET pair
+            setPairs.forEach((pair) => {
+              const [col, value] = pair.split('=').map(s => s.trim());
+
+              // Check if it's a parameter (? or $N) or literal value
+              if (value === '?' || value.match(/^\$\d+$/)) {
+                updates.push({ col, paramIndex: paramIndex });
+                paramIndex++;
+              } else {
+                // Literal value (e.g., 'published')
+                updates.push({ col, paramIndex: null, literal: value.replace(/^'|'$/g, '') });
               }
-              tableData.set(id, row);
+            });
+
+            // Parse WHERE clause to find which row to update
+            let whereColumn = 'id';
+            let whereParamIndex = paramIndex; // After all SET params
+
+            if (sql.includes('WHERE id = $') || sql.includes('WHERE id = ?')) {
+              whereColumn = 'id';
+            } else if (sql.includes('WHERE content_id = $') || sql.includes('WHERE content_id = ?')) {
+              whereColumn = 'content_id';
+            } else if (sql.includes('WHERE profile_id = $') || sql.includes('WHERE profile_id = ?')) {
+              whereColumn = 'profile_id';
+            }
+
+            const whereValue = params?.[whereParamIndex];
+            if (whereValue !== undefined) {
+              // Find and update the row
+              for (const [key, row] of tableData.entries()) {
+                if (row[whereColumn] === whereValue) {
+                  updates.forEach(({col, paramIndex: idx, literal}) => {
+                    if (idx !== null && params![idx] !== undefined) {
+                      row[col] = params![idx];
+                    } else if (literal !== undefined) {
+                      row[col] = literal;
+                    }
+                  });
+                  tableData.set(key, row);
+                  break;
+                }
+              }
             }
           }
         }
@@ -161,7 +199,12 @@ export function createMockDatabase(): DatabaseAdapter {
       if (tableMatch) {
         const tableName = tableMatch[1];
         const tableData = tables.get(tableName);
-        if (!tableData) return [];
+        if (!tableData) {
+          if (tableName === 'content') {
+            console.error(`[SELECT] No table data for ${tableName}`);
+          }
+          return [];
+        }
 
         let rows = Array.from(tableData.values());
 
@@ -175,14 +218,86 @@ export function createMockDatabase(): DatabaseAdapter {
           if (params?.[0]) rows = rows.filter(r => r.instagram_id === params[0]);
         } else if (sql.includes('WHERE email = $1') || sql.includes('WHERE email = ?')) {
           if (params?.[0]) rows = rows.filter(r => r.email === params[0]);
-        } else if (sql.includes('WHERE profile_id = $1') || sql.includes('WHERE profile_id = ?')) {
-          if (params?.[0]) rows = rows.filter(r => r.profile_id === params[0]);
+        } else if (sql.includes('WHERE profile_id = ?') && params?.[0]) {
+          rows = rows.filter(r => r.profile_id === params[0]);
+        } else if (sql.includes('WHERE profile_id = $1') && params?.[0]) {
+          rows = rows.filter(r => r.profile_id === params[0]);
+        }
+
+        // Handle collected_at filtering (for metrics history)
+        if (sql.includes('collected_at >=')) {
+          const paramIdx = sql.includes('$2') ? 1 : 1; // Second param is usually the date
+          if (params?.[paramIdx]) {
+            rows = rows.filter(r => {
+              if (!r.collected_at) return false;
+              return r.collected_at >= params[paramIdx];
+            });
+          }
         }
 
         // Handle combined WHERE id AND user_id
         if (sql.includes('WHERE id = $1 AND user_id = $2')) {
           rows = rows.filter(r => r.id === params?.[0] && r.user_id === params?.[1]);
         }
+
+        // Apply aggregate functions (AVG, COUNT, etc)
+        if (sql.includes('AVG(') || sql.includes('COUNT(') || sql.includes('SUM(')) {
+
+          // Handle AVG(engagement_rate) as avg_engagement
+          if (sql.includes('AVG(engagement_rate)')) {
+            const values = rows.map(r => r.engagement_rate).filter(v => v !== undefined && v !== null);
+            const avg = values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length : 0;
+            return [{ avg_engagement: avg }];
+          }
+
+          // Handle COUNT(*) as count
+          if (sql.includes('COUNT(*)')) {
+            return [{ count: rows.length }];
+          }
+        }
+
+        // Apply ORDER BY
+        if (sql.includes('ORDER BY')) {
+          const orderMatch = sql.match(/ORDER BY\s+(\w+)\s+(ASC|DESC)?/i);
+          if (orderMatch) {
+            const [, orderCol, direction] = orderMatch;
+            const isDesc = direction?.toUpperCase() === 'DESC';
+            rows.sort((a, b) => {
+              const aVal = a[orderCol];
+              const bVal = b[orderCol];
+              if (aVal === undefined || bVal === undefined) return 0;
+              if (aVal < bVal) return isDesc ? 1 : -1;
+              if (aVal > bVal) return isDesc ? -1 : 1;
+              return 0;
+            });
+          }
+        }
+
+        // Apply column aliases from SELECT statement
+        rows = rows.map(row => {
+          const aliasedRow = { ...row };
+
+          // Parse aliases from SELECT clause (e.g., "followers_count as followers")
+          const selectMatch = sql.match(/SELECT\s+([\s\S]*?)\s+FROM/i);
+          if (selectMatch) {
+            const selectClause = selectMatch[1];
+            const aliasMatches = selectClause.matchAll(/(\w+)\s+as\s+(\w+)/gi);
+
+            for (const match of aliasMatches) {
+              const [, originalCol, aliasCol] = match;
+              if (aliasedRow.hasOwnProperty(originalCol)) {
+                aliasedRow[aliasCol] = aliasedRow[originalCol];
+              }
+            }
+          }
+
+          // Handle DATE() function for collected_at
+          if (sql.includes('DATE(collected_at)') && aliasedRow.collected_at) {
+            aliasedRow.date = aliasedRow.collected_at.split('T')[0];
+          }
+
+          return aliasedRow;
+        });
 
         return rows;
       }
