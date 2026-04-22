@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 
 export interface BestTime {
   time: string;
@@ -17,9 +17,9 @@ interface PostCountResult {
  * AC 3: Suggest best times based on engagement history (7-30 days)
  */
 export class BestTimesCalculator {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.db = db;
   }
 

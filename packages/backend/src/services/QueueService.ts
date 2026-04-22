@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { randomUUID } from 'crypto';
 
 export interface QueueItem {
@@ -33,9 +33,9 @@ interface ScheduledPostItem {
  * AC 1-5: View, reorder, delete, filter, paginate queue
  */
 export class QueueService {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.db = db;
   }
 

@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { AnalyticsService } from './AnalyticsService.js';
 import { Profile } from '../models/Profile.js';
 
@@ -44,11 +44,11 @@ export interface PostMetricsResponse {
  * Content metrics service — returns detailed post metrics with historical data
  */
 export class ContentMetricsService {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
   private analyticsService: AnalyticsService;
   private profileModel: Profile;
 
-  constructor(db: Database.Database, analyticsService: AnalyticsService) {
+  constructor(db: DatabaseAdapter, analyticsService: AnalyticsService) {
     this.db = db;
     this.analyticsService = analyticsService;
     this.profileModel = new Profile(db);

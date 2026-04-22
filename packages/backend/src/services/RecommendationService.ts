@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { Anthropic } from '@anthropic-ai/sdk';
 import { Profile } from '../models/Profile.js';
 import { EngagementAnalysisService, EngagementAnalysis } from './EngagementAnalysisService.js';
@@ -38,7 +38,7 @@ export interface RecommendationsResponse {
  * Recommendation service — generates AI-powered strategy recommendations via Claude API
  */
 export class RecommendationService {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
   private profileModel: Profile;
   private engagementAnalysisService: EngagementAnalysisService;
   private claudeClient: Anthropic;
@@ -58,7 +58,7 @@ export class RecommendationService {
     /^follow best practices/i,
   ];
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.db = db;
     this.profileModel = new Profile(db);
     this.engagementAnalysisService = new EngagementAnalysisService(db);

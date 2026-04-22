@@ -1,9 +1,9 @@
 import { Router, Response } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { ReportService } from '../services/ReportService.js';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
 
-export function createReportsRoutes(db: Database.Database): Router {
+export function createReportsRoutes(db: DatabaseAdapter): Router {
   const router = Router();
   const reportService = new ReportService(db);
 

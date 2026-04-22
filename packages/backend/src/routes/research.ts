@@ -1,12 +1,12 @@
 import { Router, Response } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { ResearchService } from '../services/ResearchService.js';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
 
 /**
  * Content research routes using Marketing Instagram Squad
  */
-export function createResearchRoutes(db: Database.Database, squadsDir?: string): Router {
+export function createResearchRoutes(db: DatabaseAdapter, squadsDir?: string): Router {
   const router = Router();
   const researchService = new ResearchService(db, squadsDir);
 

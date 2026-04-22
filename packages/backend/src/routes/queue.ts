@@ -1,5 +1,5 @@
 import { Router, Response } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { QueueService } from '../services/QueueService.js';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
 
@@ -7,7 +7,7 @@ import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js'
  * Content queue management routes
  * AC 1-6: View, reorder, delete, filter, paginate queue, real-time updates (optional)
  */
-export function createQueueRoutes(db: Database.Database): Router {
+export function createQueueRoutes(db: DatabaseAdapter): Router {
   const router = Router();
   const queueService = new QueueService(db);
 

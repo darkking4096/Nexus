@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import type { DatabaseAdapter } from '../config/database';
+import Database from 'better-sqlite3';
 import { RecommendationService } from '../RecommendationService.js';
 
 // Mock Anthropic to prevent real API calls and force fallback recommendations
@@ -18,7 +18,7 @@ vi.mock('@anthropic-ai/sdk', () => {
 });
 
 describe('RecommendationService', () => {
-  let db: DatabaseAdapter;
+  let db: Database.Database;
   let recommendationService: RecommendationService;
   const testUserId = 'user-123';
   const testProfileId = 'profile-456';
@@ -411,7 +411,7 @@ describe('RecommendationService', () => {
 });
 
 // Test helpers
-function setupDatabase(db: DatabaseAdapter): void {
+function setupDatabase(db: Database.Database): void {
   db.exec(`
     CREATE TABLE IF NOT EXISTS profiles (
       id TEXT PRIMARY KEY,
@@ -458,7 +458,7 @@ function setupDatabase(db: DatabaseAdapter): void {
 }
 
 function insertTestProfile(
-  db: DatabaseAdapter,
+  db: Database.Database,
   profileId: string,
   userId: string
 ): void {
@@ -470,7 +470,7 @@ function insertTestProfile(
 }
 
 function insertTestContent(
-  db: DatabaseAdapter,
+  db: Database.Database,
   contentId: string,
   profileId: string,
   mediaType: string,
@@ -484,7 +484,7 @@ function insertTestContent(
 }
 
 function insertTestPostMetricsWithDate(
-  db: DatabaseAdapter,
+  db: Database.Database,
   profileId: string,
   contentId: string,
   data: {

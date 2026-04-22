@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { logger } from '../utils/logger';
 import TrendingHashtagClient, { HashtagMetadata } from './TrendingHashtagClient';
 import ShadowbanValidator from '../utils/shadowban-validator';
@@ -51,7 +51,7 @@ export class HashtagGenerator {
   private shadowbanValidator: ShadowbanValidator;
   private readonly RECOMMENDATION_THRESHOLD = 0.3;
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.trendingClient = new TrendingHashtagClient(db);
     this.shadowbanValidator = new ShadowbanValidator();
   }

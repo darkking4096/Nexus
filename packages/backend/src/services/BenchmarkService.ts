@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { SearchService, CompetitorData } from './SearchService.js';
 import { AnalyticsService, Metrics } from './AnalyticsService.js';
 
@@ -50,13 +50,13 @@ export interface BenchmarkResult {
  * Integrates SearchService (to find competitors) and AnalyticsService (to collect metrics)
  */
 export class BenchmarkService {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
   private searchService: SearchService;
   private analyticsService: AnalyticsService;
   private competitorSearchTimeoutMs: number;
 
   constructor(
-    db: Database.Database,
+    db: DatabaseAdapter,
     searchService: SearchService,
     analyticsService: AnalyticsService,
     options?: { competitorSearchTimeoutMs?: number }
@@ -287,7 +287,7 @@ export class BenchmarkService {
 }
 
 export function createBenchmarkService(
-  db: Database.Database,
+  db: DatabaseAdapter,
   searchService: SearchService,
   analyticsService: AnalyticsService
 ): BenchmarkService {

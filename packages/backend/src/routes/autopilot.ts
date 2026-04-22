@@ -1,5 +1,5 @@
 import { Router, Response } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
 import { AutopilotService, CreateAutopilotPayload, UpdateAutopilotPayload } from '../services/AutopilotService.js';
 
@@ -12,7 +12,7 @@ import { AutopilotService, CreateAutopilotPayload, UpdateAutopilotPayload } from
  * DELETE /api/profiles/{profileId}/autopilot - Delete config (for future use)
  */
 
-export function createAutopilotRoutes(db: Database.Database): Router {
+export function createAutopilotRoutes(db: DatabaseAdapter): Router {
   const router = Router({ mergeParams: true });
   const autopilotService = new AutopilotService(db);
 

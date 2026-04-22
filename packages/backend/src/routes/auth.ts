@@ -1,5 +1,5 @@
 import { Router, Request, Response, RequestHandler } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/User';
 import {
@@ -12,7 +12,7 @@ import {
 import { blacklistToken } from '../services/tokenBlacklist.service';
 import { createSecurityLogger } from '../services/securityLogger.service';
 
-export function createAuthRoutes(db: Database.Database, loginLimiter?: RequestHandler): Router {
+export function createAuthRoutes(db: DatabaseAdapter, loginLimiter?: RequestHandler): Router {
   const router = Router();
   const userModel = new User(db);
 

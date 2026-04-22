@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { Profile } from '../models/Profile.js';
 import { AnalyticsService } from './AnalyticsService.js';
 
@@ -29,12 +29,12 @@ export interface DashboardOverview {
  * Dashboard service — aggregates KPIs from multiple profiles
  */
 export class DashboardService {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
   private profileModel: Profile;
   private readonly CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes
   private cache: Map<string, { data: DashboardOverview; timestamp: number }> = new Map();
 
-  constructor(db: Database.Database, _analyticsService: AnalyticsService) {
+  constructor(db: DatabaseAdapter, _analyticsService: AnalyticsService) {
     this.db = db;
     this.profileModel = new Profile(db);
     // analyticsService parameter kept for API compatibility

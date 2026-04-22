@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 
 /**
  * Hourly engagement statistics
@@ -37,10 +37,10 @@ export interface BestTimeRecommendation {
  * Supports timezone-aware recommendations
  */
 export class OptimizationService {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
   private validTimezones: Set<string>;
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.db = db;
     // Initialize common timezone list
     // Using common IANA timezone identifiers

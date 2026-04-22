@@ -1,5 +1,5 @@
 import { Response, Router } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { StoryGenerator, StoryGenerationRequest } from '../services/StoryGenerator';
 import { logger } from '../utils/logger';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware';
@@ -7,7 +7,7 @@ import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware';
 /**
  * Story generation routes: Instagram Story frame generation with branding
  */
-export function createStoryRoutes(db: Database.Database): Router {
+export function createStoryRoutes(db: DatabaseAdapter): Router {
   const router = Router();
   const storyGenerator = new StoryGenerator(db);
 

@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { logger } from '../utils/logger';
 
 /**
@@ -101,7 +101,7 @@ export class TrendingHashtagClient {
     ],
   };
 
-  constructor(_db: Database.Database) {
+  constructor(_db: DatabaseAdapter) {
     // DB available for caching in future implementations
   }
 

@@ -1,11 +1,11 @@
 import { Router, Response } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { Competitor } from '../models/Competitor.js';
 import { Profile } from '../models/Profile.js';
 import { CompetitorService } from '../services/CompetitorService.js';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
 
-export function createCompetitorsRoutes(db: Database.Database): Router {
+export function createCompetitorsRoutes(db: DatabaseAdapter): Router {
   const router = Router({ mergeParams: true });
   const competitorModel = new Competitor(db);
   const profileModel = new Profile(db);

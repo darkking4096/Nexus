@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { randomUUID } from 'crypto';
 import { encryptJSON, decryptJSON } from '../utils/encryption.js';
 import { Profile, ProfileData } from '../models/Profile.js';
@@ -39,7 +39,7 @@ export class InstaService {
   private encryptionKey: string;
 
   constructor(
-    private db: Database.Database,
+    private db: DatabaseAdapter,
     pythonServiceUrl?: string,
     encryptionKey?: string
   ) {

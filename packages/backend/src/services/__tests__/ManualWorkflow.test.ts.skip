@@ -1,11 +1,11 @@
-import type { DatabaseAdapter } from '../config/database';
+import Database from 'better-sqlite3';
 import path from 'path';
 import { randomUUID } from 'crypto';
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import { ManualWorkflow } from '../ManualWorkflow.js';
 
 describe('ManualWorkflow Service', () => {
-  let db: DatabaseAdapter;
+  let db: Database.Database;
   let workflow: ManualWorkflow;
   let testProfileId: string;
 

@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { Profile, ProfileData } from '../models/Profile.js';
 import type { HistoryAnalysisResult } from './HistoryAnalysis.js';
 import type { AnalyzedCompetitor } from './CompetitorAnalysis.js';
@@ -73,7 +73,7 @@ export interface AnalyticsInput {
 export class AnalyticsModule {
   private profileModel: Profile;
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.profileModel = new Profile(db);
   }
 
@@ -563,6 +563,6 @@ export class AnalyticsModule {
 }
 
 // Helper function to create service with proper DI
-export function createAnalyticsModule(db: Database.Database): AnalyticsModule {
+export function createAnalyticsModule(db: DatabaseAdapter): AnalyticsModule {
   return new AnalyticsModule(db);
 }

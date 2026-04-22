@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { CaptionGenerator } from '../CaptionGenerator';
-import type { DatabaseAdapter } from '../config/database';
+import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
 
@@ -21,7 +21,7 @@ vi.mock('../CopywriterClient', () => ({
 
 describe('CaptionGenerator', () => {
   let captionGenerator: CaptionGenerator;
-  let db: DatabaseAdapter;
+  let db: Database.Database;
   const testDbPath = path.join(process.cwd(), '.test-caption-generator.db');
 
   beforeAll(() => {

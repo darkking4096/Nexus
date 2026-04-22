@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { randomUUID } from 'crypto';
 
 /**
@@ -48,9 +48,9 @@ const VALID_DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 const TIME_FORMAT_REGEX = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/; // HH:MM format
 
 export class AutopilotService {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.db = db;
   }
 

@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { Profile } from '../models/Profile.js';
 
 /**
@@ -56,10 +56,10 @@ export interface EngagementAnalysis {
  * Engagement analysis service — analyzes engagement patterns in historical data
  */
 export class EngagementAnalysisService {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
   private profileModel: Profile;
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.db = db;
     this.profileModel = new Profile(db);
   }

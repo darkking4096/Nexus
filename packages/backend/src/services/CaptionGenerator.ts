@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { logger } from '../utils/logger';
 import { CopywriterClient, CopywriterRequest } from './CopywriterClient';
 
@@ -75,7 +75,7 @@ export interface InstagramProfile {
  * Integrates with marketing-squad copywriter for refinement
  */
 export class CaptionGenerator {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
   private copywriter: CopywriterClient;
   private confidenceThreshold: number = 50;
   private charLimits = {
@@ -83,7 +83,7 @@ export class CaptionGenerator {
     max: 150,
   };
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.db = db;
     this.copywriter = new CopywriterClient();
   }

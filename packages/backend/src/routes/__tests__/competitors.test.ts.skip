@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import type { DatabaseAdapter } from '../config/database';
+import Database from 'better-sqlite3';
 import { createCompetitorsRoutes } from '../competitors';
 import { createProfilesRoutes } from '../profiles';
 import express, { Express } from 'express';
@@ -10,7 +10,7 @@ import request from 'supertest';
 
 describe('Competitors Routes', () => {
   let app: Express;
-  let db: DatabaseAdapter;
+  let db: Database.Database;
   let profileModel: Profile;
   let competitorModel: Competitor;
   let testProfileId: string;

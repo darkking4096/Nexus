@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { randomUUID } from 'crypto';
 import { logger } from '../utils/logger.js';
 
@@ -85,9 +85,9 @@ export interface ApprovalPanel {
  * 3. Publish: Final confirmation before publishing
  */
 export class ManualWorkflow {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.db = db;
   }
 
@@ -419,6 +419,6 @@ export class ManualWorkflow {
   }
 }
 
-export function createManualWorkflow(db: Database.Database): ManualWorkflow {
+export function createManualWorkflow(db: DatabaseAdapter): ManualWorkflow {
   return new ManualWorkflow(db);
 }

@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { Profile, ProfileData } from '../models/Profile.js';
 
 /**
@@ -57,10 +57,10 @@ export interface HistoryAnalysisResult {
  * Analyzes posted content, engagement patterns, and content type performance
  */
 export class HistoryAnalysis {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
   private profileModel: Profile;
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.db = db;
     this.profileModel = new Profile(db);
   }
@@ -297,6 +297,6 @@ export class HistoryAnalysis {
 }
 
 // Helper function to create service with proper DI
-export function createHistoryAnalysis(db: Database.Database): HistoryAnalysis {
+export function createHistoryAnalysis(db: DatabaseAdapter): HistoryAnalysis {
   return new HistoryAnalysis(db);
 }

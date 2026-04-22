@@ -1,10 +1,10 @@
 import { Router, Response, RequestHandler } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import rateLimit from 'express-rate-limit';
 import { SearchService } from '../services/SearchService.js';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
 
-export function createSearchRoutes(db: Database.Database): Router {
+export function createSearchRoutes(db: DatabaseAdapter): Router {
   const router = Router();
   const searchService = new SearchService(db);
 

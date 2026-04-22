@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import type { DatabaseAdapter } from '../config/database';
+import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
 import { HashtagGenerator } from '../HashtagGenerator';
 import ShadowbanValidator from '../../utils/shadowban-validator';
 
 describe('HashtagGenerator', () => {
-  let db: DatabaseAdapter;
+  let db: Database.Database;
   let generator: HashtagGenerator;
   let testDbPath: string;
 

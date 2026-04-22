@@ -1,5 +1,5 @@
 import { Router, Response } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { SchedulingService } from '../services/SchedulingService.js';
 import { BestTimesCalculator } from '../services/BestTimesCalculator.js';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
@@ -12,7 +12,7 @@ interface ContentRow {
  * Content scheduling routes
  * AC 1-6: Schedule creation, validation, best times, retrieval, update, cancel
  */
-export function createSchedulingRoutes(db: Database.Database): Router {
+export function createSchedulingRoutes(db: DatabaseAdapter): Router {
   const router = Router();
   const schedulingService = new SchedulingService(db);
   const bestTimesCalculator = new BestTimesCalculator(db);

@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { randomUUID } from 'crypto';
 
 export interface ScheduledPost {
@@ -49,9 +49,9 @@ interface CountResult {
  * Validates dates and times, coordinates with queue
  */
 export class SchedulingService {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.db = db;
   }
 

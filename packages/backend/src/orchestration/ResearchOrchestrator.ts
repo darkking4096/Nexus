@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { ResearchService } from '../services/ResearchService.js';
 import { SearchService } from '../services/SearchService.js';
 import { ResearchResult } from '../services/ResearchSquad.js';
@@ -28,7 +28,7 @@ export class ResearchOrchestrator {
   private cache: Map<string, { data: ResearchOutput; timestamp: number }> = new Map();
   private cacheMaxAge = 24 * 60 * 60 * 1000; // 24 hours
 
-  constructor(db: Database.Database, squadsDir?: string) {
+  constructor(db: DatabaseAdapter, squadsDir?: string) {
     this.researchService = new ResearchService(db, squadsDir);
     this.searchService = new SearchService(db);
   }
@@ -153,7 +153,7 @@ export class ResearchOrchestrator {
  * Helper function to create orchestrator with proper DI
  */
 export function createResearchOrchestrator(
-  db: Database.Database,
+  db: DatabaseAdapter,
   squadsDir?: string
 ): ResearchOrchestrator {
   return new ResearchOrchestrator(db, squadsDir);

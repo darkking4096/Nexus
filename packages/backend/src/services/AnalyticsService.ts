@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { randomUUID } from 'crypto';
 import { Profile, ProfileData } from '../models/Profile.js';
 import { decryptJSON } from '../utils/encryption.js';
@@ -47,14 +47,14 @@ export interface HistoricalMetrics {
  * Analytics service — metrics collection and retrieval with caching and retry logic
  */
 export class AnalyticsService {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
   private profileModel: Profile;
   private pythonBaseUrl: string;
   private encryptionKey: string;
   private readonly CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 
   constructor(
-    db: Database.Database,
+    db: DatabaseAdapter,
     pythonServiceUrl?: string,
     encryptionKey?: string
   ) {
@@ -483,7 +483,7 @@ export class AnalyticsService {
 
 // Helper function for DI
 export function createAnalyticsService(
-  db: Database.Database,
+  db: DatabaseAdapter,
   pythonServiceUrl?: string,
   encryptionKey?: string
 ): AnalyticsService {

@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import sharp from 'sharp';
 import { logger } from '../utils/logger';
 import ContrastValidator from './ContrastValidator';

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import type { DatabaseAdapter } from '../config/database';
+import Database from 'better-sqlite3';
 import { createAssetsRoutes } from '../assets';
 import { createProfilesRoutes } from '../profiles';
 import express, { Express } from 'express';
@@ -11,7 +11,7 @@ import request from 'supertest';
 
 describe('Assets Routes', () => {
   let app: Express;
-  let db: DatabaseAdapter;
+  let db: Database.Database;
   let profileModel: Profile;
   let assetModel: ProfileAsset;
   let testProfileId: string;

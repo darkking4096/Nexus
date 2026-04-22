@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import sharp from 'sharp';
 import { logger } from '../utils/logger';
 import BrandConfigLoader, { BrandConfig, BrandConfigRequest } from './BrandConfigLoader';
@@ -48,7 +48,7 @@ export class StoryGenerator {
   private readonly STANDARD_HEIGHT = 1920;
   private readonly MAX_FILE_SIZE = 500 * 1024; // 500KB
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.brandConfigLoader = new BrandConfigLoader(db);
   }
 

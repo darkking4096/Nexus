@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { randomUUID } from 'crypto';
 import fs from 'fs';
 import path from 'path';
@@ -38,7 +38,7 @@ export class PublishService {
   private encryptionKey: string;
   private instaService: InstaService;
 
-  constructor(private db: Database.Database, encryptionKey?: string) {
+  constructor(private db: DatabaseAdapter, encryptionKey?: string) {
     this.encryptionKey = encryptionKey || process.env.ENCRYPTION_KEY || '';
     this.instaService = new InstaService(db, undefined, this.encryptionKey);
 

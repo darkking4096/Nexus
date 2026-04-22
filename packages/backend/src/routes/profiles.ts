@@ -1,5 +1,5 @@
 import { Router, Response, RequestHandler } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import rateLimit from 'express-rate-limit';
 import { InstaService } from '../services/InstaService.js';
 import { Profile, ProfileData } from '../models/Profile.js';
@@ -15,7 +15,7 @@ function stripSensitiveData(profile: ProfileData): Omit<ProfileData, 'access_tok
 }
 
 export function createProfilesRoutes(
-  db: Database.Database,
+  db: DatabaseAdapter,
   connectLimiter?: RequestHandler
 ): Router {
   const router = Router();

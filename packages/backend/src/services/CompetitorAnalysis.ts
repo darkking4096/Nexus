@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { Profile, ProfileData } from '../models/Profile.js';
 import { Competitor, CompetitorData } from '../models/Competitor.js';
 
@@ -76,7 +76,7 @@ export class CompetitorAnalysis {
   private profileModel: Profile;
   private competitorModel: Competitor;
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.profileModel = new Profile(db);
     this.competitorModel = new Competitor(db);
   }
@@ -423,6 +423,6 @@ export class CompetitorAnalysis {
 }
 
 // Helper function to create service with proper DI
-export function createCompetitorAnalysis(db: Database.Database): CompetitorAnalysis {
+export function createCompetitorAnalysis(db: DatabaseAdapter): CompetitorAnalysis {
   return new CompetitorAnalysis(db);
 }

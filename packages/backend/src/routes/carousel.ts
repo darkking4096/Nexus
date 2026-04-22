@@ -1,5 +1,5 @@
 import { Response, Router } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { CarouselGenerator, CarouselGenerationRequest, CarouselSlide } from '../services/CarouselGenerator';
 import { logger } from '../utils/logger';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware';
@@ -7,7 +7,7 @@ import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware';
 /**
  * Carousel generation routes: multi-slide Instagram carousel generation
  */
-export function createCarouselRoutes(db: Database.Database): Router {
+export function createCarouselRoutes(db: DatabaseAdapter): Router {
   const router = Router();
   const carouselGenerator = new CarouselGenerator(db);
 

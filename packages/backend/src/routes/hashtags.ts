@@ -1,5 +1,5 @@
 import { Response, Router } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { HashtagGenerator, HashtagGenerationRequest } from '../services/HashtagGenerator';
 import { logger } from '../utils/logger';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware';
@@ -7,7 +7,7 @@ import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware';
 /**
  * Hashtag generation routes: Instagram hashtag discovery and generation
  */
-export function createHashtagRoutes(db: Database.Database): Router {
+export function createHashtagRoutes(db: DatabaseAdapter): Router {
   const router = Router();
   const hashtagGenerator = new HashtagGenerator(db);
 

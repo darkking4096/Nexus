@@ -1,12 +1,12 @@
 import { Router, Response } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { PublishService } from '../services/PublishService.js';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
 
 /**
  * Content routes: publishing, research, etc.
  */
-export function createContentRoutes(db: Database.Database): Router {
+export function createContentRoutes(db: DatabaseAdapter): Router {
   const router = Router();
   const publishService = new PublishService(db);
 

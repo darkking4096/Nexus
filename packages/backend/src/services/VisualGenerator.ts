@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import sharp from 'sharp';
 import { logger } from '../utils/logger';
 import {
@@ -42,7 +42,7 @@ export interface BrandProfile {
  * Integrates: Nando Banana API → Branding → Resizing → Caching
  */
 export class VisualGenerator {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
   private nandoClient: NandoBananaClient;
   private brandingProcessor: BrandingProcessor;
   private imageCache: ImageCache;
@@ -53,7 +53,7 @@ export class VisualGenerator {
     reel: { width: 1080, height: 1920 },
   };
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.db = db;
     this.nandoClient = new NandoBananaClient();
     this.brandingProcessor = new BrandingProcessor();

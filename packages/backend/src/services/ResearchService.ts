@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { Profile, ProfileData } from '../models/Profile.js';
 import { ResearchSquad, ResearchResult } from './ResearchSquad.js';
 
@@ -21,11 +21,11 @@ export interface ContentRow extends Record<string, unknown> {
  * Orchestrates ResearchSquad with safety checks
  */
 export class ResearchService {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
   private profileModel: Profile;
   private researchSquad: ResearchSquad;
 
-  constructor(db: Database.Database, squadsDir?: string) {
+  constructor(db: DatabaseAdapter, squadsDir?: string) {
     this.db = db;
     this.profileModel = new Profile(db);
     this.researchSquad = new ResearchSquad(squadsDir);
@@ -95,6 +95,6 @@ export class ResearchService {
 }
 
 // Helper function to create service with proper DI
-export function createResearchService(db: Database.Database, squadsDir?: string): ResearchService {
+export function createResearchService(db: DatabaseAdapter, squadsDir?: string): ResearchService {
   return new ResearchService(db, squadsDir);
 }

@@ -1,5 +1,5 @@
 import { Router, Response } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { OptimizationService } from '../services/OptimizationService.js';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
 
@@ -12,7 +12,7 @@ interface ProfileRow {
  * Optimization routes
  * AC: Best time analysis, confidence calculation, timezone handling
  */
-export function createOptimizationRoutes(db: Database.Database): Router {
+export function createOptimizationRoutes(db: DatabaseAdapter): Router {
   const router = Router();
   const optimizationService = new OptimizationService(db);
 

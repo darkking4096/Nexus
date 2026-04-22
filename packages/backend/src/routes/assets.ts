@@ -1,5 +1,5 @@
 import { Router, Response } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import multer from 'multer';
 import { ProfileAsset } from '../models/ProfileAsset.js';
 import { Profile } from '../models/Profile.js';
@@ -14,7 +14,7 @@ const upload = multer({
   },
 });
 
-export function createAssetsRoutes(db: Database.Database): Router {
+export function createAssetsRoutes(db: DatabaseAdapter): Router {
   const router = Router({ mergeParams: true });
   const assetModel = new ProfileAsset(db);
   const profileModel = new Profile(db);

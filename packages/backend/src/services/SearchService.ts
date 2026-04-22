@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { randomUUID } from 'crypto';
 
 /**
@@ -46,12 +46,12 @@ export interface ContentIdea {
 export class SearchService {
   // Reserved for future use (DB persistence for cache)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private readonly _db: Database.Database;
+  private readonly _db: DatabaseAdapter;
   private searchCache: Map<string, { data: SearchResult[]; timestamp: number }> = new Map();
   private cacheMaxAge = 24 * 60 * 60 * 1000; // 24 hours
   private hasEXA = false;
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this._db = db;
     // Check if EXA MCP is available
     this.checkEXAAvailability();
@@ -296,6 +296,6 @@ export class SearchService {
   }
 }
 
-export function createSearchService(db: Database.Database): SearchService {
+export function createSearchService(db: DatabaseAdapter): SearchService {
   return new SearchService(db);
 }

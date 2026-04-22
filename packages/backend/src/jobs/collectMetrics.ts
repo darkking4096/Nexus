@@ -1,11 +1,11 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { AnalyticsService } from '../services/AnalyticsService.js';
 
 /**
  * Scheduled job to collect metrics for all profiles daily
  * Call this from a cron job or scheduler (e.g., node-cron, AWS Lambda, etc.)
  */
-export async function runMetricsCollectionJob(db: Database.Database): Promise<void> {
+export async function runMetricsCollectionJob(db: DatabaseAdapter): Promise<void> {
   const analyticsService = new AnalyticsService(db);
 
   console.log('[MetricsCollectionJob] Starting metrics collection...');
@@ -25,7 +25,7 @@ export async function runMetricsCollectionJob(db: Database.Database): Promise<vo
  * Called from main app entry point
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function initializeMetricsScheduler(_db: Database.Database): void {
+export function initializeMetricsScheduler(_db: DatabaseAdapter): void {
   // Lazy load node-cron to avoid hard dependency
   // Can be imported conditionally: `import('node-cron').then(...)`
   console.log('[MetricsScheduler] Scheduler support available. Use external cron or import node-cron for automated scheduling.');

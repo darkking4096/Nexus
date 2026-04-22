@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import type { DatabaseAdapter } from '../config/database';
+import Database from 'better-sqlite3';
 import { createProfilesRoutes } from '../profiles';
 import express, { Express } from 'express';
 import { Profile } from '../../models/Profile';
@@ -8,7 +8,7 @@ import request from 'supertest';
 
 describe('Profile Routes - Context Configuration', () => {
   let app: Express;
-  let db: DatabaseAdapter;
+  let db: Database.Database;
   let profileModel: Profile;
   let testToken: string;
 

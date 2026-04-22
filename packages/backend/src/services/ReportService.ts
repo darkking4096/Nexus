@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { Profile } from '../models/Profile.js';
 
 /**
@@ -54,10 +54,10 @@ export interface PerformanceReport {
  * Report service — generates consolidated performance reports
  */
 export class ReportService {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
   private profileModel: Profile;
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.db = db;
     this.profileModel = new Profile(db);
   }

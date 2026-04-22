@@ -1,5 +1,5 @@
 import { Router, Response } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { AnalyticsService } from '../services/AnalyticsService.js';
 import { SearchService } from '../services/SearchService.js';
 import { BenchmarkService } from '../services/BenchmarkService.js';
@@ -8,7 +8,7 @@ import { EngagementAnalysisService } from '../services/EngagementAnalysisService
 import { RecommendationService } from '../services/RecommendationService.js';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
 
-export function createAnalyticsRoutes(db: Database.Database): Router {
+export function createAnalyticsRoutes(db: DatabaseAdapter): Router {
   const router = Router();
   const analyticsService = new AnalyticsService(db);
   const searchService = new SearchService(db);

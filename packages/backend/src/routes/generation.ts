@@ -1,5 +1,5 @@
 import { Response, Router } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { CaptionGenerator, CaptionRequest, BrandTone } from '../services/CaptionGenerator';
 import { logger } from '../utils/logger';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware';
@@ -7,7 +7,7 @@ import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware';
 /**
  * Content generation routes: captions, hooks, CTAs
  */
-export function createGenerationRoutes(db: Database.Database): Router {
+export function createGenerationRoutes(db: DatabaseAdapter): Router {
   const router = Router();
   const captionGenerator = new CaptionGenerator(db);
 

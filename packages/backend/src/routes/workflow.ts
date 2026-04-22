@@ -1,5 +1,5 @@
 import { Response, Router } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { ManualWorkflow, ApprovalAction } from '../services/ManualWorkflow.js';
 import { logger } from '../utils/logger.js';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js';
@@ -7,7 +7,7 @@ import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware.js'
 /**
  * Manual workflow routes: generate, approve, get approval panel
  */
-export function createWorkflowRoutes(db: Database.Database): Router {
+export function createWorkflowRoutes(db: DatabaseAdapter): Router {
   const router = Router();
   const workflow = new ManualWorkflow(db);
 

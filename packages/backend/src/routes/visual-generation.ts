@@ -1,5 +1,5 @@
 import { Response, Router } from 'express';
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { VisualGenerator } from '../services/VisualGenerator';
 import { logger } from '../utils/logger';
 import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware';
@@ -7,7 +7,7 @@ import { verifyAccessToken, AuthRequest } from '../middleware/authMiddleware';
 /**
  * Visual generation routes: image generation, formatting, caching
  */
-export function createVisualGenerationRoutes(db: Database.Database): Router {
+export function createVisualGenerationRoutes(db: DatabaseAdapter): Router {
   const router = Router();
   const visualGenerator = new VisualGenerator(db);
 

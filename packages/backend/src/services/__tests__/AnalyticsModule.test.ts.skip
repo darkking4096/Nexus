@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import type { DatabaseAdapter } from '../config/database';
+import Database from 'better-sqlite3';
 import { AnalyticsModule, AnalyticsInput } from '../AnalyticsModule.js';
 
 describe('AnalyticsModule', () => {
-  let db: DatabaseAdapter;
+  let db: Database.Database;
   let analyticsModule: AnalyticsModule;
   const testUserId = 'user-123';
   const testProfileId = 'profile-456';
@@ -505,7 +505,7 @@ describe('AnalyticsModule', () => {
 });
 
 // Helper functions
-function setupDatabase(db: DatabaseAdapter) {
+function setupDatabase(db: Database.Database) {
   db.exec(`
     CREATE TABLE IF NOT EXISTS profiles (
       id TEXT PRIMARY KEY,
@@ -515,7 +515,7 @@ function setupDatabase(db: DatabaseAdapter) {
   `);
 }
 
-function insertTestProfile(db: DatabaseAdapter, profileId: string, userId: string) {
+function insertTestProfile(db: Database.Database, profileId: string, userId: string) {
   const stmt = db.prepare(
     'INSERT INTO profiles (id, user_id, instagram_username) VALUES (?, ?, ?)'
   );

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import type { DatabaseAdapter } from '../config/database';
+import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
 import { initializeDatabase } from '../../config/database.js';
@@ -11,7 +11,7 @@ interface ContentStatusRow {
 }
 
 describe('QueueService', () => {
-  let db: DatabaseAdapter;
+  let db: Database.Database;
   let service: QueueService;
   let testDbPath: string;
   let userId: string;

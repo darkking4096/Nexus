@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import type { DatabaseAdapter } from '../config/database';
+import Database from 'better-sqlite3';
 import { AnalyticsService } from '../AnalyticsService.js';
 
 describe('AnalyticsService', () => {
-  let db: DatabaseAdapter;
+  let db: Database.Database;
   let analyticsService: AnalyticsService;
   const testUserId = 'user-123';
   const testProfileId = 'profile-456';
@@ -263,7 +263,7 @@ describe('AnalyticsService', () => {
 });
 
 // Test helpers
-function setupDatabase(db: DatabaseAdapter): void {
+function setupDatabase(db: Database.Database): void {
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
@@ -320,7 +320,7 @@ function setupDatabase(db: DatabaseAdapter): void {
 }
 
 function insertTestProfile(
-  db: DatabaseAdapter,
+  db: Database.Database,
   profileId: string,
   userId: string,
   username: string = 'test_user'
@@ -333,7 +333,7 @@ function insertTestProfile(
 }
 
 function insertTestMetrics(
-  db: DatabaseAdapter,
+  db: Database.Database,
   profileId: string,
   data: {
     followers_count: number;
@@ -346,7 +346,7 @@ function insertTestMetrics(
 }
 
 function insertTestMetricsWithDate(
-  db: DatabaseAdapter,
+  db: Database.Database,
   profileId: string,
   data: {
     followers_count: number;
@@ -364,7 +364,7 @@ function insertTestMetricsWithDate(
 }
 
 function insertTestPostMetrics(
-  db: DatabaseAdapter,
+  db: Database.Database,
   profileId: string,
   postId: string,
   data: {
@@ -379,7 +379,7 @@ function insertTestPostMetrics(
 }
 
 function insertTestPostMetricsWithDate(
-  db: DatabaseAdapter,
+  db: Database.Database,
   profileId: string,
   postId: string,
   data: {
@@ -399,7 +399,7 @@ function insertTestPostMetricsWithDate(
 }
 
 function insertTestPostMetricsWithMediaType(
-  db: DatabaseAdapter,
+  db: Database.Database,
   profileId: string,
   postId: string,
   data: {

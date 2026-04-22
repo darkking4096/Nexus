@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import type { DatabaseAdapter } from '../config/database';
 import { logger } from '../utils/logger';
 
 /**
@@ -47,7 +47,7 @@ export interface BrandConfigRequest {
  * Supports per-profile branding + defaults
  */
 export class BrandConfigLoader {
-  private db: Database.Database;
+  private db: DatabaseAdapter;
   private defaultBrand: BrandConfig = {
     id: 'default',
     name: 'Default Instagram Brand',
@@ -64,7 +64,7 @@ export class BrandConfigLoader {
     },
   };
 
-  constructor(db: Database.Database) {
+  constructor(db: DatabaseAdapter) {
     this.db = db;
   }
 

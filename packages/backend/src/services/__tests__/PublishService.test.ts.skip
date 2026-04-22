@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
-import type { DatabaseAdapter } from '../config/database';
+import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
 
@@ -77,7 +77,7 @@ vi.spyOn(fs, 'statSync').mockImplementation((path: any) => {
 
 describe('PublishService', () => {
   let publishService: PublishService;
-  let db: DatabaseAdapter;
+  let db: Database.Database;
   const testDbPath = path.join(process.cwd(), '.test-publish-service.db');
   const testEncryptionKey = 'test-encryption-key-32chars!!!!!';
   beforeAll(() => {
