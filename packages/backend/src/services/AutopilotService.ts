@@ -241,7 +241,8 @@ export class AutopilotService {
         last_updated_at: row.last_updated_at,
         next_publication_at: row.next_publication_at,
       };
-    } catch (error) {
+    } catch {
+      // Parsing or database error, return null
       return null;
     }
   }

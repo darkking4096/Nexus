@@ -11,8 +11,11 @@ dotenv.config({ path: '.env.local' });
  */
 
 export interface DatabaseStatement {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   run(...params: any[]): any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get(...params: any[]): any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   all(...params: any[]): any;
   async?: boolean; // Flag indicating async support
 }
@@ -22,8 +25,10 @@ export interface DatabaseAdapter {
   exec(sql: string): Promise<void> | void;
   transaction<T>(fn: (db: DatabaseAdapter) => T | Promise<T>): T | Promise<T>;
   close(): Promise<void>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   query(sql: string, params?: any[]): Promise<any[]>;
   // Internal method for raw queries
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   _query(sql: string, params?: any[]): Promise<any>;
 }
 
@@ -40,6 +45,7 @@ class PostgreSQLAdapter implements DatabaseAdapter {
     // In production, all code should migrate to async query() calls
     return {
       async: true,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       run(..._params: any[]) {
         console.error(
           '❌ FATAL: prepare().run() called but PostgreSQL requires async calls. ' +
@@ -51,6 +57,7 @@ class PostgreSQLAdapter implements DatabaseAdapter {
         );
       },
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       get(..._params: any[]) {
         console.error(
           '❌ FATAL: prepare().get() called but PostgreSQL requires async calls. ' +
@@ -62,6 +69,7 @@ class PostgreSQLAdapter implements DatabaseAdapter {
         );
       },
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       all(..._params: any[]) {
         console.error(
           '❌ FATAL: prepare().all() called but PostgreSQL requires async calls. ' +
@@ -99,6 +107,7 @@ class PostgreSQLAdapter implements DatabaseAdapter {
    * Modern async query interface - PRIMARY METHOD
    * Use this for all database operations
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async query(sql: string, params?: any[]): Promise<any[]> {
     try {
       const result = await this.db.query(sql, params);
@@ -112,6 +121,7 @@ class PostgreSQLAdapter implements DatabaseAdapter {
   /**
    * Internal raw query - for custom operations
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async _query(sql: string, params?: any[]): Promise<any> {
     return await this.db.query(sql, params);
   }

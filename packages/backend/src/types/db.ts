@@ -4,8 +4,11 @@
  */
 
 export interface DatabaseStatement {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   run(...params: any[]): any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get(...params: any[]): any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   all(...params: any[]): any;
 }
 
@@ -32,6 +35,7 @@ export interface DatabaseAdapter {
    * @param params - Query parameters
    * @returns Array of result rows
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   query(sql: string, params?: any[]): Promise<any[]>;
 
   /**
@@ -76,6 +80,7 @@ export interface AppContextDatabase {
   prepare(sql: string): DatabaseStatement;
   exec(sql: string): void;
   transaction(fn: () => void): void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   query(sql: string, params?: any[]): Promise<any[]>;
   close(): Promise<void>;
 }

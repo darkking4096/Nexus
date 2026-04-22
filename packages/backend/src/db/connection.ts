@@ -134,9 +134,12 @@ class DatabaseConnection {
   /**
    * Execute a query with retry logic and circuit breaker
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async query(
     text: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     values?: any[]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<QueryResult<any>> {
     // Check circuit breaker status
     if (this.circuitBreaker.isOpen) {

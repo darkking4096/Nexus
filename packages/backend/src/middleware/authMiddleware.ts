@@ -42,6 +42,7 @@ export async function verifyAccessToken(req: AuthRequest, res: Response, next: N
     req.token = token;
     next();
   } catch (error) {
+    // Type guard checks
     if (error instanceof jwt.TokenExpiredError) {
       res.status(401).json({ error: 'Token expired' });
     } else if (error instanceof jwt.JsonWebTokenError) {
@@ -93,7 +94,8 @@ export function verifyRefreshToken(token: string): string {
   try {
     const decoded = jwt.verify(token, secret) as { userId: string };
     return decoded.userId;
-  } catch (error) {
+  } catch {
+    // Catch any jwt verification errors and return generic message
     throw new Error('Invalid or expired refresh token');
   }
 }

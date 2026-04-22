@@ -271,7 +271,7 @@ export class OptimizationService {
       const tzAbbr = this.getTimezoneAbbreviation(timezone);
 
       return `${timeStr} ${tzAbbr}`;
-    } catch (error) {
+    } catch {
       // Fallback to simple format if Intl fails
       const meridiem = hour < 12 ? 'AM' : 'PM';
       const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
@@ -294,7 +294,8 @@ export class OptimizationService {
 
       const tzPart = parts.find(part => part.type === 'timeZoneName');
       return tzPart?.value || 'UTC';
-    } catch (error) {
+    } catch {
+      // Fallback to simple timezone parsing
       return timezone.split('/').pop() || 'UTC';
     }
   }
@@ -317,8 +318,8 @@ export class OptimizationService {
       const stmt = this.db.prepare(query);
       const result = stmt.get(profileId) as { timezone?: string } | undefined;
       return result?.timezone || null;
-    } catch (error) {
-      // If timezone column doesn't exist, return null
+    } catch {
+      // If timezone column doesn't exist or other error, return null
       return null;
     }
   }
