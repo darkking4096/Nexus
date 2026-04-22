@@ -230,8 +230,8 @@ describe('InstaService', () => {
     expect(session.user_agent).toBe('Instagram 1.0');
   });
 
-  it('should throw on missing session', async () => {
-    await expect(instaService.getDecryptedSession('nonexistent-profile')).rejects.toThrow(
+  it('should throw on missing session', () => {
+    expect(() => instaService.getDecryptedSession('nonexistent-profile')).toThrow(
       'No Instagram session found'
     );
   });
