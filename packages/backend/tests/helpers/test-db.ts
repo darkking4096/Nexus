@@ -55,6 +55,16 @@ export function createMockDatabase(): DatabaseAdapter {
           columns.forEach((col, i) => {
             row[col] = params?.[i];
           });
+
+          // UNIQUE constraint validation for email (users table)
+          if (tableName === 'users' && row.email) {
+            for (const existingRow of tableData.values()) {
+              if (existingRow.email === row.email) {
+                throw new Error(`duplicate key value violates unique constraint "users_email_key"`);
+              }
+            }
+          }
+
           const id = row.id || row.user_id || `id_${Date.now()}`;
           tableData.set(String(id), row);
         }

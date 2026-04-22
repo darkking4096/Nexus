@@ -102,8 +102,8 @@ describe('User Model', () => {
       password: 'password123',
     });
 
-    expect(userModel.emailExists(email)).toBe(true);
-    expect(userModel.emailExists('notexists@example.com')).toBe(false);
+    expect(await userModel.emailExists(email)).toBe(true);
+    expect(await userModel.emailExists('notexists@example.com')).toBe(false);
   });
 
   it('should update user', async () => {
