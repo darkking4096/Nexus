@@ -127,6 +127,13 @@ const db = initializeDatabase(DB_PATH);
 appContext.setDatabase(db);
 appContext.setCache(cache);
 
+// Initialize PostgreSQL connection pool asynchronously
+import { initializeDatabase as initializePgConnection } from './db/connection';
+initializePgConnection().catch(err => {
+  console.error('❌ Failed to initialize PostgreSQL connection pool:', err);
+  process.exit(1);
+});
+
 // Routes
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
