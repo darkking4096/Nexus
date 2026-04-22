@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, vi } from 'vitest';
-import Database from 'better-sqlite3';
+import { createMockDatabase } from './helpers/test-db';
+import type { DatabaseAdapter } from '../src/config/database';
 import { randomUUID } from 'crypto';
 import { PublishService } from '../src/services/PublishService';
 import { PlaywrightService } from '../src/services/PlaywrightService';
@@ -28,14 +29,14 @@ vi.mock('../src/utils/retry.ts', async () => {
 });
 
 describe('PublishService', () => {
-  let db: Database.Database;
+  let db: DatabaseAdapter;
   let publishService: PublishService;
   const testEncryptionKey = 'test-encryption-key-at-least-32-characters-long-for-aes';
   const testSessionData = { user_id: 'ig-123', cookies: { auth_token: 'token123' } };
   let encryptedSessionData: string;
 
   beforeAll(() => {
-    db = new Database(':memory:');
+    db = createMockDatabase();
     db.pragma('foreign_keys = ON');
 
     // Create schema

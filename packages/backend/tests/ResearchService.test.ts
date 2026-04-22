@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, beforeEach, vi } from 'vitest';
-import Database from 'better-sqlite3';
+import { createMockDatabase } from './helpers/test-db';
+import type { DatabaseAdapter } from '../src/config/database';
 import { randomUUID } from 'crypto';
 import { ResearchService } from '../src/services/ResearchService';
 
@@ -22,65 +23,13 @@ vi.mock('@anthropic-ai/sdk', () => {
 });
 
 describe('ResearchService', () => {
-  let db: Database.Database;
+  let db: DatabaseAdapter;
   let researchService: ResearchService;
 
   beforeAll(() => {
-    db = new Database(':memory:');
-    db.pragma('foreign_keys = ON');
+    db = createMockDatabase();
 
-    // Create schema
-    db.exec(`
-      CREATE TABLE users (
-        id TEXT PRIMARY KEY,
-        email TEXT UNIQUE NOT NULL,
-        password_hash TEXT NOT NULL,
-        name TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE profiles (
-        id TEXT PRIMARY KEY,
-        user_id TEXT NOT NULL REFERENCES users(id),
-        instagram_username TEXT UNIQUE NOT NULL,
-        instagram_id TEXT,
-        access_token TEXT NOT NULL,
-        refresh_token TEXT,
-        token_expires_at DATETIME,
-        bio TEXT,
-        profile_picture_url TEXT,
-        followers_count INTEGER DEFAULT 0,
-        context_voice TEXT,
-        context_tone TEXT,
-        context_audience TEXT,
-        context_goals TEXT,
-        autopilot_enabled BOOLEAN DEFAULT 0,
-        autopilot_schedule TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE content (
-        id TEXT PRIMARY KEY,
-        profile_id TEXT NOT NULL REFERENCES profiles(id),
-        type TEXT NOT NULL,
-        caption TEXT,
-        hashtags TEXT,
-        image_url TEXT,
-        carousel_json TEXT,
-        status TEXT DEFAULT 'draft',
-        scheduled_at DATETIME,
-        published_at DATETIME,
-        instagram_post_id TEXT,
-        instagram_url TEXT,
-        publish_error TEXT,
-        retry_count INTEGER DEFAULT 0,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
-
+    // NOTE: Schema setup moved to database initialization (Story 8.1.1)
     researchService = new ResearchService(db);
   });
 

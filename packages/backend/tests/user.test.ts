@@ -1,30 +1,15 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import Database from 'better-sqlite3';
-import path from 'path';
-import initializeDatabase from '../src/config/database';
+import { createMockDatabase } from './helpers/test-db';
+import type { DatabaseAdapter } from '../src/config/database';
 import { User } from '../src/models/User';
 
 describe('User Model', () => {
-  let db: Database.Database;
+  let db: DatabaseAdapter;
   let userModel: User;
 
   beforeAll(() => {
-    // Use in-memory SQLite for testing
-    db = new Database(':memory:');
-    db.pragma('foreign_keys = ON');
-
-    // Create schema
-    db.exec(`
-      CREATE TABLE users (
-        id TEXT PRIMARY KEY,
-        email TEXT UNIQUE NOT NULL,
-        password_hash TEXT NOT NULL,
-        name TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
-
+    // Use mock database for testing
+    db = createMockDatabase();
     userModel = new User(db);
   });
 

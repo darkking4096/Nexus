@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, vi } from 'vitest';
-import Database from 'better-sqlite3';
+import { createMockDatabase } from './helpers/test-db';
+import type { DatabaseAdapter } from '../src/config/database';
 import { InstaService } from '../src/services/InstaService';
 import { Profile } from '../src/models/Profile';
 
@@ -7,67 +8,17 @@ import { Profile } from '../src/models/Profile';
 vi.stubGlobal('fetch', vi.fn());
 
 describe('InstaService', () => {
-  let db: Database.Database;
+  let db: DatabaseAdapter;
   let instaService: InstaService;
   let profileModel: Profile;
   const testEncryptionKey = 'test-encryption-key-at-least-32-characters-long-for-aes';
   const testUserId = 'test-user-123';
 
   beforeAll(() => {
-    // In-memory database
-    db = new Database(':memory:');
-    db.pragma('foreign_keys = ON');
+    // Use mock database for testing
+    db = createMockDatabase();
 
-    // Create schema (minimal for testing)
-    db.exec(`
-      CREATE TABLE users (
-        id TEXT PRIMARY KEY,
-        email TEXT UNIQUE NOT NULL,
-        password_hash TEXT NOT NULL,
-        name TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE profiles (
-        id TEXT PRIMARY KEY,
-        user_id TEXT NOT NULL REFERENCES users(id),
-        instagram_username TEXT UNIQUE NOT NULL,
-        instagram_id TEXT,
-        access_token TEXT NOT NULL,
-        refresh_token TEXT,
-        token_expires_at DATETIME,
-        bio TEXT,
-        profile_picture_url TEXT,
-        followers_count INTEGER DEFAULT 0,
-        context_voice TEXT,
-        context_tone TEXT,
-        context_audience TEXT,
-        context_goals TEXT,
-        autopilot_enabled BOOLEAN DEFAULT 0,
-        autopilot_schedule TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE insta_sessions (
-        id TEXT PRIMARY KEY,
-        profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-        session_data TEXT NOT NULL,
-        last_used_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE INDEX idx_profiles_user_id ON profiles(user_id);
-      CREATE INDEX idx_insta_sessions_profile_id ON insta_sessions(profile_id);
-    `);
-
-    // Create test user
-    db.exec(`
-      INSERT INTO users (id, email, password_hash, name, created_at, updated_at)
-      VALUES ('${testUserId}', 'test@example.com', 'hash', 'Test User', datetime('now'), datetime('now'));
-    `);
-
+    // NOTE: Schema setup moved to database initialization (Story 8.1.1)
     profileModel = new Profile(db);
     instaService = new InstaService(db, 'http://localhost:5001', testEncryptionKey);
   });

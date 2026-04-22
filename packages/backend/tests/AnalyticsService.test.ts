@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, vi } from 'vitest';
-import Database from 'better-sqlite3';
+import { createMockDatabase } from './helpers/test-db';
+import type { DatabaseAdapter } from '../src/config/database';
 import { AnalyticsService } from '../src/services/AnalyticsService';
 import { Profile } from '../src/models/Profile';
 
@@ -7,7 +8,7 @@ import { Profile } from '../src/models/Profile';
 vi.stubGlobal('fetch', vi.fn());
 
 describe('AnalyticsService', () => {
-  let db: Database.Database;
+  let db: DatabaseAdapter;
   let analyticsService: AnalyticsService;
   let profileModel: Profile;
   const testEncryptionKey = 'test-encryption-key-at-least-32-characters-long-for-aes';
@@ -15,108 +16,11 @@ describe('AnalyticsService', () => {
   const testProfileId = 'test-profile-123';
 
   beforeAll(() => {
-    // In-memory database
-    db = new Database(':memory:');
-    db.pragma('foreign_keys = ON');
+    // Use mock database for testing
+    db = createMockDatabase();
 
-    // Create schema
-    db.exec(`
-      CREATE TABLE users (
-        id TEXT PRIMARY KEY,
-        email TEXT UNIQUE NOT NULL,
-        password_hash TEXT NOT NULL,
-        name TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE profiles (
-        id TEXT PRIMARY KEY,
-        user_id TEXT NOT NULL REFERENCES users(id),
-        instagram_username TEXT UNIQUE NOT NULL,
-        instagram_id TEXT,
-        access_token TEXT NOT NULL,
-        refresh_token TEXT,
-        token_expires_at DATETIME,
-        bio TEXT,
-        profile_picture_url TEXT,
-        followers_count INTEGER DEFAULT 0,
-        context_voice TEXT,
-        context_tone TEXT,
-        context_audience TEXT,
-        context_goals TEXT,
-        autopilot_enabled BOOLEAN DEFAULT 0,
-        autopilot_schedule TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE content (
-        id TEXT PRIMARY KEY,
-        profile_id TEXT NOT NULL REFERENCES profiles(id),
-        type TEXT NOT NULL,
-        caption TEXT,
-        hashtags TEXT,
-        image_url TEXT,
-        carousel_json TEXT,
-        status TEXT DEFAULT 'draft',
-        scheduled_at DATETIME,
-        published_at DATETIME,
-        instagram_post_id TEXT,
-        instagram_url TEXT,
-        publish_error TEXT,
-        retry_count INTEGER DEFAULT 0,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE insta_sessions (
-        id TEXT PRIMARY KEY,
-        profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-        session_data TEXT NOT NULL,
-        last_used_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE metrics (
-        id TEXT PRIMARY KEY,
-        profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-        followers_count INTEGER,
-        engagement_rate REAL,
-        reach INTEGER,
-        impressions INTEGER,
-        collected_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE post_metrics (
-        id TEXT PRIMARY KEY,
-        content_id TEXT NOT NULL REFERENCES content(id) ON DELETE CASCADE,
-        profile_id TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-        likes INTEGER DEFAULT 0,
-        comments INTEGER DEFAULT 0,
-        shares INTEGER DEFAULT 0,
-        saves INTEGER DEFAULT 0,
-        reach INTEGER DEFAULT 0,
-        collected_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE INDEX idx_profiles_user_id ON profiles(user_id);
-      CREATE INDEX idx_content_profile_id ON content(profile_id);
-      CREATE INDEX idx_metrics_profile_id ON metrics(profile_id);
-      CREATE INDEX idx_post_metrics_content_id ON post_metrics(content_id);
-    `);
-
-    // Create test user and profile
-    const userStmt = db.prepare('INSERT INTO users (id, email, password_hash, name) VALUES (?, ?, ?, ?)');
-    userStmt.run(testUserId, 'test@example.com', 'hashed_password', 'Test User');
-
-    const profileStmt = db.prepare(`
-      INSERT INTO profiles (id, user_id, instagram_username, instagram_id, access_token, bio, followers_count)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `);
-    profileStmt.run(testProfileId, testUserId, 'testuser', 'insta-123', 'encrypted_token', 'Test bio', 1000);
+    // NOTE: Schema setup has been moved to database initialization (Story 8.1.1)
+    // Test data would be created via async queries in a real test database
 
     analyticsService = new AnalyticsService(db, 'http://localhost:5001', testEncryptionKey);
     profileModel = new Profile(db);

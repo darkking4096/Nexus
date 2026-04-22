@@ -10,7 +10,6 @@
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { Pool } from 'pg';
-import Database from 'better-sqlite3';
 
 const postgres = new Pool({
   host: process.env.DB_HOST || 'localhost',
@@ -20,8 +19,6 @@ const postgres = new Pool({
   password: process.env.DB_PASSWORD || '',
   ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
 });
-
-const sqlite = new Database(process.env.SQLITE_DB_PATH || 'packages/backend/data/nexus.db');
 
 describe('Story 8.1.1: Schema Validation', () => {
   beforeAll(async () => {
@@ -35,7 +32,7 @@ describe('Story 8.1.1: Schema Validation', () => {
 
   afterAll(async () => {
     await postgres.end();
-    sqlite.close();
+    // SQLite removed - migrated to PostgreSQL
   });
 
   describe('PostgreSQL Schema', () => {
@@ -145,51 +142,8 @@ describe('Story 8.1.1: Schema Validation', () => {
     });
   });
 
-  describe('SQLite → PostgreSQL Data Compatibility', () => {
-    it('should handle BOOLEAN → BOOLEAN conversion', () => {
-      // SQLite uses 0/1 for booleans
-      const sqliteBoolean = sqlite.prepare(
-        'SELECT autopilot_enabled FROM profiles LIMIT 1'
-      ).get();
-
-      // PostgreSQL should interpret as BOOLEAN
-      expect([0, 1, true, false]).toContain(sqliteBoolean?.autopilot_enabled);
-    });
-
-    it('should handle DATETIME → TIMESTAMP conversion', () => {
-      const sqliteDate = sqlite.prepare(
-        'SELECT created_at FROM users LIMIT 1'
-      ).get();
-
-      // Date should be ISO format
-      expect(sqliteDate?.created_at).toMatch(/\d{4}-\d{2}-\d{2}/);
-    });
-
-    it('should handle TEXT fields correctly', () => {
-      const sqliteText = sqlite.prepare(
-        'SELECT email FROM users LIMIT 1'
-      ).get();
-
-      expect(typeof sqliteText?.email).toBe('string');
-    });
-
-    it('should handle INTEGER fields correctly', () => {
-      const sqliteInt = sqlite.prepare(
-        'SELECT retry_count FROM content LIMIT 1'
-      ).get();
-
-      expect(typeof sqliteInt?.retry_count).toBe('number');
-    });
-
-    it('should handle NULL values correctly', () => {
-      const sqliteNull = sqlite.prepare(
-        'SELECT instagram_id FROM profiles WHERE instagram_id IS NULL LIMIT 1'
-      ).get();
-
-      // NULL values should convert to null in PostgreSQL
-      expect(sqliteNull?.instagram_id ?? null).toBe(null);
-    });
-  });
+  // NOTE: SQLite compatibility tests removed - migration to PostgreSQL complete (Story 8.1.2)
+  // describe('SQLite → PostgreSQL Data Compatibility', () => { ... });
 
   describe('Foreign Key Constraints', () => {
     it('should have profiles referencing users', async () => {

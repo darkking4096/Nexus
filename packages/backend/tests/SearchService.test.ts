@@ -1,14 +1,15 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import Database from 'better-sqlite3';
+import { createMockDatabase } from './helpers/test-db';
+import type { DatabaseAdapter } from '../src/config/database';
 import { SearchService } from '../src/services/SearchService';
 
 describe('SearchService', () => {
-  let db: Database.Database;
+  let db: DatabaseAdapter;
   let searchService: SearchService;
 
   beforeAll(() => {
-    // In-memory database
-    db = new Database(':memory:');
+    // Use mock database for testing
+    db = createMockDatabase();
     searchService = new SearchService(db);
   });
 

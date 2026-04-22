@@ -1,17 +1,18 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import Database from 'better-sqlite3';
+import { createMockDatabase } from './helpers/test-db';
+import type { DatabaseAdapter } from '../src/config/database';
 import { BenchmarkService } from '../src/services/BenchmarkService';
 import { SearchService, CompetitorData } from '../src/services/SearchService';
 import { AnalyticsService, Metrics } from '../src/services/AnalyticsService';
 
 describe('BenchmarkService', () => {
-  let db: Database.Database;
+  let db: DatabaseAdapter;
   let benchmarkService: BenchmarkService;
   let searchService: SearchService;
   let analyticsService: AnalyticsService;
 
   beforeEach(() => {
-    db = new Database(':memory:');
+    db = createMockDatabase();
     searchService = new SearchService(db);
     analyticsService = new AnalyticsService(db, 'http://localhost:5001', 'test-key');
     benchmarkService = new BenchmarkService(db, searchService, analyticsService);
