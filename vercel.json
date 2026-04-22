@@ -1,0 +1,22 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "packages/frontend/dist",
+  "rootDirectory": "packages/frontend",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "nodeVersion": "18.x",
+  "env": {
+    "VITE_API_URL": "@vite_api_url"
+  },
+  "preview": {
+    "env": {
+      "VITE_API_URL": "@vite_api_url_preview"
+    }
+  },
+  "regions": ["iad1"],
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 60
+    }
+  }
+}

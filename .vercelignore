@@ -1,0 +1,56 @@
+# Development files
+.env.local
+.env.*.local
+.env.development
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Dependencies
+node_modules
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build artifacts
+dist
+build
+.next
+out
+
+# Test files
+tests
+test-results
+playwright-report
+.nyc_output
+coverage
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation
+docs
+README.md
+CHANGELOG.md
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.circleci
+
+# Other
+.cache
+.eslintcache
+.parcel-cache
