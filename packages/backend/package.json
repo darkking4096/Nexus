@@ -17,7 +17,13 @@
     "lint": "eslint src --ext .ts",
     "typecheck": "tsc --noEmit",
     "migrate:data": "tsx scripts/migrate-data.ts",
-    "db:test": "node scripts/apply-migrations.mjs"
+    "db:test": "node scripts/apply-migrations.mjs",
+    "test:e2e": "playwright test",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report test-results/e2e",
+    "seed:test-data": "tsx scripts/seed-test-data.ts",
+    "seed:test-data:api": "tsx scripts/seed-test-data.ts --api http://localhost:3001"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.20.0",
