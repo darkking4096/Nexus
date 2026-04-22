@@ -13,7 +13,10 @@
     "build": "npm run build --workspace=packages/backend && npm run build --workspace=packages/frontend",
     "test": "npm run test --workspace=packages/backend && npm run test --workspace=packages/frontend",
     "lint": "npm run lint --workspace=packages/backend && npm run lint --workspace=packages/frontend",
-    "typecheck": "npm run typecheck --workspace=packages/backend && npm run typecheck --workspace=packages/frontend"
+    "typecheck": "npm run typecheck --workspace=packages/backend && npm run typecheck --workspace=packages/frontend",
+    "vercel:setup": "bash scripts/setup-vercel-complete.sh",
+    "vercel:api": "node scripts/vercel-setup-api.js",
+    "vercel:playwright": "npx ts-node scripts/vercel-setup-automation.playwright.ts"
   },
   "engines": {
     "node": ">=18.0.0",
