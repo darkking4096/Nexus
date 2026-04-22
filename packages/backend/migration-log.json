@@ -1,0 +1,89 @@
+{
+  "startTime": "2026-04-22T13:29:53.731Z",
+  "dryRun": false,
+  "tables": [
+    {
+      "table": "users",
+      "sqliteRows": 2,
+      "postgresRows": 2,
+      "match": true
+    },
+    {
+      "table": "profiles",
+      "sqliteRows": 0,
+      "postgresRows": 0,
+      "match": true
+    },
+    {
+      "table": "credentials",
+      "sqliteRows": 0,
+      "postgresRows": 0,
+      "match": true
+    },
+    {
+      "table": "insta_sessions",
+      "sqliteRows": 0,
+      "postgresRows": 0,
+      "match": true
+    },
+    {
+      "table": "content",
+      "sqliteRows": 0,
+      "postgresRows": 0,
+      "match": true
+    },
+    {
+      "table": "publish_logs",
+      "sqliteRows": 0,
+      "postgresRows": 0,
+      "match": true
+    },
+    {
+      "table": "metrics",
+      "sqliteRows": 0,
+      "postgresRows": 0,
+      "match": true
+    },
+    {
+      "table": "post_metrics",
+      "sqliteRows": 0,
+      "postgresRows": 0,
+      "match": true
+    },
+    {
+      "table": "workflow_states",
+      "sqliteRows": 0,
+      "postgresRows": 0,
+      "match": true
+    },
+    {
+      "table": "workflow_history",
+      "sqliteRows": 0,
+      "postgresRows": 0,
+      "match": true
+    },
+    {
+      "table": "autopilot_config",
+      "sqliteRows": 0,
+      "postgresRows": 0,
+      "match": true
+    },
+    {
+      "table": "scheduled_posts",
+      "sqliteRows": 0,
+      "postgresRows": 0,
+      "match": true
+    },
+    {
+      "table": "schedule_audit",
+      "sqliteRows": 0,
+      "postgresRows": 0,
+      "match": true
+    }
+  ],
+  "totalSQLiteRows": 2,
+  "totalPostgresRows": 2,
+  "status": "completed",
+  "endTime": "2026-04-22T13:29:56.292Z",
+  "duration": 2561
+}

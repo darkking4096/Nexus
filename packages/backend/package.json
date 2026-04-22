@@ -10,8 +10,11 @@
     "start": "node dist/index.js",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
+    "test:migrations": "vitest tests/migrations",
     "lint": "eslint src --ext .ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "migrate:data": "tsx scripts/migrate-data.ts",
+    "db:test": "node scripts/apply-migrations.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.20.0",
@@ -23,6 +26,7 @@
     "express": "^4.18.2",
     "express-rate-limit": "^7.1.5",
     "jsonwebtoken": "^9.0.0",
+    "pg": "^8.20.0",
     "playwright": "^1.42.0",
     "redis": "^4.6.11",
     "sharp": "^0.33.5",
