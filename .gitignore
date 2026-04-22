@@ -44,3 +44,5 @@ Thumbs.db
 **/__tests__/test-*.db
 *.db.lock
 **/test-results.json
+
+.vercel
